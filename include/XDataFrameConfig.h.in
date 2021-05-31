@@ -1,0 +1,3 @@
+// the configured options and settings for XDataFrame
+#define XDataFrame_VERSION_MAJOR 1.0
+#define XDataFrame_VERSION_MINOR 1.0

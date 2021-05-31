@@ -1,0 +1,7 @@
+{
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "*.in": "cpp",
+        "CheckLoad.C": "cpp"
+    }
+}
