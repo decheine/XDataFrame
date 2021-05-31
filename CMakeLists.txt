@@ -11,16 +11,22 @@ find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread Multi
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-# Generate dictionaries
-# ROOT_GENERATE_DICTIONARY(G__Event Event.h LINKDEF EventLinkDef.h)
+
+# Generate dictionaries for ROOT
+# ROOT_GENERATE_DICTIONARY(G__XDataFrame XDataFrame.h LINKDEF XDataFrameLinkDef.h)
 
 
 
+# Adding project subdirectories for different functional parts/modules
+# RDataFrame
+add_subdirectory(RDataFrameHandler)
+# ServiceX TODO: create the CMakeLists and such for that module
+# add_subdirectory(ServiceXHandler)
 
 
 
-
-
+# Adding local libraries ?
+# add_library(RDataFrameHandler G__RDataFrameHandler)
 
 
 

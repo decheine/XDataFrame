@@ -14,12 +14,12 @@ find_package(ROOT 6.20 CONFIG REQUIRED)
 
 root_generate_dictionary(G__RDataFrameHandler RDataFrameHandler.h LINKDEF DictLinkDef.h)
 
-add_library(DictExample SHARED DictExample.cxx DictExample.h G__DictExample.cxx)
-target_include_directories(DictExample PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-target_link_libraries(DictExample PUBLIC ROOT::Core)
+add_library(RDataFrameHandler SHARED RDataFrameHandler.cxx RDataFrameHandler.h G__RDataFrameHandler.cxx)
+target_include_directories(RDataFrameHandler PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_link_libraries(RDataFrameHandler PUBLIC ROOT::Core ROOT::Tree ROOT::Physics)
 
 ## Alternative to add the dictionary to an existing target:
-# add_library(DictExample SHARED DictExample.cxx DictExample.h)
-# target_include_directories(DictExample PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-# target_link_libraries(DictExample PUBLIC ROOT::Core)
-# root_generate_dictionary(G__DictExample DictExample.h MODULE DictExample LINKDEF DictLinkDef.h)
+# add_library(RDataFrameHandler SHARED RDataFrameHandler.cxx RDataFrameHandler.h)
+# target_include_directories(RDataFrameHandler PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+# target_link_libraries(RDataFrameHandler PUBLIC ROOT::Core)
+# root_generate_dictionary(G__RDataFrameHandler RDataFrameHandler.h MODULE RDataFrameHandler LINKDEF DictLinkDef.h)
