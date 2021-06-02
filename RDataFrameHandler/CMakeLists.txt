@@ -16,7 +16,7 @@ root_generate_dictionary(G__RDataFrameHandler RDataFrameHandler.h LINKDEF DictLi
 
 add_library(RDataFrameHandler SHARED RDataFrameHandler.cxx RDataFrameHandler.h G__RDataFrameHandler.cxx)
 target_include_directories(RDataFrameHandler PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-target_link_libraries(RDataFrameHandler PUBLIC ROOT::Core ROOT::Tree ROOT::Physics)
+target_link_libraries(RDataFrameHandler PUBLIC ROOT::Core ROOT::Tree ROOT::Physics ROOT::RIO)
 
 ## Alternative to add the dictionary to an existing target:
 # add_library(RDataFrameHandler SHARED RDataFrameHandler.cxx RDataFrameHandler.h)

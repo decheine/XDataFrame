@@ -1,0 +1,4 @@
+api_endpoints:
+  - endpoint: https://xaod.servicex.ssl-hep.org/
+    token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjI1NzM2OTYsIm5iZiI6MTYyMjU3MzY5NiwianRpIjoiY2ZjMDlmOTItZDRlNi00NjE0LTlhOTEtMjRlZDFhZDhiY2ViIiwiaWRlbnRpdHkiOiIwM2I0YTVmYi02YzBkLTQxODEtOGUyMy1kNzFmNDgzZGY4YjMiLCJ0eXBlIjoicmVmcmVzaCJ9.efvLqwiJK-Eksu5oJkEkWMBxtd8BJJqSBfTaN1hQAS8
+    type: xaod

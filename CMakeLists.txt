@@ -11,10 +11,11 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 #                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
 #                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
 
-find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint)
+find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
 
+find_package(yaml-cpp REQUIRED)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include)
 
 # Generate dictionaries for ROOT
 # ROOT_GENERATE_DICTIONARY(G__XDataFrame XDataFrame.h LINKDEF XDataFrameLinkDef.h)
@@ -23,8 +24,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Adding project subdirectories for different functional parts/modules
 # RDataFrame
-add_subdirectory(RDataFrameHandler)
-# ServiceX TODO: create the CMakeLists and such for that module
+# add_subdirectory(RDataFrameHandler)
+
+# ServiceX
 # add_subdirectory(ServiceXHandler)
 
 
@@ -32,10 +34,10 @@ add_subdirectory(RDataFrameHandler)
 # Adding local libraries ?
 # add_library(RDataFrameHandler G__RDataFrameHandler)
 
-
+file(GLOB SOURCES src/*.cpp)
 
 # Executable
-add_executable(XDataFrame exe/XDataFrame.cxx)
+add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
 
 # Linking Libraries
@@ -49,6 +51,7 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ROOT::ROOTDataFrame
                                         ROOT::Gpad
                                         ROOT::Rint
+                                        ${YAML_CPP_LIBRARIES}
 )
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
