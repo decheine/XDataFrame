@@ -7,7 +7,11 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # Locate the ROOT package and include the components the project needs
 # MultiProc     ROOT's multi-threading framework
-find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame  )
+# root-config --libs => -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps 
+#                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
+#                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
+
+find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint)
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -43,6 +47,8 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ROOT::Thread 
                                         ROOT::MultiProc
                                         ROOT::ROOTDataFrame
+                                        ROOT::Gpad
+                                        ROOT::Rint
 )
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
