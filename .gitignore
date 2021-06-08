@@ -37,3 +37,8 @@ install/
 .idea/
 .vscode/
 cmake*/
+
+
+# other
+servicex.yaml
+workspace.code-workspace
