@@ -37,6 +37,12 @@ using namespace std;
 // }
 // ServiceXHandler::~ServiceXHandler() { }
 
+/**
+ * @brief reads and parses the servicex.yaml file and stores 
+ * the endpoint, token, and type
+ * 
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> ServiceXHandler::readYaml(){
 
     // Check if file exists
@@ -87,10 +93,8 @@ std::vector<std::string> ServiceXHandler::readYaml(){
         token = regex_replace(fields.at(2), regexToken, "");
         mytype = regex_replace(fields.at(3), regexType, "");
         // regex_search(fields.at(2), m, regexToken);
-    
-        
-        outputStr.push_back(endpoint);
 
+        outputStr.push_back(endpoint);
 
         std::cout << endpoint << "\n";
         myfile.close();

@@ -1,0 +1,10 @@
+{
+	"did": "cms:DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18NanoAODv7-Nano02Apr2020_102X_upgrade2018_realistic_v21_ext2-v1/NANOAODSIM",
+	"tree-name": "nominal",
+	"selection": "(Select (call Events) (lambda (list e) (list (attr e 'Electron_pt'))))",
+	"image": "sslhep/servicex_func_adl_uproot_transformer:develop",
+	"result-destination": "object-store",
+	"result-format": "parquet",
+	"chunk-size": 7000,
+	"workers": 1
+}
