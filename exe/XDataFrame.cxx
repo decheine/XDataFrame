@@ -1,5 +1,5 @@
 // Standard includes
-
+#include <map>
 
 #include "../include/XDataFrameConfig.h.in"
 // Include ROOT
@@ -7,14 +7,19 @@
 #include "TRint.h"
 #include "TCanvas.h"
 
+// ryml
+#include <ryml.hpp>
+
+#include <iostream>
+
 // Include ServiceX ?
 #include "ServiceXHandler.h"
 
 using namespace std;
 
-int main(int argc, char* argv[]){
-    std::cout << "Hello world \n";
 
+
+int main(int argc, char* argv[]){
     // if (argc < 2) {
     //     // report version
     //     // Show usage 
@@ -26,12 +31,23 @@ int main(int argc, char* argv[]){
 
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
-    userYaml = xHandler.readYaml();
+    User theUser();
+    std::map<std::string, std::string> values = xHandler.parseYaml();
+
+    for (std::map<std::string, std::string>::iterator it = values.begin(); it != values.end(); ++it){
+        std::cout << it->second << std::endl;
+    }
+    // std::for_each(values.begin(), values.end()){
+    //     std::cout << s << std::endl;
+    // }
+
     // 1 - endpoint
     // 2 - token
     // 3 - type
     // userYaml.at(1);
 
+
+    
 
 
 
@@ -50,5 +66,6 @@ int main(int argc, char* argv[]){
 
     // Run and finish with ROOT prompt
     // app.Run();
+    std::cout << "Finished\n";
     return 0;
 }

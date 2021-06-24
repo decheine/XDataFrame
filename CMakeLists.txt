@@ -11,9 +11,17 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 #                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
 #                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
 
+# Setting prefix path to look for package config files
+set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
+
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
 
-find_package(yaml-cpp REQUIRED)
+
+
+# instruct cmake to search for ryml
+find_package(ryml REQUIRED)
+
+find_package( CURL REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include)
 
@@ -29,7 +37,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cp
 # ServiceX
 # add_subdirectory(ServiceXHandler)
 
-
+# Using Rapid YAML project for yaml parsing
 
 # Adding local libraries ?
 # add_library(RDataFrameHandler G__RDataFrameHandler)
@@ -51,7 +59,7 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ROOT::ROOTDataFrame
                                         ROOT::Gpad
                                         ROOT::Rint
-                                        ${YAML_CPP_LIBRARIES}
+                                        ryml::ryml
 )
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)

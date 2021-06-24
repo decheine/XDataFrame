@@ -8,7 +8,11 @@
 class User {
     public:
         char* getEndpoint();
-        User(std::string end, std::string tok, std::string typ);
+        // User(std::string end, std::string tok, std::string typ);
+        User();
+        void setEndpoint(char*endpoint);
+        void setToken(char* token);
+        void setType(char* type);
 
     private:
         const char* endpoint;
@@ -22,7 +26,14 @@ class ServiceXHandler {
         double x;
         // User user;
 
-        std::vector<std::string> readYaml();
+        void show_val(ryml::NodeRef n);
+        void show_keyval(ryml::NodeRef n);
+
+
+        // std::vector<std::string> readYaml();
+        // void readYaml();
+
+        std::map<std::string, std::string> parseYaml();
         char* getEndpoint();
         char* getType();
 };
