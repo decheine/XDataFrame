@@ -25,11 +25,12 @@ class ServiceXHandler {
     public:
         double x;
         // User user;
+        static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data);
 
         void show_val(ryml::NodeRef n);
         void show_keyval(ryml::NodeRef n);
-
-
+        std::string fetchData(std::string request_id);
+        void getStatus(std::string request_id);
         // std::vector<std::string> readYaml();
         // void readYaml();
 
