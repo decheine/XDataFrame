@@ -1,5 +1,6 @@
 // Standard includes
 #include <map>
+#include <iostream>
 
 #include "../include/XDataFrameConfig.h.in"
 // Include ROOT
@@ -10,14 +11,20 @@
 // ryml
 #include <ryml.hpp>
 
-#include <iostream>
+// Curl
+#include <curl/curl.h>
 
-// Include ServiceX ?
+
+
+// ServiceX
 #include "ServiceXHandler.h"
 
 using namespace std;
 
-
+size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
+    data->append((char*)ptr, size * nmemb);
+    return size * nmemb;
+}
 
 int main(int argc, char* argv[]){
     // if (argc < 2) {
@@ -28,6 +35,8 @@ int main(int argc, char* argv[]){
     //     std::cout << "Usage: " << argv[0] << " number" << std::endl;
     //     return 1;
     // }
+
+
 
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
@@ -41,14 +50,18 @@ int main(int argc, char* argv[]){
     //     std::cout << s << std::endl;
     // }
 
-    // 1 - endpoint
-    // 2 - token
-    // 3 - type
-    // userYaml.at(1);
+    // curlopt_post
+    // CURLOPT_HTTPGET
 
-
+    // CURL *curl = curl_easy_init();
+    std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
+    const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    const char* targetURL = (serviceXURL + request_id).c_str();
     
 
+    std::string response_string = xHandler.fetchData(request_id);
+    std::cout << "Response: " << response_string << std::endl;
 
 
     // Runs basic ROOT app with the arguments given for main

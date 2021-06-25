@@ -23,7 +23,14 @@ find_package(ryml REQUIRED)
 
 find_package( CURL REQUIRED)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include)
+set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
+
+find_package(jsoncpp CONFIG REQUIRED)
+
+include(FindPkgConfig)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include 
+        ${CURL_INCLUDE_DIRS})
 
 # Generate dictionaries for ROOT
 # ROOT_GENERATE_DICTIONARY(G__XDataFrame XDataFrame.h LINKDEF XDataFrameLinkDef.h)
@@ -60,7 +67,10 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ROOT::Gpad
                                         ROOT::Rint
                                         ryml::ryml
+                                        ${CURL_LIBRARIES}
 )
+
+target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static)
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 

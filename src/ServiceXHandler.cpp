@@ -1,26 +1,6 @@
-// // Check if file exists
-//             ifstream infile("~/servicex.yaml");
-//             if(!infile.good()){
-//                 std::cout << "servicex.yaml not found in home directory. Exiting.\n";
-//                 exit(1);
-//             }
-//             string myText;
-//             ifstream ReadFile("~/servicex.yaml");
-
-//             // Use a while loop together with the getline() function to read the file line by line
-//             while (getline(ReadFile, myText)) {
-//             // Output the text from the file
-//                 cout << myText;
-//             }
-
-//             TFile readYaml("~/servicex.yaml");
-            
-//             // Make new file object from  /servicex.yaml
-//             return 0;
-
-
+// Standard Includes
+#include <stdlib.h>
 #include <iostream>
-#include "yaml-cpp/yaml.h"
 #include <fstream>
 #include <string>
 #include <streambuf>
@@ -29,13 +9,18 @@
 #include <iterator> 
 #include <map>
 
+// Yaml processor
 #include <c4/yml/preprocess.hpp>
 #include <c4/yml/std/string.hpp>
-
 #include <ryml.hpp>
 
-#include <stdlib.h>
+// Curl
+#include <curl/curl.h>
 
+// Jsoncpp
+#include <json/value.h>
+
+// Project
 #include "ServiceXHandler.h"
 
 using namespace std;
@@ -55,6 +40,19 @@ void ServiceXHandler::show_val(c4::yml::NodeRef n)
     std::cout << n.val() << "\n";
 }
 
+/**
+ * @brief Writes data that is being fetched from a get request
+ * 
+ * @param ptr 
+ * @param size 
+ * @param nmemb 
+ * @param data 
+ * @return size_t 
+ */
+size_t ServiceXHandler::writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
+    data->append((char*)ptr, size * nmemb);
+    return size * nmemb;
+}
 
 // TODO: Fix/build the servicex.yaml parser, correctly. Design what things we need from the file
 
@@ -164,7 +162,44 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(){
     return properties;
 }
 
+std::string ServiceXHandler::fetchData(std::string request_id){
+    // CURL *curl = curl_easy_init();
+    // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
+    const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    const char* targetURL = (serviceXURL + request_id).c_str();
+    
+    curl_global_init(CURL_GLOBAL_DEFAULT);
 
+    // GET request
+    std::cout << "Doing GET request\n";
+    CURL *curl = curl_easy_init();
+    std::string response_string;
+    std::string header_string;
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, requestURL);
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
+        curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
+        curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1L);
+
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
+
+        curl_easy_perform(curl);
+        cout << response_string;
+        curl_easy_cleanup(curl);
+        curl_global_cleanup();
+        curl = NULL;
+    }
+
+    std::cout << "Response: " << response_string << std::endl;
+    return response_string;
+}
+
+void getStatus(std::string request_id){
+
+}
 
 // User::User(std::string end, std::string tok, std::string typ){
 //     endpoint = end.c_str();
