@@ -11,6 +11,9 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 #                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
 #                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
 
+
+set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems vcpkg.cmake)
+
 # Setting prefix path to look for package config files
 set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
 
@@ -28,6 +31,36 @@ set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
 find_package(jsoncpp CONFIG REQUIRED)
 
 include(FindPkgConfig)
+
+set(Brotli_DIR ~/IRIS-HEP/vcpkg/packages/brotli_x64-linux/share/unofficial-brotli)
+# find_package(Brotli)
+
+# Snappy, arrow dependency
+# set(Snappy_LIB ~/IRIS-HEP/vcpkg/packages/snappy_x64-linux/include)
+# set(Snappy_DIR ~/IRIS-HEP/vcpkg/packages/snappy_x64-linux/share/snappy)
+# set(Snappy_INCLUDE_DIR ~/IRIS-HEP/vcpkg/packages/snappy_x64-linux/include)
+
+# set(Arrow_DIR ~/IRIS-HEP/vcpkg/packages/arrow_x64-linux/share/arrow)
+# set(arrow_DIR ~/IRIS-HEP/vcpkg/packages/arrow_x64-linux/share/arrow)
+
+# find_package(Arrow CONFIG REQUIRED)
+
+# set(ARROW_LIBS "LZ4::lz4 re2::re2 arrow_static zstd::libzstd")
+
+
+
+# Amazon AWS SDK External Project
+include(ExternalProject)
+
+ExternalProject_Add(aws-sdk-cpp
+    GIT_REPOSITORY    https://github.com/aws/aws-sdk-cpp.git
+    GIT_TAG           <tag>
+    CMAKE_ARGS        <CMake-options>
+    BUILD_ALWAYS      TRUE
+    TEST_COMMAND      ""
+)
+
+
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include 
         ${CURL_INCLUDE_DIRS})
@@ -68,9 +101,12 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ROOT::Rint
                                         ryml::ryml
                                         ${CURL_LIBRARIES}
+                                        
 )
 
-target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static)
+target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
+                                        # ${ARROW_LIBS}
+                                        )
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 

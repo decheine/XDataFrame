@@ -14,7 +14,10 @@
 // Curl
 #include <curl/curl.h>
 
-
+// Jsoncpp
+#include <json/reader.h>
+#include <json/value.h>
+#include <json/writer.h>
 
 // ServiceX
 #include "ServiceXHandler.h"
@@ -61,8 +64,39 @@ int main(int argc, char* argv[]){
     
 
     std::string response_string = xHandler.fetchData(request_id);
-    std::cout << "Response: " << response_string << std::endl;
+    // std::cout << "Response: " << response_string << std::endl;
 
+    Json::Value root;  
+    // For convenience, use `writeString()` with a specialized builder.
+    Json::StreamWriterBuilder wbuilder;
+    wbuilder["indentation"] = "\t";
+    std::string document = Json::writeString(wbuilder, root);
+    
+    
+
+    // Here, using a specialized Builder, we discard comments and
+    // record errors as we parse.
+    Json::CharReaderBuilder rbuilder;
+    rbuilder["collectComments"] = false;
+    std::string errs;
+    auto reader = rbuilder.newCharReader();
+    reader->parse(&response_string.front(), &response_string.back(), &root, &errs);
+    std::vector<string> members = root.getMemberNames();
+
+    
+    // std::cout << members[0] << std::endl;
+
+    for (std::vector<std::string>::iterator it = members.begin(); it != members.end(); ++it){
+        std::cout << *it << std::endl;
+    }
+    // bool ok = Json::parse(rbuilder, response_string, &root, &errs);
+
+    std::cout << "RequestID: " << root["request_id"] << std::endl;
+    // std::string text = "{ \"first\": 1; \"second\": 2}";
+
+    // if(!reader.parse(response_string, root)) {
+    //     std::cout << reader.getFormattedErrorMessages() << std::endl;
+    // }
 
     // Runs basic ROOT app with the arguments given for main
     // TRint app("app", &argc, argv);
@@ -79,6 +113,13 @@ int main(int argc, char* argv[]){
 
     // Run and finish with ROOT prompt
     // app.Run();
+    
+    std::cout << "Minio access key: " << root["minio-access-key"] << std::endl;
+    std::cout << "Minio endpoint: " << root["minio-endpoint"] << std::endl;
+    std::cout << "Minio secret key " << root["minio-secret-key"] << std::endl;
+    std::cout << "Minio secured " << root["minio-secured"] << std::endl;
+    std::cout << "Result destination " << root["tree-name"] << std::endl;
+
     std::cout << "Finished\n";
     return 0;
 }
