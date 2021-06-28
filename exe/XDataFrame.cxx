@@ -19,6 +19,10 @@
 #include <json/value.h>
 #include <json/writer.h>
 
+// AWS SDK
+#include <aws/core/Aws.h>
+
+
 // ServiceX
 #include "ServiceXHandler.h"
 

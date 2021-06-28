@@ -54,8 +54,8 @@ include(ExternalProject)
 
 ExternalProject_Add(aws-sdk-cpp
     GIT_REPOSITORY    https://github.com/aws/aws-sdk-cpp.git
-    GIT_TAG           <tag>
-    CMAKE_ARGS        <CMake-options>
+    GIT_TAG           origin/master
+    CMAKE_ARGS        
     BUILD_ALWAYS      TRUE
     TEST_COMMAND      ""
 )
