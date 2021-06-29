@@ -1,12 +1,14 @@
 // Standard includes
 #include <map>
 #include <iostream>
+#include <fstream>
 
 #include "../include/XDataFrameConfig.h.in"
 // Include ROOT
 #include "TF1.h"
 #include "TRint.h"
 #include "TCanvas.h"
+#include "TFile.h"
 
 // ryml
 #include <ryml.hpp>
@@ -21,6 +23,15 @@
 
 // AWS SDK
 #include <aws/core/Aws.h>
+#include <aws/core/SDKConfig.h>
+
+#include <aws/s3/S3Client.h>
+#include <aws/s3/model/ListObjectsRequest.h>
+#include <aws/s3/model/GetObjectRequest.h>
+
+
+#include <aws/s3/model/PutObjectRequest.h>
+#include <aws/core/auth/AWSCredentialsProvider.h>
 
 
 // ServiceX
@@ -123,6 +134,114 @@ int main(int argc, char* argv[]){
     std::cout << "Minio secret key " << root["minio-secret-key"] << std::endl;
     std::cout << "Minio secured " << root["minio-secured"] << std::endl;
     std::cout << "Result destination " << root["tree-name"] << std::endl;
+
+    std::string BucketName = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+
+
+    Aws::SDKOptions m_options;
+    Aws::S3::S3Client* m_client = { NULL };
+
+
+    Aws::InitAPI(m_options);
+    Aws::Client::ClientConfiguration cfg;
+    cfg.endpointOverride = "cmsopendata-minio.servicex.ssl-hep.org";
+    cfg.scheme = Aws::Http::Scheme::HTTP;
+    cfg.verifySSL = false;
+    //Aws::Auth::AWSCredentials cred("RPW421T9GSIO4A45Y9ZR", "2owKYy9emSS90Q0pXuyqpX1OxBCyEDYodsiBemcq");  // 认证的Key
+    m_client = new Aws::S3::S3Client(Aws::Auth::AWSCredentials("miniouser", "leftfoot1"), cfg, 
+        Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, false);
+    std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
+    std::string pathkey = "temp";
+    Aws::S3::Model::PutObjectRequest putObjectRequest;
+    putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
+
+    // Aws::S3::Model::ListBucketsOutcome outcome = m_client->ListBuckets();
+    Aws::S3::Model::ListObjectsRequest objRequest;
+    objRequest.WithBucket(BucketName);
+
+    auto outcome = m_client->ListObjects(objRequest);
+
+    if (outcome.IsSuccess()) {
+        std::cout << "Objects in bucket '" << BucketName << "':" 
+            << std::endl << std::endl;
+
+        Aws::Vector<Aws::S3::Model::Object> objects =
+            outcome.GetResult().GetContents();
+
+        for (Aws::S3::Model::Object& object : objects)
+        {
+            std::cout << object.GetKey() << std::endl;
+        }
+
+    }
+    else
+    {
+        std::cout << "Error: ListObjects: " <<
+            outcome.GetError().GetMessage() << std::endl;
+
+    }
+    // auto input_data = Aws::MakeShared<Aws::FStream>("PutObjectInputStream", pathkey.c_str(), std::ios_base::in | std::ios_base::binary);
+    // putObjectRequest.SetBody(input_data);
+    // auto putObjectResult = m_client->PutObject(putObjectRequest);
+
+    // if (putObjectResult.IsSuccess())
+    // {
+    //     std::cout << "Done!" << std::endl;
+    //     return true;
+    // }
+    // else
+    // {
+    //     std::cout << "PutObject error: " <<
+    //         putObjectResult.GetError().GetExceptionName() << " " <<
+    //         putObjectResult.GetError().GetMessage() << std::endl;
+    //     return false;
+    // }
+
+    // Get object
+
+    std::cout << "Getting object\n"; 
+
+    Aws::S3::Model::GetObjectRequest object_request;
+    object_request.SetBucket(BucketName);
+    object_request.SetKey(objectKey);
+
+    Aws::S3::Model::GetObjectOutcome get_object_outcome = 
+        m_client->GetObject(object_request);
+
+    if (get_object_outcome.IsSuccess())
+    {
+        // auto& retrieved_file = get_object_outcome.GetResultWithOwnership().
+        //     GetBody();
+        // std::cout << typeid(retrieved_file).name() << '\n';
+
+        // // Print a beginning portion of the text file.
+        // std::cout << "Beginning of file contents:\n";
+        // char file_data[255] = { 0 };
+        // retrieved_file.getline(file_data, 254);
+        // std::cout << file_data << std::endl;
+
+        std::cout << "attempting save\n";
+
+        // TFile *myFile = new TFile("myfile.root", "CREATE");
+
+        Aws::OFStream local_file;
+		local_file.open("outputFile.root", std::ios::out | std::ios::binary);
+		local_file << get_object_outcome.GetResult().GetBody().rdbuf();
+		std::cout << "Done!" << std::endl;
+
+        // myFile->
+
+        // return true;
+    }
+    else
+    {
+        auto err = get_object_outcome.GetError();
+        std::cout << "Error: GetObject: " <<
+            err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
+
+        // return false;
+    }
+
 
     std::cout << "Finished\n";
     return 0;
