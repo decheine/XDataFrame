@@ -229,7 +229,7 @@ int main(int argc, char* argv[]){
 		local_file << get_object_outcome.GetResult().GetBody().rdbuf();
 		std::cout << "Done!" << std::endl;
 
-        // myFile->
+        // myFile-
 
         // return true;
     }
