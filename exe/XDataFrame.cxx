@@ -225,7 +225,7 @@ int main(int argc, char* argv[]){
         // TFile *myFile = new TFile("myfile.root", "CREATE");
 
         Aws::OFStream local_file;
-		local_file.open("outputFile.root", std::ios::out | std::ios::binary);
+		local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
 		local_file << get_object_outcome.GetResult().GetBody().rdbuf();
 		std::cout << "Done!" << std::endl;
 

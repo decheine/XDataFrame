@@ -38,6 +38,9 @@ install/
 .vscode/
 cmake*/
 
+# root
+
+*.root
 
 # other
 servicex.yaml
