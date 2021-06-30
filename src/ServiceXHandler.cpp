@@ -45,8 +45,6 @@ static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* d
     return size * nmemb;
 }
 
-
-
 // TODO: Fix/build the servicex.yaml parser, correctly. Design what things we need from the file
 
 /**

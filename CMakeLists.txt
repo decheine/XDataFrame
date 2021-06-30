@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 
 project(XDataFrame VERSION 1.0)
 
@@ -75,12 +75,18 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cp
 # Adding local libraries ?
 # add_library(RDataFrameHandler G__RDataFrameHandler)
 
+# Testing
+
+
+# add_subdirectory(src)
+enable_testing()
 add_subdirectory(tests)
 
 file(GLOB SOURCES src/*.cpp)
 
 # Executable
-add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
+# add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
+
 
 
 
@@ -89,7 +95,16 @@ message("-- Curl libraries " ${CURL_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
 
-target_link_directories(XDataFrame PUBLIC /usr/lib/x86_64-linux-gnu/curl BEFORE)
+# target_link_directories(XDataFrame PUBLIC /usr/lib/x86_64-linux-gnu/curl BEFORE)
+
+# set(XDATAFRAME_FILES src/ServiceXHandler.cpp)
+
+# add_library(mylibs ${XDATAFRAME_FILES})
+# add_library(ServiceXHandler ServiceXHandler.cpp ServiceXHandler.h)
+add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
+
+file(GLOB SOURCES src/*.cpp)
+add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
 # Linking Libraries
 target_link_libraries(XDataFrame PUBLIC ROOT::Core
@@ -107,7 +122,7 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         OpenSSL::Crypto
                                         ${AWSSDK_LINK_LIBRARIES}
                                         CURL::libcurl
-
+                                        Math
 )
 
 target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
@@ -119,6 +134,8 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
                                         CURL::libcurl
                                         
                                         )
+
+
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 
@@ -134,17 +151,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Installation
 
 
-# Testing
-enable_testing()
+
 
 # add_test(testname Exename arg1 arg2 ...)
 # add_test(NAME <name> [CONFIGURATIONS [Debug|Release|...]]
 #          [WORKING_DIRECTORY dir]
 #          COMMAND <command> [arg1 [arg2 ...]])
 
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    include(CTest)
-endif()
+# if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+#     include(CTest)
+# endif()
 
 
 
