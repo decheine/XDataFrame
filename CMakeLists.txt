@@ -5,7 +5,12 @@ project(XDataFrame VERSION 1.0)
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(CMAKE_TOOLCHAIN_FILE ~/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
+set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
+# set(OPENSSL_USE_STATIC_LIBS TRUE)
+find_package(OpenSSL REQUIRED)
+
+
 # set(BUILD_SHARED_LIBS OFF)
 # Locate the ROOT package and include the components the project needs
 # MultiProc     ROOT's multi-threading framework
@@ -13,29 +18,27 @@ set(CMAKE_TOOLCHAIN_FILE ~/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
 #                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
 #                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
 
+# Set the /lib and /bin directories to be used by the program
+# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+
 
 # set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems vcpkg.cmake)
 
-# Setting prefix path to look for package config files
-set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
-
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
 
-
-
 # instruct cmake to search for ryml
+set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
 find_package(ryml REQUIRED)
 
-
-
 set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
-
 find_package(jsoncpp CONFIG REQUIRED)
 
-
-
 # AWS SDK
-# set(CMAKE_PREFIX_PATH /usr/bin/curl)
+# set(CMAKE_PREFIX_PATH ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
+set(LD_LIBRARY_PATH /usr/local/lib)
 set(AWSSDK_DIR ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/AWSSDK)
 set(aws-cpp-sdk-core_DIR ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-core)
 set(aws-cpp-sdk-s3_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-s3)
@@ -44,40 +47,10 @@ set(aws-cpp-sdk-dynamodb_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/sh
 set(aws-c-event-stream_DIR ~/IRIS-HEP/vcpkg/packages/aws-c-event-stream_x64-linux/share/aws-c-event-stream/)
 set(aws-checksums_DIR ~/IRIS-HEP/vcpkg/packages/aws-checksums_x64-linux/share/aws-checksums/)
 set(aws-c-common_DIR ~/IRIS-HEP/vcpkg/packages/aws-c-common_x64-linux/share/aws-c-common/)
-
-# set(curl_DIR ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
-
-
-# set_target_properties(  curl-lib
-#                         PROPERTIES IMPORTED_LOCATION 
-#                         /usr/lib/x86_64-linux-gnu/libcurl.a
-# )
-
-find_package( CURL REQUIRED)
-
-
 find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
 
-
-
-# include(FindPkgConfig)
-
-# set(Brotli_DIR ~/IRIS-HEP/vcpkg/packages/brotli_x64-linux/share/unofficial-brotli)
-# find_package(Brotli)
-
-# Snappy, arrow dependency
-# set(Snappy_LIB ~/IRIS-HEP/vcpkg/packages/snappy_x64-linux/include)
-# set(Snappy_DIR ~/IRIS-HEP/vcpkg/packages/snappy_x64-linux/share/snappy)
-# set(Snappy_INCLUDE_DIR ~/IRIS-HEP/vcpkg/packages/snappy_x64-linux/include)
-
-# set(Arrow_DIR ~/IRIS-HEP/vcpkg/packages/arrow_x64-linux/share/arrow)
-# set(arrow_DIR ~/IRIS-HEP/vcpkg/packages/arrow_x64-linux/share/arrow)
-
-# find_package(Arrow CONFIG REQUIRED)
-
-# set(ARROW_LIBS "LZ4::lz4 re2::re2 arrow_static zstd::libzstd")
-
-
+set(CURL_DIR ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
+find_package( CURL CONFIG REQUIRED)
 
 # Amazon AWS SDK External Project
 # include(ExternalProject)
@@ -118,9 +91,9 @@ file(GLOB SOURCES src/*.cpp)
 # Executable
 add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
-message("Curl libraries " ${CURL_LIBRARIES})
-message("AWSSDK libraries " ${AWSSDK_LIBRARIES})
-message("AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
+message("-- Curl libraries " ${CURL_LIBRARIES})
+message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
+message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
 
 target_link_directories(XDataFrame PUBLIC /usr/lib/x86_64-linux-gnu/curl BEFORE)
 
@@ -136,7 +109,11 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ROOT::Gpad
                                         ROOT::Rint
                                         ryml::ryml
+                                        CURL::libcurl
+                                        OpenSSL::Crypto
                                         ${AWSSDK_LINK_LIBRARIES}
+
+
 )
 
 target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
@@ -144,8 +121,8 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-dynamodb
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
-                                        
                                         ${CURL_LINK_LIBRARIES}
+                                        
                                         )
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)

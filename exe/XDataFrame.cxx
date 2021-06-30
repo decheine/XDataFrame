@@ -39,28 +39,34 @@
 
 using namespace std;
 
-size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
-    data->append((char*)ptr, size * nmemb);
-    return size * nmemb;
-}
+// size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
+//     data->append((char*)ptr, size * nmemb);
+//     return size * nmemb;
+// }
 
 int main(int argc, char* argv[]){
-    // if (argc < 2) {
-    //     // report version
-    //     // Show usage 
-    //     std::cout << argv[0] << " Version " << XDataFrame_VERSION_MAJOR << "."
-    //             << XDataFrame_VERSION_MINOR << std::endl;
-    //     std::cout << "Usage: " << argv[0] << " number" << std::endl;
-    //     return 1;
-    // }
-
-
+    if(argc > 1){
+        if (strcmp(argv[1], "--version") == 0) {
+            // report version
+            // Show usage 
+            std::cout << argv[0] << " Version " << XDataFrame_VERSION_MAJOR << "."
+                    << XDataFrame_VERSION_MINOR << std::endl;
+            std::cout << "Usage: " << argv[0] << " number" << std::endl;
+            return 1;
+        }
+    }
 
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
     User theUser();
-    std::map<std::string, std::string> values = xHandler.parseYaml();
+    std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
+    // xHandler.fetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
+    // Request testRequest(values, "/submit_request.json");
+
+
+
+//////////////
     for (std::map<std::string, std::string>::iterator it = values.begin(); it != values.end(); ++it){
         std::cout << it->second << std::endl;
     }
@@ -107,27 +113,7 @@ int main(int argc, char* argv[]){
     // bool ok = Json::parse(rbuilder, response_string, &root, &errs);
 
     std::cout << "RequestID: " << root["request_id"] << std::endl;
-    // std::string text = "{ \"first\": 1; \"second\": 2}";
-
-    // if(!reader.parse(response_string, root)) {
-    //     std::cout << reader.getFormattedErrorMessages() << std::endl;
-    // }
-
-    // Runs basic ROOT app with the arguments given for main
-    // TRint app("app", &argc, argv);
-
-    // Testing. Makes some drawings on a TCanvas
-    // TCanvas* c = new TCanvas("c", "Something", 0, 0, 800, 600);
-    // TF1 *f1 = new TF1("f1","sin(x)", -5, 5);
-    // f1->SetLineColor(kBlue+1);
-    // f1->SetTitle("My graph;x; sin(x)");
-    // f1->Draw();
-    // c->Modified(); c->Update();
-    //
-
-
-    // Run and finish with ROOT prompt
-    // app.Run();
+    
     
     std::cout << "Minio access key: " << root["minio-access-key"] << std::endl;
     std::cout << "Minio endpoint: " << root["minio-endpoint"] << std::endl;
@@ -147,7 +133,6 @@ int main(int argc, char* argv[]){
     cfg.endpointOverride = "cmsopendata-minio.servicex.ssl-hep.org";
     cfg.scheme = Aws::Http::Scheme::HTTP;
     cfg.verifySSL = false;
-    //Aws::Auth::AWSCredentials cred("RPW421T9GSIO4A45Y9ZR", "2owKYy9emSS90Q0pXuyqpX1OxBCyEDYodsiBemcq");  // 认证的Key
     m_client = new Aws::S3::S3Client(Aws::Auth::AWSCredentials("miniouser", "leftfoot1"), cfg, 
         Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, false);
     std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
@@ -155,7 +140,6 @@ int main(int argc, char* argv[]){
     Aws::S3::Model::PutObjectRequest putObjectRequest;
     putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
 
-    // Aws::S3::Model::ListBucketsOutcome outcome = m_client->ListBuckets();
     Aws::S3::Model::ListObjectsRequest objRequest;
     objRequest.WithBucket(BucketName);
 
@@ -180,25 +164,8 @@ int main(int argc, char* argv[]){
             outcome.GetError().GetMessage() << std::endl;
 
     }
-    // auto input_data = Aws::MakeShared<Aws::FStream>("PutObjectInputStream", pathkey.c_str(), std::ios_base::in | std::ios_base::binary);
-    // putObjectRequest.SetBody(input_data);
-    // auto putObjectResult = m_client->PutObject(putObjectRequest);
-
-    // if (putObjectResult.IsSuccess())
-    // {
-    //     std::cout << "Done!" << std::endl;
-    //     return true;
-    // }
-    // else
-    // {
-    //     std::cout << "PutObject error: " <<
-    //         putObjectResult.GetError().GetExceptionName() << " " <<
-    //         putObjectResult.GetError().GetMessage() << std::endl;
-    //     return false;
-    // }
 
     // Get object
-
     std::cout << "Getting object\n"; 
 
     Aws::S3::Model::GetObjectRequest object_request;
@@ -208,8 +175,7 @@ int main(int argc, char* argv[]){
     Aws::S3::Model::GetObjectOutcome get_object_outcome = 
         m_client->GetObject(object_request);
 
-    if (get_object_outcome.IsSuccess())
-    {
+    if (get_object_outcome.IsSuccess()) {
         // auto& retrieved_file = get_object_outcome.GetResultWithOwnership().
         //     GetBody();
         // std::cout << typeid(retrieved_file).name() << '\n';
@@ -233,16 +199,15 @@ int main(int argc, char* argv[]){
 
         // return true;
     }
-    else
-    {
+    else {
         auto err = get_object_outcome.GetError();
         std::cout << "Error: GetObject: " <<
             err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
 
         // return false;
     }
-
+///////////////
 
     std::cout << "Finished\n";
-    return 0;
+    return 1;
 }
