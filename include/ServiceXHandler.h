@@ -55,20 +55,7 @@ class Request {
 
 
 
-class User {
-    public:
-        char* getEndpoint();
-        // User(std::string end, std::string tok, std::string typ);
-        User();
-        void setEndpoint(char*endpoint);
-        void setToken(char* token);
-        void setType(char* type);
 
-    private:
-        const char* endpoint;
-        const char* token; // todo use different class that supports long boi strings
-        const char* apiType;
-};
 
 
 class ServiceXHandler {

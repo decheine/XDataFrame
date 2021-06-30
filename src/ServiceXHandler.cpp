@@ -23,6 +23,7 @@
 // Project
 #include "ServiceXHandler.h"
 
+
 using namespace std;
 
 /// YAML Methods
@@ -200,32 +201,6 @@ void getStatus(std::string request_id){
 
 }
 
-// User::User(std::string end, std::string tok, std::string typ){
-//     endpoint = end.c_str();
-//     token = tok.c_str();
-//     apiType = typ.c_str();
-// }
-
-User::User(){
-//  Check if User folder exists
-//      if it doesn't, make it
-//  
-}
-
-void User::setEndpoint(char* endpoint){
-    User::endpoint = endpoint;
-}
-void User::setToken(char* token){
-    User::token = token;
-}
-void User::setType(char* type){
-    User::apiType = type;
-}
-
-
-
-// Request
-
 Json::Value Request::getStatus(){
     // Check if the endpoint exists
 
@@ -266,11 +241,6 @@ Json::Value Request::getStatus(){
     return response_string;
 }
 
-
-// Request::Request(){
-//     this. 
-    
-// }
 size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data){
     data->append((char*)ptr, size * nmemb);
     return size * nmemb;
@@ -363,7 +333,6 @@ int Request::sendRequest(std::map<std::string, std::string> values, std::string 
         } 
     return 0;
 }
-
 
 Request::Request() {
 

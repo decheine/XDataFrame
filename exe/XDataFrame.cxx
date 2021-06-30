@@ -9,6 +9,8 @@
 #include "TRint.h"
 #include "TCanvas.h"
 #include "TFile.h"
+#include "TBrowser.h"
+
 
 // ryml
 #include <ryml.hpp>
@@ -36,6 +38,7 @@
 
 // ServiceX
 #include "ServiceXHandler.h"
+#include "User.h"
 
 using namespace std;
 
@@ -58,13 +61,36 @@ int main(int argc, char* argv[]){
 
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
-    User theUser();
-    std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
+    // User theUser();
+    //std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
     // xHandler.fetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
     Request testRequest;
-    testRequest.sendRequest(values, "/submit_request.json");
 
+    // testRequest.sendRequest(values, "/submit_request.json");
+
+    User myUser;
+    myUser.CreateUserFolder("user1");
+
+
+    std::string text = "{ \"first\": 1; \"second\": 2}";
+
+    // if(!reader.parse(response_string, root)) {
+    //     std::cout << reader.getFormattedErrorMessages() << std::endl;
+    // }
+
+    //Runs basic ROOT app with the arguments given for main
+    TRint app("app", &argc, argv);
+
+    //Testing. Makes some drawings on a TCanvas
+    // TCanvas* c = new TCanvas("c", "Something", 0, 0, 800, 600);
+    // TF1 *f1 = new TF1("f1","sin(x)", -5, 5);
+    // f1->SetLineColor(kBlue+1);
+    // f1->SetTitle("My graph;x; sin(x)");
+    // f1->Draw();
+    // c->Modified(); c->Update();
+
+    new TBrowser;
 
 
 //////////////
@@ -208,6 +234,13 @@ int main(int argc, char* argv[]){
     //     // return false;
     // }
 ///////////////
+
+
+    
+
+
+    //Run and finish with ROOT prompt
+    app.Run();
 
     std::cout << "Finished\n";
     return 1;
