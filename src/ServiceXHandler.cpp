@@ -278,9 +278,7 @@ size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string*
     return size * nmemb;
 }
 
-
-
-Request::Request(std::map<std::string, std::string> values, std::string submitRequestJson) {
+int Request::sendRequest(std::map<std::string, std::string> values, std::string submitRequestJson) {
     std::cout << "Reading json\n"; 
 
     const char* homeDir = getenv("HOME");
@@ -368,8 +366,11 @@ Request::Request(std::map<std::string, std::string> values, std::string submitRe
         {  
             printf("curl exception %s.\n", ex.what());  
         } 
-    return;
+    return 0;
+}
 
+
+Request::Request(std::map<std::string, std::string> values, std::string submitRequestJson) {
 
 }
 
