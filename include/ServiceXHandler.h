@@ -40,6 +40,9 @@ class Request {
 
         const Json::Value submitRequestJson;
 
+        // Submission method. Call to send the curl request to ServiceX with a submit_request.json
+        int sendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
+
 
         // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
         // This version takes as input a map of servicex.yaml. submit_request.json
