@@ -5,10 +5,10 @@ project(XDataFrame VERSION 1.0)
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
+# set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
 # set(OPENSSL_USE_STATIC_LIBS TRUE)
-find_package(OpenSSL REQUIRED)
+# find_package(OpenSSL REQUIRED)
 
 
 # set(BUILD_SHARED_LIBS OFF)
@@ -49,8 +49,8 @@ set(aws-checksums_DIR ~/IRIS-HEP/vcpkg/packages/aws-checksums_x64-linux/share/aw
 set(aws-c-common_DIR ~/IRIS-HEP/vcpkg/packages/aws-c-common_x64-linux/share/aws-c-common/)
 find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
 
-set(CURL_DIR ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
-find_package( CURL CONFIG REQUIRED)
+# set(CURL_DIR /usr/bin/curl)
+find_package( CURL REQUIRED)
 
 # Amazon AWS SDK External Project
 # include(ExternalProject)
@@ -112,6 +112,7 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         CURL::libcurl
                                         OpenSSL::Crypto
                                         ${AWSSDK_LINK_LIBRARIES}
+                                        CURL::libcurl
 
 
 )
@@ -122,6 +123,7 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
                                         ${CURL_LINK_LIBRARIES}
+                                        CURL::libcurl
                                         
                                         )
 
