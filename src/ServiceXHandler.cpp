@@ -327,15 +327,12 @@ int Request::sendRequest(std::map<std::string, std::string> values, std::string 
             // header_string = curl_slist_append(header_string, "charset: utf-8");
             std::cout << "Set up headers\n";
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_string);
-            // curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
             // curl_easy_setopt(curl, CURLOPT_POST, 1L);
 
-
-            
             // curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, -1L);
             
-            
-
+        
             curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
 
             // curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
@@ -370,7 +367,7 @@ int Request::sendRequest(std::map<std::string, std::string> values, std::string 
 }
 
 
-Request::Request(std::map<std::string, std::string> values, std::string submitRequestJson) {
+Request::Request() {
 
 }
 

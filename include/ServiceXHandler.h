@@ -46,7 +46,7 @@ class Request {
 
         // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
         // This version takes as input a map of servicex.yaml. submit_request.json
-        Request(std::map<std::string, std::string> values, std::string submitRequestJson);
+        Request();
 
     private:
         // Who needs private members? public is just easier and I'm lazy

@@ -62,150 +62,151 @@ int main(int argc, char* argv[]){
     std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
     // xHandler.fetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
-    // Request testRequest(values, "/submit_request.json");
+    Request testRequest;
+    testRequest.sendRequest(values, "/submit_request.json");
 
 
 
 //////////////
-    for (std::map<std::string, std::string>::iterator it = values.begin(); it != values.end(); ++it){
-        std::cout << it->second << std::endl;
-    }
-    // std::for_each(values.begin(), values.end()){
-    //     std::cout << s << std::endl;
+    // for (std::map<std::string, std::string>::iterator it = values.begin(); it != values.end(); ++it){
+    //     std::cout << it->second << std::endl;
+    // }
+    // // std::for_each(values.begin(), values.end()){
+    // //     std::cout << s << std::endl;
+    // // }
+
+    // // curlopt_post
+    // // CURLOPT_HTTPGET
+
+    // // CURL *curl = curl_easy_init();
+    // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    // std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
+    // const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    // const char* targetURL = (serviceXURL + request_id).c_str();
+    
+
+    // std::string response_string = xHandler.fetchData(request_id);
+    // // std::cout << "Response: " << response_string << std::endl;
+
+    // Json::Value root;  
+    // // For convenience, use `writeString()` with a specialized builder.
+    // Json::StreamWriterBuilder wbuilder;
+    // wbuilder["indentation"] = "\t";
+    // std::string document = Json::writeString(wbuilder, root);
+    
+    
+
+    // // Here, using a specialized Builder, we discard comments and
+    // // record errors as we parse.
+    // Json::CharReaderBuilder rbuilder;
+    // rbuilder["collectComments"] = false;
+    // std::string errs;
+    // auto reader = rbuilder.newCharReader();
+    // reader->parse(&response_string.front(), &response_string.back(), &root, &errs);
+    // std::vector<string> members = root.getMemberNames();
+
+    
+    // // std::cout << members[0] << std::endl;
+
+    // for (std::vector<std::string>::iterator it = members.begin(); it != members.end(); ++it){
+    //     std::cout << *it << std::endl;
+    // }
+    // // bool ok = Json::parse(rbuilder, response_string, &root, &errs);
+
+    // std::cout << "RequestID: " << root["request_id"] << std::endl;
+    
+    
+    // std::cout << "Minio access key: " << root["minio-access-key"] << std::endl;
+    // std::cout << "Minio endpoint: " << root["minio-endpoint"] << std::endl;
+    // std::cout << "Minio secret key " << root["minio-secret-key"] << std::endl;
+    // std::cout << "Minio secured " << root["minio-secured"] << std::endl;
+    // std::cout << "Result destination " << root["tree-name"] << std::endl;
+
+    // std::string BucketName = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+
+
+    // Aws::SDKOptions m_options;
+    // Aws::S3::S3Client* m_client = { NULL };
+
+
+    // Aws::InitAPI(m_options);
+    // Aws::Client::ClientConfiguration cfg;
+    // cfg.endpointOverride = "cmsopendata-minio.servicex.ssl-hep.org";
+    // cfg.scheme = Aws::Http::Scheme::HTTP;
+    // cfg.verifySSL = false;
+    // m_client = new Aws::S3::S3Client(Aws::Auth::AWSCredentials("miniouser", "leftfoot1"), cfg, 
+    //     Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, false);
+    // std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
+    // std::string pathkey = "temp";
+    // Aws::S3::Model::PutObjectRequest putObjectRequest;
+    // putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
+
+    // Aws::S3::Model::ListObjectsRequest objRequest;
+    // objRequest.WithBucket(BucketName);
+
+    // auto outcome = m_client->ListObjects(objRequest);
+
+    // if (outcome.IsSuccess()) {
+    //     std::cout << "Objects in bucket '" << BucketName << "':" 
+    //         << std::endl << std::endl;
+
+    //     Aws::Vector<Aws::S3::Model::Object> objects =
+    //         outcome.GetResult().GetContents();
+
+    //     for (Aws::S3::Model::Object& object : objects)
+    //     {
+    //         std::cout << object.GetKey() << std::endl;
+    //     }
+
+    // }
+    // else
+    // {
+    //     std::cout << "Error: ListObjects: " <<
+    //         outcome.GetError().GetMessage() << std::endl;
+
     // }
 
-    // curlopt_post
-    // CURLOPT_HTTPGET
+    // // Get object
+    // std::cout << "Getting object\n"; 
 
-    // CURL *curl = curl_easy_init();
-    std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
-    std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
-    const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
-    const char* targetURL = (serviceXURL + request_id).c_str();
-    
+    // Aws::S3::Model::GetObjectRequest object_request;
+    // object_request.SetBucket(BucketName);
+    // object_request.SetKey(objectKey);
 
-    std::string response_string = xHandler.fetchData(request_id);
-    // std::cout << "Response: " << response_string << std::endl;
+    // Aws::S3::Model::GetObjectOutcome get_object_outcome = 
+    //     m_client->GetObject(object_request);
 
-    Json::Value root;  
-    // For convenience, use `writeString()` with a specialized builder.
-    Json::StreamWriterBuilder wbuilder;
-    wbuilder["indentation"] = "\t";
-    std::string document = Json::writeString(wbuilder, root);
-    
-    
+    // if (get_object_outcome.IsSuccess()) {
+    //     // auto& retrieved_file = get_object_outcome.GetResultWithOwnership().
+    //     //     GetBody();
+    //     // std::cout << typeid(retrieved_file).name() << '\n';
 
-    // Here, using a specialized Builder, we discard comments and
-    // record errors as we parse.
-    Json::CharReaderBuilder rbuilder;
-    rbuilder["collectComments"] = false;
-    std::string errs;
-    auto reader = rbuilder.newCharReader();
-    reader->parse(&response_string.front(), &response_string.back(), &root, &errs);
-    std::vector<string> members = root.getMemberNames();
+    //     // // Print a beginning portion of the text file.
+    //     // std::cout << "Beginning of file contents:\n";
+    //     // char file_data[255] = { 0 };
+    //     // retrieved_file.getline(file_data, 254);
+    //     // std::cout << file_data << std::endl;
 
-    
-    // std::cout << members[0] << std::endl;
+    //     std::cout << "attempting save\n";
 
-    for (std::vector<std::string>::iterator it = members.begin(); it != members.end(); ++it){
-        std::cout << *it << std::endl;
-    }
-    // bool ok = Json::parse(rbuilder, response_string, &root, &errs);
+    //     // TFile *myFile = new TFile("myfile.root", "CREATE");
 
-    std::cout << "RequestID: " << root["request_id"] << std::endl;
-    
-    
-    std::cout << "Minio access key: " << root["minio-access-key"] << std::endl;
-    std::cout << "Minio endpoint: " << root["minio-endpoint"] << std::endl;
-    std::cout << "Minio secret key " << root["minio-secret-key"] << std::endl;
-    std::cout << "Minio secured " << root["minio-secured"] << std::endl;
-    std::cout << "Result destination " << root["tree-name"] << std::endl;
+    //     Aws::OFStream local_file;
+	// 	local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
+	// 	local_file << get_object_outcome.GetResult().GetBody().rdbuf();
+	// 	std::cout << "Done!" << std::endl;
 
-    std::string BucketName = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+    //     // myFile-
 
+    //     // return true;
+    // }
+    // else {
+    //     auto err = get_object_outcome.GetError();
+    //     std::cout << "Error: GetObject: " <<
+    //         err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
 
-    Aws::SDKOptions m_options;
-    Aws::S3::S3Client* m_client = { NULL };
-
-
-    Aws::InitAPI(m_options);
-    Aws::Client::ClientConfiguration cfg;
-    cfg.endpointOverride = "cmsopendata-minio.servicex.ssl-hep.org";
-    cfg.scheme = Aws::Http::Scheme::HTTP;
-    cfg.verifySSL = false;
-    m_client = new Aws::S3::S3Client(Aws::Auth::AWSCredentials("miniouser", "leftfoot1"), cfg, 
-        Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, false);
-    std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
-    std::string pathkey = "temp";
-    Aws::S3::Model::PutObjectRequest putObjectRequest;
-    putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
-
-    Aws::S3::Model::ListObjectsRequest objRequest;
-    objRequest.WithBucket(BucketName);
-
-    auto outcome = m_client->ListObjects(objRequest);
-
-    if (outcome.IsSuccess()) {
-        std::cout << "Objects in bucket '" << BucketName << "':" 
-            << std::endl << std::endl;
-
-        Aws::Vector<Aws::S3::Model::Object> objects =
-            outcome.GetResult().GetContents();
-
-        for (Aws::S3::Model::Object& object : objects)
-        {
-            std::cout << object.GetKey() << std::endl;
-        }
-
-    }
-    else
-    {
-        std::cout << "Error: ListObjects: " <<
-            outcome.GetError().GetMessage() << std::endl;
-
-    }
-
-    // Get object
-    std::cout << "Getting object\n"; 
-
-    Aws::S3::Model::GetObjectRequest object_request;
-    object_request.SetBucket(BucketName);
-    object_request.SetKey(objectKey);
-
-    Aws::S3::Model::GetObjectOutcome get_object_outcome = 
-        m_client->GetObject(object_request);
-
-    if (get_object_outcome.IsSuccess()) {
-        // auto& retrieved_file = get_object_outcome.GetResultWithOwnership().
-        //     GetBody();
-        // std::cout << typeid(retrieved_file).name() << '\n';
-
-        // // Print a beginning portion of the text file.
-        // std::cout << "Beginning of file contents:\n";
-        // char file_data[255] = { 0 };
-        // retrieved_file.getline(file_data, 254);
-        // std::cout << file_data << std::endl;
-
-        std::cout << "attempting save\n";
-
-        // TFile *myFile = new TFile("myfile.root", "CREATE");
-
-        Aws::OFStream local_file;
-		local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
-		local_file << get_object_outcome.GetResult().GetBody().rdbuf();
-		std::cout << "Done!" << std::endl;
-
-        // myFile-
-
-        // return true;
-    }
-    else {
-        auto err = get_object_outcome.GetError();
-        std::cout << "Error: GetObject: " <<
-            err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
-
-        // return false;
-    }
+    //     // return false;
+    // }
 ///////////////
 
     std::cout << "Finished\n";
