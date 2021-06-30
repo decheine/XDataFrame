@@ -2,28 +2,17 @@ cmake_minimum_required(VERSION 3.10)
 
 project(XDataFrame VERSION 1.0)
 
+
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
-# set(OPENSSL_USE_STATIC_LIBS TRUE)
-# find_package(OpenSSL REQUIRED)
-
-
-# set(BUILD_SHARED_LIBS OFF)
 # Locate the ROOT package and include the components the project needs
 # MultiProc     ROOT's multi-threading framework
 # root-config --libs => -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps 
 #                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
 #                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
-
-# Set the /lib and /bin directories to be used by the program
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-
 
 # set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems vcpkg.cmake)
 
@@ -86,10 +75,15 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cp
 # Adding local libraries ?
 # add_library(RDataFrameHandler G__RDataFrameHandler)
 
+add_subdirectory(tests)
+
 file(GLOB SOURCES src/*.cpp)
 
 # Executable
 add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
+
+
+
 
 message("-- Curl libraries " ${CURL_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
@@ -113,7 +107,6 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         OpenSSL::Crypto
                                         ${AWSSDK_LINK_LIBRARIES}
                                         CURL::libcurl
-
 
 )
 
@@ -139,5 +132,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
 # Installation
+
+
+# Testing
+enable_testing()
+
+# add_test(testname Exename arg1 arg2 ...)
+# add_test(NAME <name> [CONFIGURATIONS [Debug|Release|...]]
+#          [WORKING_DIRECTORY dir]
+#          COMMAND <command> [arg1 [arg2 ...]])
+
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    include(CTest)
+endif()
+
 
 

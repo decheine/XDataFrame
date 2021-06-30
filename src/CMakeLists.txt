@@ -1,0 +1,1 @@
+add_library(ServiceXHandler ServiceXHandler.cpp ServiceXHandler.h)
