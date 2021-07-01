@@ -64,7 +64,7 @@ int main(int argc, char* argv[]){
     // User theUser();
     //std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
-    // xHandler.fetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
+    xHandler.fetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
     Request testRequest;
 
     // testRequest.sendRequest(values, "/submit_request.json");
