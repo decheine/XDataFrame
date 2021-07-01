@@ -148,7 +148,10 @@ target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-
+# Setting the application directories, like bin and lib
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Installation
 
@@ -164,5 +167,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #     include(CTest)
 # endif()
 
-
+install(TARGETS XDataFrame
+        CONFIGURATIONS Debug
+        RUNTIME DESTINATION ${CMAKE_BINARY_DIR}/../install/bin)
 

@@ -141,10 +141,12 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
 int Request::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
-    builder["indentation"] = "   ";
+    builder["indentation"] = "\t";
 
     std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-    std::ofstream outputFileStream("test.json");
+    std::string savedir = "" + value["request_id"].asString() + ".json";
+    std::cout << "Saving file as " << savedir << std::endl;
+    std::ofstream outputFileStream(savedir);
     writer -> write(value, &outputFileStream);
 
     return 0;

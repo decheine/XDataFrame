@@ -67,42 +67,9 @@ int main(int argc, char* argv[]){
     Request testRequest;
 
     std::string jsonStr = testRequest.GetStatus();
-    std::cout << jsonStr << std::endl;
-
-    // Json::Value root;
-    
-    // Json::CharReaderBuilder builder;
-    // Json::CharReader* reader = builder.newCharReader();
-    // builder["collectComments"] = false;
-    // Json::Value value;
-    // std::string errs;
-    // std::cout << "parsing\n"; 
-    // bool parsingSuccessful = reader->parse(
-    //     jsonStr.c_str(),
-    //     jsonStr.c_str() + jsonStr.size(),
-    //     &value,
-    //     &errs
-    // );
-    // delete reader;
-
-    // if (!parsingSuccessful) {
-    //     std::cout << "Failed to parse the JSON, errors:" << std::endl;
-    //     std::cout << errs << std::endl;
-    //     return 1;
-    // }
-
-    // Json::Value reqId = value["request_id"];
-
-    // std::cout << reqId << std::endl;
 
     Json::Value jsonResponse = xHandler.JsonFromStr(jsonStr);
-    std::cout << jsonResponse["request_id"] << std::endl;
-
-    // std::cout << jsonResponse["\"request_id\""] << std::endl;
-
-    // std::string strTest = jsonResponse["request_id"].asString();
-    // std::cout << jsonResponse["request_id"].asString() << std::endl;
-    xHandler.SaveJson(jsonResponse);
+    testRequest.SaveJson(jsonResponse);
 
 
     
@@ -112,33 +79,6 @@ int main(int argc, char* argv[]){
 
     User myUser;
     // myUser.CreateROOTUserFolder("user1");
-
-    
-
-
-
-
-
-
-
-
-
-    // if(!reader.parse(response_string, root)) {
-    //     std::cout << reader.getFormattedErrorMessages() << std::endl;
-    // }
-
-    //Runs basic ROOT app with the arguments given for main
-    // TRint app("app", &argc, argv);
-
-    //Testing. Makes some drawings on a TCanvas
-    // TCanvas* c = new TCanvas("c", "Something", 0, 0, 800, 600);
-    // TF1 *f1 = new TF1("f1","sin(x)", -5, 5);
-    // f1->SetLineColor(kBlue+1);
-    // f1->SetTitle("My graph;x; sin(x)");
-    // f1->Draw();
-    // c->Modified(); c->Update();
-
-    // new TBrowser;
 
 
 //////////////
@@ -152,23 +92,6 @@ int main(int argc, char* argv[]){
     // // curlopt_post
     // // CURLOPT_HTTPGET
 
-    // // CURL *curl = curl_easy_init();
-    // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
-    // std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
-    // const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
-    // const char* targetURL = (serviceXURL + request_id).c_str();
-    
-
-    // std::string response_string = xHandler.fetchData(request_id);
-    // // std::cout << "Response: " << response_string << std::endl;
-
-    // Json::Value root;  
-    // // For convenience, use `writeString()` with a specialized builder.
-    // Json::StreamWriterBuilder wbuilder;
-    // wbuilder["indentation"] = "\t";
-    // std::string document = Json::writeString(wbuilder, root);
-    
-    
 
     // // Here, using a specialized Builder, we discard comments and
     // // record errors as we parse.
@@ -188,13 +111,6 @@ int main(int argc, char* argv[]){
     // // bool ok = Json::parse(rbuilder, response_string, &root, &errs);
 
     // std::cout << "RequestID: " << root["request_id"] << std::endl;
-    
-    
-    // std::cout << "Minio access key: " << root["minio-access-key"] << std::endl;
-    // std::cout << "Minio endpoint: " << root["minio-endpoint"] << std::endl;
-    // std::cout << "Minio secret key " << root["minio-secret-key"] << std::endl;
-    // std::cout << "Minio secured " << root["minio-secured"] << std::endl;
-    // std::cout << "Result destination " << root["tree-name"] << std::endl;
 
     // std::string BucketName = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
 
