@@ -4,13 +4,12 @@
 #include <fstream>
 
 #include "../include/XDataFrameConfig.h.in"
-// Include ROOT
+// ROOT
 #include "TF1.h"
 #include "TRint.h"
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TBrowser.h"
-
 
 // ryml
 #include <ryml.hpp>
@@ -31,14 +30,13 @@
 #include <aws/s3/model/ListObjectsRequest.h>
 #include <aws/s3/model/GetObjectRequest.h>
 
-
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
 
-
-// ServiceX
+// Project
 #include "ServiceXHandler.h"
 #include "User.h"
+#include "Request.h"
 
 using namespace std;
 
@@ -55,7 +53,7 @@ int main(int argc, char* argv[]){
             std::cout << argv[0] << " Version " << XDataFrame_VERSION_MAJOR << "."
                     << XDataFrame_VERSION_MINOR << std::endl;
             std::cout << "Usage: " << argv[0] << " number" << std::endl;
-            return 1;
+            return 0;
         }
     }
 
@@ -243,5 +241,5 @@ int main(int argc, char* argv[]){
     app.Run();
 
     std::cout << "Finished\n";
-    return 1;
+    return 0;
 }
