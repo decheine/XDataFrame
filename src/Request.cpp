@@ -12,7 +12,7 @@
 // Header
 #include "Request.h"
 
-Json::Value Request::getStatus(){
+Json::Value Request::GetStatus(){
     // Check if the endpoint exists
 
     // if(this->endpoint)
