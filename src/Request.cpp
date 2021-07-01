@@ -12,7 +12,7 @@
 // Header
 #include "Request.h"
 
-Json::Value Request::GetStatus(){
+std::string Request::GetStatus(){
     // Check if the endpoint exists
 
     // if(this->endpoint)
@@ -42,13 +42,13 @@ Json::Value Request::GetStatus(){
         curl_easy_perform(curl);
         std::cout << "done easy perform\n";
 
-        std::cout << response_string;
+        // std::cout << response_string;
         curl_easy_cleanup(curl);
         curl_global_cleanup();
         curl = NULL;
     }
 
-    std::cout << "Response: " << response_string << std::endl;
+    // std::cout << "Response: " << response_string << std::endl;
     return response_string;
 }
 
@@ -57,7 +57,7 @@ size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string*
     return size * nmemb;
 }
 
-int Request::sendRequest(std::map<std::string, std::string> values, std::string submitRequestJson) {
+int Request::SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson) {
     std::cout << "Reading json\n"; 
 
     const char* homeDir = getenv("HOME");
@@ -107,18 +107,11 @@ int Request::sendRequest(std::map<std::string, std::string> values, std::string 
             std::cout << "Set up headers\n";
             curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_string);
             curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
-            // curl_easy_setopt(curl, CURLOPT_POST, 1L);
-
-            // curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, -1L);
-            
         
-            curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
+            // curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
 
             // curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 
-            // curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
-            // curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
-            // curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1L);
             std::cout << "Trying write function\n";
 
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
@@ -136,7 +129,7 @@ int Request::sendRequest(std::map<std::string, std::string> values, std::string 
             curl = NULL;
         }
 
-        std::cout << "Response: " << response_string << std::endl;
+        // std::cout << "Response: " << response_string << std::endl;
         // put response_string to a variable
     }catch (std::exception &ex)  
         {  
@@ -144,6 +137,19 @@ int Request::sendRequest(std::map<std::string, std::string> values, std::string 
         } 
     return 0;
 }
+
+int Request::SaveJson(Json::Value value){
+    Json::StreamWriterBuilder builder;
+    builder["commentStyle"] = "None";
+    builder["indentation"] = "   ";
+
+    std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+    std::ofstream outputFileStream("test.json");
+    writer -> write(value, &outputFileStream);
+
+    return 0;
+}
+
 
 Request::Request() {
 

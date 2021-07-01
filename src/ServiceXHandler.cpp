@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include <streambuf>
-#include <filesystem>
 #include <regex>
 #include <iterator> 
 #include <map>
@@ -19,6 +18,9 @@
 
 // Jsoncpp
 #include <json/value.h>
+
+// Boost filesystem
+#include <boost/filesystem.hpp>
 
 // Project
 #include "ServiceXHandler.h"
@@ -153,7 +155,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
     return properties;
 }
 
-std::string ServiceXHandler::fetchData(std::string request_id){
+std::string ServiceXHandler::FetchData(std::string request_id){
     // CURL *curl = curl_easy_init();
     // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
     std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
@@ -181,7 +183,7 @@ std::string ServiceXHandler::fetchData(std::string request_id){
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
         // curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
 
-        curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
+        // curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
 
 
         std::cout << "easy perform\n";
@@ -193,7 +195,7 @@ std::string ServiceXHandler::fetchData(std::string request_id){
         curl = NULL;
     }
 
-    std::cout << "Response: " << response_string << std::endl;
+    // std::cout << "Response: " << response_string << std::endl;
     return response_string;
 }
 
@@ -202,14 +204,74 @@ void getStatus(std::string request_id){
 }
 
 
+void MakeDirectory(){
+
+    // const char* homeDir = getenv("HOME");
+
+    // const std::string fullDir = homeDir + ""
+
+
+
+    // boost::filesystem::path dir("");
+	// if(boost::filesystem::create_directory(dir)) {
+	// 	std::cout << "Success" << "\n";
+	// }
+    return;
+}
 
 
 
 
+int ServiceXHandler::SaveJson(Json::Value value){
+    Json::StreamWriterBuilder builder;
+    builder["commentStyle"] = "None";
+    builder["indentation"] = "\t";
+
+    std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+    std::string savedir = "" + value["request_id"].asString() + ".json";
+    std::cout << "Saving file as " << savedir << std::endl;
+    std::ofstream outputFileStream(savedir);
+    writer -> write(value, &outputFileStream);
+
+    return 0;
+}
 
 
+/**
+ * @brief Helper function that takes in a string and returns a Json Value object that can be indexed
+ * The old reader was deprecated and in its place much more complicated code
+ * 
+ * @param str 
+ * @return Json::Value 
+ */
+Json::Value ServiceXHandler::JsonFromStr(std::string jsonStr){
+    Json::Value root;
+    
+    Json::CharReaderBuilder builder;
+    Json::CharReader* reader = builder.newCharReader();
+    builder["collectComments"] = false;
+    Json::Value value;
+    std::string errs;
+    std::cout << "parsing\n"; 
+    bool parsingSuccessful = reader->parse(
+        jsonStr.c_str(),
+        jsonStr.c_str() + jsonStr.size(),
+        &value,
+        &errs
+    );
+    delete reader;
 
+    if (!parsingSuccessful) {
+        std::cout << "Failed to parse the JSON, errors:" << std::endl;
+        std::cout << errs << std::endl;
+        return 1;
+    }
 
+    // Json::Value reqId = value["request_id"];
+
+    // std::cout << reqId << std::endl;
+    return value;
+}
 
 
 

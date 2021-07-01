@@ -41,6 +41,10 @@ find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
 # set(CURL_DIR /usr/bin/curl)
 find_package( CURL REQUIRED)
 
+
+# BOOST
+find_package(Boost REQUIRED )
+
 # Amazon AWS SDK External Project
 # include(ExternalProject)
 
@@ -56,6 +60,7 @@ find_package( CURL REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include 
         ${CURL_INCLUDE_DIRS}
+        ${Boost_INCLUDE_DIR}
         )
 
 # Generate dictionaries for ROOT
@@ -119,6 +124,7 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ${AWSSDK_LINK_LIBRARIES}
                                         CURL::libcurl
                                         Math
+                                        ${Boost_LIBRARIES}
 )
 
 target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
@@ -139,7 +145,7 @@ target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )
 target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
 
 # specify the C++ standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 

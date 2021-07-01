@@ -25,13 +25,18 @@ class Request {
         void SetToken(char* token);
         void SetType(char* type);
 
-        Json::Value GetStatus();    
+        std::string GetStatus();    
         char* GetEndpoint();
         char* GetToken();
         char* GetType();
 
         // Submission method. Call to send the curl request to ServiceX with a submit_request.json
-        int sendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
+        int SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
+
+        int SaveJson(Json::Value val);
+
+        // Loads data into the request object. Called with initializer?
+        int LoadRequest();
 
         const char* name;
         const char* endpoint;

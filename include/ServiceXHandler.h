@@ -20,7 +20,7 @@ class ServiceXHandler {
 
         void show_val(ryml::NodeRef n);
         void show_keyval(ryml::NodeRef n);
-        std::string fetchData(std::string request_id);
+        std::string FetchData(std::string request_id);
         void getStatus(std::string request_id);
         // std::vector<std::string> readYaml();
         // void readYaml();
@@ -28,6 +28,9 @@ class ServiceXHandler {
         std::map<std::string, std::string> parseYaml(std::string targetName);
         char* GetEndpoint();
         char* getType();
+        int SaveJson(Json::Value val);
+
+        Json::Value JsonFromStr(std::string str);
 
         // Submit Request
         // Json::Value submitRequest(std::string submitJson)

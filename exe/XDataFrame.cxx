@@ -62,23 +62,73 @@ int main(int argc, char* argv[]){
     // User theUser();
     //std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
-    xHandler.fetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
+    // std::string jsonstringresponse = xHandler.FetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
+
     Request testRequest;
 
-    // testRequest.sendRequest(values, "/submit_request.json");
+    std::string jsonStr = testRequest.GetStatus();
+    std::cout << jsonStr << std::endl;
+
+    // Json::Value root;
+    
+    // Json::CharReaderBuilder builder;
+    // Json::CharReader* reader = builder.newCharReader();
+    // builder["collectComments"] = false;
+    // Json::Value value;
+    // std::string errs;
+    // std::cout << "parsing\n"; 
+    // bool parsingSuccessful = reader->parse(
+    //     jsonStr.c_str(),
+    //     jsonStr.c_str() + jsonStr.size(),
+    //     &value,
+    //     &errs
+    // );
+    // delete reader;
+
+    // if (!parsingSuccessful) {
+    //     std::cout << "Failed to parse the JSON, errors:" << std::endl;
+    //     std::cout << errs << std::endl;
+    //     return 1;
+    // }
+
+    // Json::Value reqId = value["request_id"];
+
+    // std::cout << reqId << std::endl;
+
+    Json::Value jsonResponse = xHandler.JsonFromStr(jsonStr);
+    std::cout << jsonResponse["request_id"] << std::endl;
+
+    // std::cout << jsonResponse["\"request_id\""] << std::endl;
+
+    // std::string strTest = jsonResponse["request_id"].asString();
+    // std::cout << jsonResponse["request_id"].asString() << std::endl;
+    xHandler.SaveJson(jsonResponse);
+
+
+    
+
+
+    // testRequest.SendRequest(values, "/submit_request.json");
 
     User myUser;
-    myUser.CreateROOTUserFolder("user1");
+    // myUser.CreateROOTUserFolder("user1");
+
+    
 
 
-    std::string text = "{ \"first\": 1; \"second\": 2}";
+
+
+
+
+
+
 
     // if(!reader.parse(response_string, root)) {
     //     std::cout << reader.getFormattedErrorMessages() << std::endl;
     // }
 
     //Runs basic ROOT app with the arguments given for main
-    TRint app("app", &argc, argv);
+    // TRint app("app", &argc, argv);
 
     //Testing. Makes some drawings on a TCanvas
     // TCanvas* c = new TCanvas("c", "Something", 0, 0, 800, 600);
@@ -88,7 +138,7 @@ int main(int argc, char* argv[]){
     // f1->Draw();
     // c->Modified(); c->Update();
 
-    new TBrowser;
+    // new TBrowser;
 
 
 //////////////
@@ -238,7 +288,7 @@ int main(int argc, char* argv[]){
 
 
     //Run and finish with ROOT prompt
-    app.Run();
+    // app.Run();
 
     std::cout << "Finished\n";
     return 0;
