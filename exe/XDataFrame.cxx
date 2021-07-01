@@ -70,7 +70,7 @@ int main(int argc, char* argv[]){
     // testRequest.sendRequest(values, "/submit_request.json");
 
     User myUser;
-    myUser.CreateUserFolder("user1");
+    myUser.CreateROOTUserFolder("user1");
 
 
     std::string text = "{ \"first\": 1; \"second\": 2}";

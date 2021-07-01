@@ -26,9 +26,17 @@
 
 #include <User.h>
 
-
-
+/**
+ * @brief Creates a folder for a new user if it doesn't exist already
+ * 
+ * @param userName Folder name
+ * @return int success
+ */
 int User::CreateUserFolder(std::string userName){
+    return 0;
+}
+
+int User::CreateROOTUserFolder(std::string userName){
 
     // Add the top folder of my hierary to //root
     TFolder *userfolder=gROOT->GetRootFolder()->AddFolder("userfolder",

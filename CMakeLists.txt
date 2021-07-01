@@ -87,10 +87,6 @@ file(GLOB SOURCES src/*.cpp)
 # Executable
 # add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
-
-
-
-
 message("-- Curl libraries " ${CURL_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
@@ -143,7 +139,7 @@ target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )
 target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
 
 # specify the C++ standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 

@@ -15,6 +15,7 @@ class User {
     public:
         // User(std::string end, std::string tok, std::string typ);
         User();
+        int CreateROOTUserFolder(std::string username);
         int CreateUserFolder(std::string username);
 
     private:
