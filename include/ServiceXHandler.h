@@ -26,7 +26,7 @@ class ServiceXHandler {
         // void readYaml();
 
         std::map<std::string, std::string> parseYaml(std::string targetName);
-        char* getEndpoint();
+        char* GetEndpoint();
         char* getType();
 
         // Submit Request

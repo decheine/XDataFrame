@@ -15,21 +15,25 @@
  */
 class Request {
     public:
-        const char* name;
-
+        // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
+        // This version takes as input a map of servicex.yaml. submit_request.json
+        Request();
+        // Function utilized by curl methods to write down return values as they are received.
         static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data);
 
+        void SetEndpoint(char*endpoint);
+        void SetToken(char* token);
+        void SetType(char* type);
 
-        void setEndpoint(char*endpoint);
-        void setToken(char* token);
-        void setType(char* type);
+        Json::Value GetStatus();    
+        char* GetEndpoint();
+        char* GetToken();
+        char* GetType();
 
-        // Gets status of request. Returns a json output
-        Json::Value getStatus();    
-        char* getEndpoint();
-        char* getToken();
-        char* getType();
+        // Submission method. Call to send the curl request to ServiceX with a submit_request.json
+        int sendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
 
+        const char* name;
         const char* endpoint;
         const char* token; // todo use different class that supports long boi strings
         const char* apiType;
@@ -37,16 +41,11 @@ class Request {
 
         const Json::Value submitRequestJson;
 
-        // Submission method. Call to send the curl request to ServiceX with a submit_request.json
-        int sendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
 
-
-        // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
-        // This version takes as input a map of servicex.yaml. submit_request.json
-        Request();
 
     private:
         // Who needs private members? public is just easier and I'm lazy
+        // Will change them over later
 
 };
 
