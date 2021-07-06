@@ -29,6 +29,7 @@ std::string Hasher::GetHash(std::string filename){
         std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
 
         myFile.close();
+        return toString(digest);
     }
     
 

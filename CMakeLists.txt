@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 
 project(XDataFrame VERSION 1.0)
 
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -43,7 +47,7 @@ find_package( CURL REQUIRED)
 
 
 # BOOST
-find_package(Boost REQUIRED )
+find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework )
 
 # Amazon AWS SDK External Project
 # include(ExternalProject)
@@ -95,6 +99,8 @@ file(GLOB SOURCES src/*.cpp)
 message("-- Curl libraries " ${CURL_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
+message("-- Boost include dir " ${Boost_INCLUDE_DIR})
+
 
 # target_link_directories(XDataFrame PUBLIC /usr/lib/x86_64-linux-gnu/curl BEFORE)
 
@@ -144,14 +150,19 @@ configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )   
 target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
 
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 
 # Setting the application directories, like bin and lib
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+
+
+# Add compile flags
+SET(GCC_COVERAGE_COMPILE_FLAGS "-DBOOST_NO_CXX11_SCOPED_ENUMS")
+
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 # Installation
 

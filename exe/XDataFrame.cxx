@@ -38,6 +38,7 @@
 #include "User.h"
 #include "Request.h"
 #include "Hasher.h"
+#include "MCache.h"
 
 using namespace std;
 
@@ -106,6 +107,11 @@ int main(int argc, char* argv[]){
     Hasher hasher;
     std::string hashVal;
     hashVal = hasher.GetHash("/submit_request.json");
+
+    MCache cache;
+
+    cache.CreateCacheEntry(hashVal);
+    // cache.SaveRequestId(hashVal, requestId);
 
 
     //Run and finish with ROOT prompt
