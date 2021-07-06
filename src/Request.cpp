@@ -16,6 +16,8 @@
 // This might be a bad idea
 #include "ServiceXHandler.h"
 
+#include "Hasher.h"
+
 std::string Request::GetStatus(){
     // Check if the endpoint exists
 
@@ -74,79 +76,91 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     tmp << myFile.rdbuf();
     std::string s = tmp.str();
     std::cout << s << std::endl;
-    const char* jsonObj = s.c_str();
-    std::string requestURL = values["endpoint"] + "servicex/transformation";
-    std::cout << "api endpoint: " << requestURL << "\n";
-    // Store submitrequestjson to variable
-    SubmitRequestJson = ServiceXHandler::JsonFromStr(s);
+    // const char* jsonObj = s.c_str();
 
-    // make post request
+    // Hash and check
+    Hasher hasher;
+    std::string hashString = hasher.GetHash(s);
+    // Look for hash entry on disk
+    bool hashFound = false;
 
-    const char* targetURL = requestURL.c_str();
+    if(hashFound == false){
+        std::string requestURL = values["endpoint"] + "servicex/transformation";
+        std::cout << "api endpoint: " << requestURL << "\n";
+        // Store submitrequestjson to variable
+        SubmitRequestJson = ServiceXHandler::JsonFromStr(s);
 
-    curl_global_cleanup();
-    curl_global_init(CURL_GLOBAL_DEFAULT);
+        // make post request
 
-    // GET request
-    std::cout << "Doing POST request\n";
-    CURL *curl = curl_easy_init();
-    std::string response_string;
-    CURLcode res = CURLE_FAILED_INIT;
-    char errbuf[CURL_ERROR_SIZE] = { 0, };
-    struct curl_slist *header_string=NULL;
-    char agent[1024] = { 0, };
+        const char* targetURL = requestURL.c_str();
 
-    char szJsonData[1024];  
-    memset(szJsonData, 0, sizeof(szJsonData));
-    strcpy(szJsonData, s.c_str());  
-    try{
-        if (curl) {
+        curl_global_cleanup();
+        curl_global_init(CURL_GLOBAL_DEFAULT);
+
+        // GET request
+        std::cout << "Doing POST request\n";
+        CURL *curl = curl_easy_init();
+        std::string response_string;
+        CURLcode res = CURLE_FAILED_INIT;
+        char errbuf[CURL_ERROR_SIZE] = { 0, };
+        struct curl_slist *header_string=NULL;
+        char agent[1024] = { 0, };
+
+        char szJsonData[1024];  
+        memset(szJsonData, 0, sizeof(szJsonData));
+        strcpy(szJsonData, s.c_str());  
+        try{
+            if (curl) {
+                
+
+                // agent[sizeof(agent) - 1] = 0;
+                // curl_easy_setopt(curl, CURLOPT_USERAGENT, agent);
+                const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation";
+
+                curl_easy_setopt(curl, CURLOPT_URL, requestURL);
+                // header_string = curl_slist_append(header_string, "Expect:");
+                header_string = curl_slist_append(header_string, "Content-Type: application/json");
+                // header_string = curl_slist_append(header_string, "charset: utf-8");
+                std::cout << "Set up headers\n";
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_string);
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
             
+                // curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
 
-            // agent[sizeof(agent) - 1] = 0;
-            // curl_easy_setopt(curl, CURLOPT_USERAGENT, agent);
-            const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation";
+                // curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 
-            curl_easy_setopt(curl, CURLOPT_URL, requestURL);
-            // header_string = curl_slist_append(header_string, "Expect:");
-            header_string = curl_slist_append(header_string, "Content-Type: application/json");
-            // header_string = curl_slist_append(header_string, "charset: utf-8");
-            std::cout << "Set up headers\n";
-            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_string);
-            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
-        
-            // curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
+                std::cout << "Trying write function\n";
 
-            // curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
-
-            std::cout << "Trying write function\n";
-
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szJsonData);
+                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
+                curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szJsonData);
 
 
-            std::cout << "Performing curl request\n";
-            res = curl_easy_perform(curl);
-            std::cout << "Finished curl request\n";
-            curl_slist_free_all(header_string);
-            std::cout << response_string;
-            curl_easy_cleanup(curl);
-            curl_global_cleanup();
-            curl = NULL;
-        }
+                std::cout << "Performing curl request\n";
+                res = curl_easy_perform(curl);
+                std::cout << "Finished curl request\n";
+                curl_slist_free_all(header_string);
+                std::cout << response_string;
+                curl_easy_cleanup(curl);
+                curl_global_cleanup();
+                curl = NULL;
+            }
 
-        // std::cout << "Response: " << response_string << std::endl;
-        // put response_string to a variable
-    }catch (std::exception &ex)  
-        {  
-            printf("curl exception %s.\n", ex.what());  
-            return 1;
-        }
-    // All finished, so set the Request variables
-    // Make the response into a Json object
-    Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
-    request_id = responseJson["request_id"].asCString();
+            // std::cout << "Response: " << response_string << std::endl;
+            // put response_string to a variable
+        }catch (std::exception &ex)  
+            {  
+                printf("curl exception %s.\n", ex.what());  
+                return 1;
+            }
+        // All finished, so set the Request variables
+        // Make the response into a Json object
+        Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
+        request_id = responseJson["request_id"].asCString();
+    } else {
+        // Hash was found
+        // request_id = hash
+    }
 
     return 0;
 }

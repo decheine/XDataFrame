@@ -3,42 +3,45 @@
 #include <fstream> 
 
 
-bool Hasher::GetHash(std::string filename){
+std::string Hasher::GetHash(std::string filename){
     std::string s;
 
-    // std::ofstream ofs;
-    // ofs.open(filename, std::ofstream::out | std::ofstream::app);
-    // ofs.close();
+    const char* homeDir = getenv("HOME");
+    // std::cout << "homedir: " << homeDir << "\n"; 
+    const std::string fullDir = homeDir + filename;
 
-    std::fstream my_file;
-	my_file.open(filename, std::ios::in);
-	if (!my_file) {
-		std::cout << "No such file";
-	}
-	else {
-		char ch;
+    std::ifstream myFile(fullDir);
+    if (!myFile) {
+            std::cout << "No such file";
+    } else {
+        std::ostringstream tmp;
+        tmp << myFile.rdbuf();
+        std::string s = tmp.str();
+        std::cout << s << std::endl;
+        const char* jsonObj = s.c_str();
 
-		while (1) {
-			my_file >> ch;
-			if (my_file.eof())
-				break;
+        md5 hash;
+        md5::digest_type digest;
 
-			std::cout << ch;
-		}
+        hash.process_bytes(s.data(), s.size());
+        hash.get_digest(digest);
 
-	}
-	my_file.close();
+        std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
 
-
-    // while(std::getline(std::cin, s)) {
-    //     md5 hash;
-    //     md5::digest_type digest;
-
-    //     hash.process_bytes(s.data(), s.size());
-    //     hash.get_digest(digest);
-
-    //     std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
-    // }
+        myFile.close();
+    }
+    
 
     return 0;
 }
+
+
+//   while(std::getline(my_file, s)) {
+//             md5 hash;
+//             md5::digest_type digest;
+
+//             hash.process_bytes(s.data(), s.size());
+//             hash.get_digest(digest);
+
+//             std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
+//         }

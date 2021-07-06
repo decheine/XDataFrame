@@ -46,6 +46,32 @@ using namespace std;
 //     return size * nmemb;
 // }
 
+
+// Helper Functions
+
+/**
+ * @brief Reads a json with file name filename from the user's homedirectory
+ * 
+ * @param filename 
+ * @return std::string 
+ */
+std::string ReadJsonFromFile(std::string filename){
+    const char* homeDir = getenv("HOME");
+    // std::cout << "homedir: " << homeDir << "\n"; 
+    const std::string fullDir = homeDir + filename;
+
+    // Read json file
+    std::ifstream myFile(fullDir);
+    std::ostringstream tmp;
+    tmp << myFile.rdbuf();
+    std::string s = tmp.str();
+    std::cout << s << std::endl;
+    const char* jsonObj = s.c_str();
+    return s;
+}
+
+
+
 int main(int argc, char* argv[]){
     if(argc > 1){
         if (strcmp(argv[1], "--version") == 0) {
@@ -69,17 +95,17 @@ int main(int argc, char* argv[]){
 
 
 
-    testRequest.SendRequest(values, "/submit_request.json");
-    std::cout << "Saving json of response\n"; 
-    testRequest.SaveJson(testRequest.SubmitRequestJson);
+    // testRequest.SendRequest(values, "/submit_request.json");
+    // std::cout << "Saving json of response\n"; 
+    // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
     std::string md5_string;
 
     User myUser;
 
     Hasher hasher;
-
-    // hasher.GetHash("../submit_request.json");
+    std::string hashVal;
+    hashVal = hasher.GetHash("/submit_request.json");
 
 
     //Run and finish with ROOT prompt

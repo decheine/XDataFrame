@@ -42,9 +42,6 @@
 // Project
 #include "ServiceXHandler.h"
 
-
-using namespace std;
-
 /// YAML Methods
 
 // convenience functions to print a node
@@ -206,7 +203,7 @@ std::string ServiceXHandler::FetchData(std::string request_id){
         std::cout << "easy perform\n";
         curl_easy_perform(curl);
         std::cout << "done easy perform\n";
-        cout << response_string;
+        std::cout << response_string;
         curl_easy_cleanup(curl);
         curl_global_cleanup();
         curl = NULL;
