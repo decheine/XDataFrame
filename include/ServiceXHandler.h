@@ -11,6 +11,8 @@
 #include <json/reader.h>
 #include <json/writer.h>
 
+// ryml
+#include <ryml.hpp>
 
 class ServiceXHandler {
     public:
@@ -24,13 +26,17 @@ class ServiceXHandler {
         void getStatus(std::string request_id);
         // std::vector<std::string> readYaml();
         // void readYaml();
+        void GetMinIOData();
+
+        void DoMD5(std::string filename);
+        bool GetMd5(std::string &str_md5, const char  * const buffer, size_t buffer_size);
 
         std::map<std::string, std::string> parseYaml(std::string targetName);
         char* GetEndpoint();
         char* getType();
         int SaveJson(Json::Value val);
 
-        Json::Value JsonFromStr(std::string str);
+        static Json::Value JsonFromStr(std::string str);
 
         // Submit Request
         // Json::Value submitRequest(std::string submitJson)

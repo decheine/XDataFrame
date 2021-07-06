@@ -29,6 +29,7 @@ class Request {
         char* GetEndpoint();
         char* GetToken();
         char* GetType();
+        std::string GetRequestID();
 
         // Submission method. Call to send the curl request to ServiceX with a submit_request.json
         int SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
@@ -42,9 +43,9 @@ class Request {
         const char* endpoint;
         const char* token; // todo use different class that supports long boi strings
         const char* apiType;
-        const char* request_id;
+        std::string request_id;
 
-        const Json::Value submitRequestJson;
+        Json::Value SubmitRequestJson;
 
 
 

@@ -12,6 +12,10 @@
 // Header
 #include "Request.h"
 
+// Include ServiceXHandler ??
+// This might be a bad idea
+#include "ServiceXHandler.h"
+
 std::string Request::GetStatus(){
     // Check if the endpoint exists
 
@@ -73,6 +77,9 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     const char* jsonObj = s.c_str();
     std::string requestURL = values["endpoint"] + "servicex/transformation";
     std::cout << "api endpoint: " << requestURL << "\n";
+    // Store submitrequestjson to variable
+    SubmitRequestJson = ServiceXHandler::JsonFromStr(submitRequestJson);
+
     // make post request
 
     const char* targetURL = requestURL.c_str();
@@ -134,7 +141,13 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     }catch (std::exception &ex)  
         {  
             printf("curl exception %s.\n", ex.what());  
-        } 
+            return 1;
+        }
+    // All finished, so set the Request variables
+    // Make the response into a Json object
+    Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
+    // request_id = responseJson["request_id"].asCString();
+
     return 0;
 }
 
@@ -144,12 +157,18 @@ int Request::SaveJson(Json::Value value){
     builder["indentation"] = "\t";
 
     std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-    std::string savedir = "" + value["request_id"].asString() + ".json";
+    std::string savedir = request_id + ".json";
+
+    // std::string savedir = "" + value["request_id"].asString() + ".json";
     std::cout << "Saving file as " << savedir << std::endl;
     std::ofstream outputFileStream(savedir);
     writer -> write(value, &outputFileStream);
 
     return 0;
+}
+
+std::string Request::GetRequestID(){
+    return request_id;
 }
 
 
