@@ -78,7 +78,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     std::string requestURL = values["endpoint"] + "servicex/transformation";
     std::cout << "api endpoint: " << requestURL << "\n";
     // Store submitrequestjson to variable
-    SubmitRequestJson = ServiceXHandler::JsonFromStr(submitRequestJson);
+    SubmitRequestJson = ServiceXHandler::JsonFromStr(s);
 
     // make post request
 
@@ -146,7 +146,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     // All finished, so set the Request variables
     // Make the response into a Json object
     Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
-    // request_id = responseJson["request_id"].asCString();
+    request_id = responseJson["request_id"].asCString();
 
     return 0;
 }
