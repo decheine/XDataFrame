@@ -18,6 +18,8 @@
 
 #include "Hasher.h"
 
+#include "MCache.h"
+
 std::string Request::GetStatus(){
     // Check if the endpoint exists
 
@@ -63,7 +65,7 @@ size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string*
     return size * nmemb;
 }
 
-int Request::SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson) {
+int Request::SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson, MCache* cache) {
     std::cout << "Reading json\n"; 
 
     const char* homeDir = getenv("HOME");
@@ -73,6 +75,8 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     // Read json file
     std::ifstream myFile(fullDir);
     std::ostringstream tmp;
+    std::cout << "reading buffer \n";
+
     tmp << myFile.rdbuf();
     std::string s = tmp.str();
     std::cout << s << std::endl;
@@ -81,8 +85,14 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     // Hash and check
     Hasher hasher;
     std::string hashString = hasher.GetHash(s);
+    std::cout << "got hash\n";
+
+    
     // Look for hash entry on disk
     bool hashFound = false;
+
+    hashFound = cache->EntryExists(hashString);
+
 
     if(hashFound == false){
         std::string requestURL = values["endpoint"] + "servicex/transformation";
@@ -156,6 +166,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
         // All finished, so set the Request variables
         // Make the response into a Json object
         Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
+        std::cout << "setting request_id " << responseJson["request_id"].asCString() << "\n";
         request_id = responseJson["request_id"].asCString();
     } else {
         // Hash was found

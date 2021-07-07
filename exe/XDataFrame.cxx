@@ -73,6 +73,7 @@ std::string ReadJsonFromFile(std::string filename){
 
 
 
+
 int main(int argc, char* argv[]){
     if(argc > 1){
         if (strcmp(argv[1], "--version") == 0) {
@@ -94,9 +95,10 @@ int main(int argc, char* argv[]){
 
     Request testRequest;
 
+    MCache cache;
 
 
-    // testRequest.SendRequest(values, "/submit_request.json");
+    testRequest.SendRequest(values, "/submit_request.json", &cache);
     // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
@@ -107,10 +109,10 @@ int main(int argc, char* argv[]){
     Hasher hasher;
     std::string hashVal;
     hashVal = hasher.GetHash("/submit_request.json");
-
-    MCache cache;
+    
 
     cache.CreateCacheEntry(hashVal);
+    cache.WriteRequestID(hashVal, testRequest.request_id);
     // cache.SaveRequestId(hashVal, requestId);
 
 

@@ -8,6 +8,8 @@
 #include <json/reader.h>
 #include <json/writer.h>
 
+#include "MCache.h"
+
 /**
  * @brief Request object representing an instance of a ServiceX request
  * Contains the endpoint, token, type. 
@@ -32,7 +34,7 @@ class Request {
         std::string GetRequestID();
 
         // Submission method. Call to send the curl request to ServiceX with a submit_request.json
-        int SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson);
+        int SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson, MCache* cache);
 
         int SaveJson(Json::Value val);
 

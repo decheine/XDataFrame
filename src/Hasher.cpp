@@ -31,9 +31,7 @@ std::string Hasher::GetHash(std::string filename){
         myFile.close();
         return toString(digest);
     }
-    
-
-    return 0;
+    return "";
 }
 
 

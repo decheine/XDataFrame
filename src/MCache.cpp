@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <fstream>
+
 #include <boost/filesystem.hpp>
 
 #include "MCache.h"
@@ -14,12 +16,29 @@ namespace fs = boost::filesystem;
  */
 MCache::MCache() {
     std::cout << "Object is being created" << std::endl;
+    fs::path cachePath = fs::path(fs::temp_directory_path().string() + "/XDataFrame");
+    if(fs::is_directory(cachePath)){
+    } else {
+        fs::create_directory(cachePath);
+    }
+    cacheDir = cachePath.string();
 
 }
 
 void MCache::LoadCache(){
     return;
 }
+
+bool MCache::EntryExists(std::string hash){
+    fs::path entryPath = fs::path(GetCacheDir() + "/" + hash + "/");
+    bool exists = fs::is_directory(entryPath);
+    if(exists){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 /**
  * @brief Save request_id to the hash folder.
@@ -34,6 +53,60 @@ bool MCache::SaveRequestId(std::string hash, std::string request_id){
 
     // Check if hash exists.
     // If it doesn't, create it
+
+    return 0;
+}
+
+void MCache::SetCacheDir(std::string directory){
+    cacheDir = directory;
+}
+
+std::string MCache::GetCacheDir(){
+    return cacheDir;
+}
+
+std::string MCache::ReadRequestId(std::string hash){
+    fs::path hashFolderPath = fs::path(cacheDir + "/" + hash);
+    if( fs::is_directory(hashFolderPath)) {
+        fs::path reqidFilePath = fs::path(hashFolderPath.string() + "/request_id.txt" );
+        if(fs::exists(reqidFilePath)){
+            std::string line;
+            std::ifstream myfile (reqidFilePath.string());
+            std::string requestIdStr;
+            if (myfile.is_open()){
+                while ( getline (myfile,line) ) {
+                    std::cout << line << '\n';
+                    requestIdStr = line;
+                }
+                myfile.close();
+            } else std::cout << "Unable to open file"; 
+        }
+    } else {
+        std::cout << "specified hash " + hash + "has not been created in the cache";
+        return "error";
+    }
+
+    return "";
+}
+
+bool MCache::WriteRequestID(std::string hash, std::string requestId){
+    fs::path home = fs::path(std::getenv("HOME"));
+    fs::path cachePath = fs::path(fs::temp_directory_path().string() + "/" + hash + "/");
+    if(fs::is_directory(cachePath)){
+        fs::path reqidFilePath = fs::path(cachePath.string() + "request_id.txt");
+        if(fs::exists(reqidFilePath)){
+            std::cout << "Request_ID already written for " << hash << "\n Overwriting \n";
+        }
+        std::ofstream myfile;
+        
+        myfile.open ("request_id.txt");
+        myfile << requestId;
+        myfile.close();
+        return 0;
+    }else {
+        std::cout << "hash directory " << hash.c_str() << " does not exist\n";
+        return 1;
+    }
 
     return 0;
 }
