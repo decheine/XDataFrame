@@ -110,6 +110,8 @@ int main(int argc, char* argv[]){
     std::string hashVal;
     hashVal = hasher.GetHash("/submit_request.json");
     std::cout << "request_id: " << testRequest.request_id << "\n";
+    // Only call this if user specifically wants to refresh the data or if there are no data files. 
+    // For now, do it every time. 
     xHandler.GetMinIOData(testRequest.request_id);
 
     //Run and finish with ROOT prompt

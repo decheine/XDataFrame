@@ -36,11 +36,12 @@
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
 
-
-
-
 // Project
 #include "ServiceXHandler.h"
+
+
+namespace fs = boost::filesystem;
+
 
 /// YAML Methods
 
@@ -328,60 +329,54 @@ void ServiceXHandler::GetMinIOData(std::string bucketName){
 
         Aws::Vector<Aws::S3::Model::Object> objects =
             outcome.GetResult().GetContents();
+        std::vector<std::string> objectKeys;
+        std::vector<std::string>::iterator it;
 
-        for (Aws::S3::Model::Object& object : objects)
-        {
+        it = objectKeys.begin();
+        // Gets all object keys
+        for (Aws::S3::Model::Object& object : objects){
             std::cout << object.GetKey() << std::endl;
+            objectKeys.push_back(object.GetKey());
         }
 
-    }
-    else
-    {
+        // Downloads files with object keys
+
+        // This loop is the costly one, where making the RDataFrame dynamically will have to be done
+        // The objects are donwloaded in order during this loop.
+        // After each item is downloaded, add it to the RDataFrame. 
+
+        for (std::string objectKey : objectKeys){
+        
+            // Get object
+            std::cout << "Getting object " << objectKey << "\n"; 
+
+            // std::string pathkey = "temp";
+            Aws::S3::Model::PutObjectRequest putObjectRequest;
+            putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
+
+            Aws::S3::Model::GetObjectRequest object_request;
+            object_request.SetBucket(BucketName);
+            object_request.SetKey(objectKey);
+            // if()
+            Aws::S3::Model::GetObjectOutcome get_object_outcome = 
+                m_client->GetObject(object_request);
+
+            if (get_object_outcome.IsSuccess()) {
+
+                Aws::OFStream local_file;
+                // local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
+                local_file << get_object_outcome.GetResult().GetBody().rdbuf();
+                std::cout << "Done!" << std::endl;
+
+            }  else {
+                auto err = get_object_outcome.GetError();
+                std::cout << "Error: GetObject: " <<
+                err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
+            }
+        }
+    } else {
         std::cout << "Error: ListObjects: " <<
             outcome.GetError().GetMessage() << std::endl;
-
-    }
-
-    // Get object
-    std::cout << "Getting object\n"; 
-
-    Aws::S3::Model::GetObjectRequest object_request;
-    object_request.SetBucket(BucketName);
-    // object_request.SetKey(objectKey);
-
-    Aws::S3::Model::GetObjectOutcome get_object_outcome = 
-        m_client->GetObject(object_request);
-
-    if (get_object_outcome.IsSuccess()) {
-        // auto& retrieved_file = get_object_outcome.GetResultWithOwnership().
-        //     GetBody();
-        // std::cout << typeid(retrieved_file).name() << '\n';
-
-        // // Print a beginning portion of the text file.
-        // std::cout << "Beginning of file contents:\n";
-        // char file_data[255] = { 0 };
-        // retrieved_file.getline(file_data, 254);
-        // std::cout << file_data << std::endl;
-
-        std::cout << "attempting save\n";
-
-        // TFile *myFile = new TFile("myfile.root", "CREATE");
-
-        Aws::OFStream local_file;
-		// local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
-		local_file << get_object_outcome.GetResult().GetBody().rdbuf();
-		std::cout << "Done!" << std::endl;
-
-        // myFile-
-
-        // return true;
-    }
-    else {
-        auto err = get_object_outcome.GetError();
-        std::cout << "Error: GetObject: " <<
-            err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
-
-        // return false;
     }
 }
 
