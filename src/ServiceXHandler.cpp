@@ -310,14 +310,6 @@ void ServiceXHandler::GetMinIOData(std::string bucketName){
         Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, false);
     
 
-
-    
-    
-    // std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
-    // std::string pathkey = "temp";
-    // Aws::S3::Model::PutObjectRequest putObjectRequest;
-    // putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
-
     Aws::S3::Model::ListObjectsRequest objRequest;
     objRequest.WithBucket(BucketName);
 
