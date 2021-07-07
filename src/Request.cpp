@@ -85,12 +85,12 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     // Hash and check
     Hasher hasher;
     std::string hashString = hasher.GetHash(s);
-    std::cout << "got hash\n";
+    std::cout << "got hash: " << hashString << "\n";
 
     
     // Look for hash entry on disk
-    bool hashFound = false;
-
+    bool hashFound = true;
+    std::cout << "checking cache for " + hashString + "\n";
     hashFound = cache->EntryExists(hashString);
 
 
@@ -168,11 +168,23 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
         Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
         std::cout << "setting request_id " << responseJson["request_id"].asCString() << "\n";
         request_id = responseJson["request_id"].asCString();
+        cache->CreateCacheEntry(hashString);
+        cache->WriteRequestID(hashString, request_id);
+        return 0; 
     } else {
         // Hash was found
         // request_id = hash
-    }
+        std::cout << "Hash found\n";
 
+        std::string reqId = cache->ReadRequestId(hashString);
+        request_id = reqId;
+        // fs::path reqidPath = fs::path(cache->GetCacheDir() + "/" + hashString);
+
+
+        return 0;
+
+    }
+    std::cout << "outside returning\n";
     return 0;
 }
 

@@ -90,21 +90,29 @@ std::string MCache::ReadRequestId(std::string hash){
 }
 
 bool MCache::WriteRequestID(std::string hash, std::string requestId){
-    fs::path home = fs::path(std::getenv("HOME"));
-    fs::path cachePath = fs::path(fs::temp_directory_path().string() + "/" + hash + "/");
+    fs::path cachePath = fs::path(cacheDir);
     if(fs::is_directory(cachePath)){
-        fs::path reqidFilePath = fs::path(cachePath.string() + "request_id.txt");
+        fs::path reqidFilePath = fs::path(cachePath.string() + "/" + hash + "/request_id.txt");
         if(fs::exists(reqidFilePath)){
             std::cout << "Request_ID already written for " << hash << "\n Overwriting \n";
         }
+        std::cout << "opening " << reqidFilePath.string() << "\n";
         std::ofstream myfile;
+        myfile.open(reqidFilePath.string());
+        if(myfile.is_open()){
+            std::cout << "writing " << requestId << " to file\n";
+
+            myfile << requestId;
+            myfile.close();
+            return 0;
+        } else {
+            std::cout << "could not open " << reqidFilePath.string() << " for writing.\n";
+            return 1;
+        }
+            
         
-        myfile.open ("request_id.txt");
-        myfile << requestId;
-        myfile.close();
-        return 0;
     }else {
-        std::cout << "hash directory " << hash.c_str() << " does not exist\n";
+        std::cout << "hash directory " << cachePath.string() << " does not exist\n";
         return 1;
     }
 
@@ -115,27 +123,15 @@ bool MCache::CreateCacheEntry(std::string hash){
     // std::string tmpDir = fs::temp_directory_path();
     fs::path home = fs::path(std::getenv("HOME"));
     std::cout << "home: " << home.string() << "\n";
-
-    // fs::path tmpDir = boost::filesystem::temp_directory_path();
-    std::cout << "tmp: " << home.string() << "\n";
-    std::cout << "Temp directory is " << fs::temp_directory_path() << '\n';
-    bool tmpDirExists = false;
-    fs::path xdataframeDir = fs::path(fs::temp_directory_path().string() + "/XDataFrame");
-    tmpDirExists = fs::is_directory(xdataframeDir);
-    std::cout << "does xdataframe dir exist " << tmpDirExists << "\n";
-    if(tmpDirExists == 0){
-        // Create it
-        fs::create_directories(xdataframeDir);
-    } else {    }
     // Does exist
     try {
                 // Create folder
-        fs::path cacheDir = fs::path(xdataframeDir.string() + "/" + hash);
-        if (fs::exists(cacheDir)){
+        fs::path cacheEntryDir = fs::path(cacheDir + "/" + hash);
+        if (fs::exists(cacheEntryDir)){
             std::cout << "Cache entry already exists!\n";
             return 1; 
         }else {
-            fs::create_directory(cacheDir);
+            fs::create_directory(cacheEntryDir);
             return 0;
         }
 

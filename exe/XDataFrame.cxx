@@ -111,8 +111,8 @@ int main(int argc, char* argv[]){
     hashVal = hasher.GetHash("/submit_request.json");
     
 
-    cache.CreateCacheEntry(hashVal);
-    cache.WriteRequestID(hashVal, testRequest.request_id);
+    // cache.CreateCacheEntry(hashVal);
+    // cache.WriteRequestID(hashVal, testRequest.request_id);
     // cache.SaveRequestId(hashVal, requestId);
 
 
