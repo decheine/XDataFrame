@@ -292,8 +292,8 @@ Json::Value ServiceXHandler::JsonFromStr(std::string jsonStr){
  * 
  */
 
-void ServiceXHandler::GetMinIOData(){
-    std::string BucketName = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+void ServiceXHandler::GetMinIOData(std::string bucketName){
+    std::string BucketName = bucketName;
 
 
     Aws::SDKOptions m_options;
@@ -307,10 +307,15 @@ void ServiceXHandler::GetMinIOData(){
     cfg.verifySSL = false;
     m_client = new Aws::S3::S3Client(Aws::Auth::AWSCredentials("miniouser", "leftfoot1"), cfg, 
         Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, false);
-    std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
-    std::string pathkey = "temp";
-    Aws::S3::Model::PutObjectRequest putObjectRequest;
-    putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
+    
+
+
+    
+    
+    // std::string objectKey = "root:::eospublic.cern.ch::eos:opendata:cms:MonteCarlo2011:Summer11LegDR:SMHiggsToZZTo4L_M-125_7TeV-powheg15-JHUgenV3-pythia6:AODSIM:PU_S13_START53_LV6-v1:20000:08CD3ECC-4C92-E411-B001-0025907B4F20.root";
+    // std::string pathkey = "temp";
+    // Aws::S3::Model::PutObjectRequest putObjectRequest;
+    // putObjectRequest.WithBucket(BucketName.c_str()).WithKey(objectKey.c_str());
 
     Aws::S3::Model::ListObjectsRequest objRequest;
     objRequest.WithBucket(BucketName);
@@ -342,7 +347,7 @@ void ServiceXHandler::GetMinIOData(){
 
     Aws::S3::Model::GetObjectRequest object_request;
     object_request.SetBucket(BucketName);
-    object_request.SetKey(objectKey);
+    // object_request.SetKey(objectKey);
 
     Aws::S3::Model::GetObjectOutcome get_object_outcome = 
         m_client->GetObject(object_request);
@@ -363,7 +368,7 @@ void ServiceXHandler::GetMinIOData(){
         // TFile *myFile = new TFile("myfile.root", "CREATE");
 
         Aws::OFStream local_file;
-		local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
+		// local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
 		local_file << get_object_outcome.GetResult().GetBody().rdbuf();
 		std::cout << "Done!" << std::endl;
 

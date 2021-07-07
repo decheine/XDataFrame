@@ -177,6 +177,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
         std::cout << "Hash found\n";
 
         std::string reqId = cache->ReadRequestId(hashString);
+        std::cout << "setting hashes, " << request_id << " " << reqId << "\n";
         request_id = reqId;
         // fs::path reqidPath = fs::path(cache->GetCacheDir() + "/" + hashString);
 

@@ -102,19 +102,15 @@ int main(int argc, char* argv[]){
     // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
-    std::string md5_string;
+
 
     User myUser;
 
     Hasher hasher;
     std::string hashVal;
     hashVal = hasher.GetHash("/submit_request.json");
-    
-
-    // cache.CreateCacheEntry(hashVal);
-    // cache.WriteRequestID(hashVal, testRequest.request_id);
-    // cache.SaveRequestId(hashVal, requestId);
-
+    std::cout << "request_id: " << testRequest.request_id << "\n";
+    xHandler.GetMinIOData(testRequest.request_id);
 
     //Run and finish with ROOT prompt
     // app.Run();

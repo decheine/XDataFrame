@@ -79,13 +79,16 @@ std::string MCache::ReadRequestId(std::string hash){
                     requestIdStr = line;
                 }
                 myfile.close();
-            } else std::cout << "Unable to open file"; 
+                return requestIdStr;
+            } else {
+                std::cerr << "Unable to open file";
+                return "";
+            }
+        } else {
+            std::cerr << "specified hash " + hash + "has not been created in the cache";
+            return "error";
         }
-    } else {
-        std::cout << "specified hash " + hash + "has not been created in the cache";
-        return "error";
     }
-
     return "";
 }
 
