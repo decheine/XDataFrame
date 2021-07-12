@@ -5,7 +5,10 @@
 
 // ROOT includes
 
-#include "ROOT/RDataFrame.hxx"
+#include <ROOT/RDataFrame.hxx>
+#include <ROOT/RDF/RDisplay.hxx>
+
+
 
 class RDataFrameHandler {
     public:
@@ -15,7 +18,7 @@ class RDataFrameHandler {
         int AddFile(std::string filename);
         int AddFiles(std::vector<std::string> filenames);
         void DisplayRDF();
-        int CreateRDataFrame();
+        ROOT::RDataFrame CreateRDataFrame();
 
         RDataFrameHandler();
     private:

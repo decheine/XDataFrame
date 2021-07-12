@@ -40,11 +40,11 @@ std::string Hasher::GetHashOf(std::string filenameString){
         // Read json file
         std::ifstream myFile(fullDir);
         std::ostringstream tmp;
-        std::cout << "reading buffer \n";
+        // std::cout << "reading buffer \n";
 
         tmp << myFile.rdbuf();
         std::string s = tmp.str();
-        std::cout << s << std::endl;
+        // std::cout << s << std::endl;
 
 
         hash.process_bytes(s.data(), s.size());
@@ -52,7 +52,7 @@ std::string Hasher::GetHashOf(std::string filenameString){
 
         // std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
 
-        std::cout << "returning " << toString(digest) << std::endl;
+        // std::cout << "returning " << toString(digest) << std::endl;
 
         return toString(digest);
 }

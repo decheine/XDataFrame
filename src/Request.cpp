@@ -75,22 +75,22 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     // Read json file
     std::ifstream myFile(fullDir);
     std::ostringstream tmp;
-    std::cout << "reading buffer \n";
+    // std::cout << "reading buffer \n";
 
     tmp << myFile.rdbuf();
     std::string s = tmp.str();
-    std::cout << s << std::endl;
+    // std::cout << s << std::endl;
     // const char* jsonObj = s.c_str();
 
     // Hash and check
     Hasher hasher;
     std::string hashString = hasher.GetHash(s);
-    std::cout << "got hash: " << hashString << "\n";
+    // std::cout << "got hash: " << hashString << "\n";
 
     
     // Look for hash entry on disk
     bool hashFound = true;
-    std::cout << "checking cache for " + hashString + "\n";
+    // std::cout << "checking cache for " + hashString + "\n";
     hashFound = cache->EntryExists(hashString);
 
 
@@ -174,10 +174,10 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     } else {
         // Hash was found
         // request_id = hash
-        std::cout << "Hash found\n";
+        // std::cout << "Hash found\n";
 
         std::string reqId = cache->ReadRequestId(hashString);
-        std::cout << "setting hashes, " << request_id << " " << reqId << "\n";
+        // std::cout << "setting hashes, " << request_id << " " << reqId << "\n";
         request_id = reqId;
         // fs::path reqidPath = fs::path(cache->GetCacheDir() + "/" + hashString);
 
@@ -185,7 +185,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
         return 0;
 
     }
-    std::cout << "outside returning\n";
+    // std::cout << "outside returning\n";
     return 0;
 }
 

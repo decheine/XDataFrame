@@ -31,9 +31,9 @@ void RDataFrameHandler::fill_tree(const char *treeName, const char *fileName){
  * @brief Creates the RDataFrame objecct with the file list in the RDataFrameHandler
  * Returns 0 if successful
  * Returns 1 if not successful
- * @return int
+ * @return ROOT::RDataFrame
  */
-int RDataFrameHandler::CreateRDataFrame(){
+ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
     // auto fileName = "df001_introduction.root";
     auto treeName = "treeme";
     // fill_tree(treeName, fileName);
@@ -53,7 +53,13 @@ int RDataFrameHandler::CreateRDataFrame(){
     auto d1 = df.Display();
     d1->Print();
 
-    return 0;
+    std::cout << "Displaying 2 \n";
+
+    auto d2 = RDataFrameObject->Display();
+    d2->Print();
+
+
+    return df;
 }
 
 /**
@@ -77,7 +83,7 @@ int RDataFrameHandler::AddFiles(std::vector<std::string> filenames){
     for (auto iter = filenames.begin(); iter != filenames.end(); ++iter)
     {  
         // If iter is a valid file:
-        std::cout << "adding " << iter->c_str() << "\n";
+        // std::cout << "adding " << iter->c_str() << "\n";
         AddFile(iter->c_str());
         // attack->makeDamage();
     }
@@ -90,6 +96,9 @@ RDataFrameHandler::RDataFrameHandler(){
 
 
 void RDataFrameHandler::DisplayRDF(){
-    ROOT::RDataFrame rdf = *RDataFrameObject;
-    rdf.Display();
+    // ROOT::RDataFrame rdf = *RDataFrameObject;
+    std::cout << "Displaying\n";
+
+    auto d1 = RDataFrameObject->Display();
+    d1->Print();
 }

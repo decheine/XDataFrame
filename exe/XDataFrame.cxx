@@ -123,9 +123,9 @@ int main(int argc, char* argv[]){
 
     RDataFrameHandler rdfHandler;
     rdfHandler.AddFiles(filenameList);
-    rdfHandler.CreateRDataFrame();
+    ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
 
-    rdfHandler.DisplayRDF();
+    // rdfHandler.DisplayRDF();
 
     std::cout << "Finished\n";
     return 0;

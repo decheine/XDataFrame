@@ -110,7 +110,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 
         // get a reference to the "foo" node
         ryml::NodeRef node = tree["api_endpoints"];
-        std::cout << "Number of children: " << node.num_children() << std::endl;
+        // std::cout << "Number of children: " << node.num_children() << std::endl;
         ryml::NodeRef subNode = node.find_child("sub2");
         ryml::NodeRef subFirst = node.child(0);
 
@@ -130,7 +130,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
         // show_val(tree["sub"].child(0)[0]);  // "foo: 1"
         // show_val(subFirst[0]);
         // show_keyval(api_endpointNode[0]);
-        std::cout << "Number of children of endpoint: " << api_endpointNode.num_children() << std::endl;
+        // std::cout << "Number of children of endpoint: " << api_endpointNode.num_children() << std::endl;
 
         // show_val(typeNode[0]);
         // show_val(tokenNode[0]);
@@ -327,7 +327,7 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
         it = objectKeys.begin();
         // Gets all object keys
         for (Aws::S3::Model::Object& object : objects){
-            std::cout << object.GetKey() << std::endl;
+            // std::cout << object.GetKey() << std::endl;
             objectKeys.push_back(object.GetKey());
         }
 
@@ -338,12 +338,12 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
         // Downloads files with object keys
 
         // This loop is the costly one, where making the RDataFrame dynamically will have to be done
-        // The objects are donwloaded in order during this loop.
+        // The objects are donwloaded in order during this loop.q
         // After each item is downloaded, add it to the RDataFrame. 
         for (std::string objectKey : objectKeys){
         
             // Get object
-            std::cout << "Getting object " << objectKey << "\n"; 
+            // std::cout << "Getting object " << objectKey << "\n"; 
 
             // std::string pathkey = "temp";
             Aws::S3::Model::PutObjectRequest putObjectRequest;
@@ -363,7 +363,7 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
                 local_file << get_object_outcome.GetResult().GetBody().rdbuf();
                 local_file.close();
                 filenames.push_back(filepath);
-                std::cout << "Done!" << std::endl;
+                // std::cout << "Done!" << std::endl;
 
             }  else {
                 auto err = get_object_outcome.GetError();
@@ -371,6 +371,8 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
                 err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
             }
         }
+        
+        std::cout << "Done!" << std::endl;
         return filenames;
     } else {
         std::cout << "Error: ListObjects: " <<
