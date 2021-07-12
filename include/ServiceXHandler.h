@@ -29,7 +29,7 @@ class ServiceXHandler {
         void getStatus(std::string request_id);
         // std::vector<std::string> readYaml();
         // void readYaml();
-        void GetMinIOData(std::string bucketName, std::string pathkey);
+        std::vector<std::string> GetMinIOData(std::string bucketName, std::string pathkey);
 
         void DoMD5(std::string filename);
         bool GetMd5(std::string &str_md5, const char  * const buffer, size_t buffer_size);

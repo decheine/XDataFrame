@@ -114,9 +114,13 @@ int main(int argc, char* argv[]){
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
     // Only call this if user specifically wants to refresh the data or if there are no data files. 
     // For now, do it every time. 
-    xHandler.GetMinIOData(testRequest.request_id, pathkey);
+    std::vector<std::string> filenameList;
+    filenameList = xHandler.GetMinIOData(testRequest.request_id, pathkey);
 
 
+    // RDataFrame Part
+
+    
 
 
     std::cout << "Finished\n";

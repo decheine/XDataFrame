@@ -291,15 +291,15 @@ Json::Value ServiceXHandler::JsonFromStr(std::string jsonStr){
  * @brief Gets MinIO bucket data and prints it. For now, uses a hard-coded bucket name and 
  * request_id
  * 
+ * @return A list of downloaded file names
  */
 
-void ServiceXHandler::GetMinIOData(std::string bucketName, std::string pathkey){
+std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, std::string pathkey){
+    std::vector<std::string> filenames;
+
     std::string BucketName = bucketName;
-
-
     Aws::SDKOptions m_options;
     Aws::S3::S3Client* m_client = { NULL };
-
 
     Aws::InitAPI(m_options);
     Aws::Client::ClientConfiguration cfg;
@@ -357,11 +357,12 @@ void ServiceXHandler::GetMinIOData(std::string bucketName, std::string pathkey){
                 m_client->GetObject(object_request);
 
             if (get_object_outcome.IsSuccess()) {
-
+                std::string filepath = pathkey + objectKey;
                 Aws::OFStream local_file;
-                local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
+                local_file.open(filepath.c_str(), std::ios::out | std::ios::binary);
                 local_file << get_object_outcome.GetResult().GetBody().rdbuf();
                 local_file.close();
+                filenames.push_back(filepath);
                 std::cout << "Done!" << std::endl;
 
             }  else {
@@ -370,10 +371,13 @@ void ServiceXHandler::GetMinIOData(std::string bucketName, std::string pathkey){
                 err.GetExceptionName() << ": " << err.GetMessage() << std::endl;
             }
         }
+        return filenames;
     } else {
         std::cout << "Error: ListObjects: " <<
             outcome.GetError().GetMessage() << std::endl;
     }
+    std::cerr << "Warning, end of method reached, should not have reached here.\n";
+    return filenames;
 }
 
 
