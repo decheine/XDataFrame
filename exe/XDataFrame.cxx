@@ -110,12 +110,14 @@ int main(int argc, char* argv[]){
     std::string hashVal;
     hashVal = hasher.GetHash("/submit_request.json");
     std::cout << "request_id: " << testRequest.request_id << "\n";
+    std::string pathkey;
+    pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
     // Only call this if user specifically wants to refresh the data or if there are no data files. 
     // For now, do it every time. 
-    xHandler.GetMinIOData(testRequest.request_id);
+    xHandler.GetMinIOData(testRequest.request_id, pathkey);
 
-    //Run and finish with ROOT prompt
-    // app.Run();
+
+
 
     std::cout << "Finished\n";
     return 0;

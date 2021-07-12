@@ -16,6 +16,8 @@ public:
     RDFHandler();
     void fill_tree(const char *treeName, const char *fileName);
     int AddFile(std::string filename);
+    int AddFiles(std::vector<std::string> filenames);
+
     int CreateRDataFrame();
 
 

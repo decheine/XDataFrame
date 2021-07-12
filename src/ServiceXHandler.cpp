@@ -293,7 +293,7 @@ Json::Value ServiceXHandler::JsonFromStr(std::string jsonStr){
  * 
  */
 
-void ServiceXHandler::GetMinIOData(std::string bucketName){
+void ServiceXHandler::GetMinIOData(std::string bucketName, std::string pathkey){
     std::string BucketName = bucketName;
 
 
@@ -331,12 +331,15 @@ void ServiceXHandler::GetMinIOData(std::string bucketName){
             objectKeys.push_back(object.GetKey());
         }
 
+        // Path key
+        std::cout << "Downloading to: " << pathkey << "\n";
+
+
         // Downloads files with object keys
 
         // This loop is the costly one, where making the RDataFrame dynamically will have to be done
         // The objects are donwloaded in order during this loop.
         // After each item is downloaded, add it to the RDataFrame. 
-
         for (std::string objectKey : objectKeys){
         
             // Get object
@@ -356,8 +359,9 @@ void ServiceXHandler::GetMinIOData(std::string bucketName){
             if (get_object_outcome.IsSuccess()) {
 
                 Aws::OFStream local_file;
-                // local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
+                local_file.open(objectKey.c_str(), std::ios::out | std::ios::binary);
                 local_file << get_object_outcome.GetResult().GetBody().rdbuf();
+                local_file.close();
                 std::cout << "Done!" << std::endl;
 
             }  else {

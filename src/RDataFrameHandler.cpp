@@ -53,3 +53,18 @@ int RDFHandler::AddFile(std::string filename){
     // Check if exists first
     return 0;
 }
+
+/**
+ * @brief adds multiple files
+ * 
+ */
+int RDFHandler::AddFiles(std::vector<std::string> filenames){
+    for (auto iter = filenames.begin(); iter != filenames.end(); ++iter)
+    {  
+        // If iter is a valid file:
+        std::cout << "adding " << iter->c_str();
+        AddFile(iter->c_str());
+        // attack->makeDamage();
+    }
+    return 0;
+}
