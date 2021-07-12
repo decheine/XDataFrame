@@ -6,27 +6,19 @@
 
 #include <ROOT/RDataFrame.hxx>
 
+class RDFHandler {
 
-class Simple {
-    double x;
-
-public:
-    Simple() : x(2.5) {}
-    double GetX() const;
-
-    ClassDef(Simple,1)
-};
-
-class Handler {
-    double y;
-    ROOT::RDataFrame *RDataFramePointer;
+private:
+    std::vector<std::string> filenames;
+    ROOT::RDataFrame RDataFrameObject;
 
 public:
-    Handler();
+    RDFHandler();
     void fill_tree(const char *treeName, const char *fileName);
-    ROOT::RDataFrame CreateRDataFrame();
+    int AddFile(std::string filename);
+    int CreateRDataFrame();
 
 
-    ClassDef(Handler,1);
+    ClassDef(RDFHandler,1);
 
 };
