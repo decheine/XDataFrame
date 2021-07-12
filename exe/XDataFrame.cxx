@@ -10,6 +10,7 @@
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TBrowser.h"
+#include "ROOT/RDataFrame.hxx"
 
 // ryml
 #include <ryml.hpp>
@@ -35,12 +36,12 @@
 
 // Project
 #include "ServiceXHandler.h"
+#include "RDataFrameHandler.h"
 #include "User.h"
 #include "Request.h"
 #include "Hasher.h"
 #include "MCache.h"
 
-using namespace std;
 
 // size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
 //     data->append((char*)ptr, size * nmemb);
@@ -120,8 +121,11 @@ int main(int argc, char* argv[]){
 
     // RDataFrame Part
 
-    
+    RDataFrameHandler rdfHandler;
+    rdfHandler.AddFiles(filenameList);
+    rdfHandler.CreateRDataFrame();
 
+    rdfHandler.DisplayRDF();
 
     std::cout << "Finished\n";
     return 0;

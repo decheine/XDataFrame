@@ -1,26 +1,26 @@
-#pragma once
+#ifndef RDATAFRAMEHANDLER_H
+#define RDATAFRAMEHANDLER_H
 
 #include <TLorentzVector.h>
 
 // ROOT includes
 
-#include <ROOT/RDataFrame.hxx>
+#include "ROOT/RDataFrame.hxx"
 
-class RDFHandler {
+class RDataFrameHandler {
+    public:
+        std::vector<std::string> filenames;
 
-private:
-    std::vector<std::string> filenames;
-    ROOT::RDataFrame RDataFrameObject;
+        void fill_tree(const char *treeName, const char *fileName);
+        int AddFile(std::string filename);
+        int AddFiles(std::vector<std::string> filenames);
+        void DisplayRDF();
+        int CreateRDataFrame();
 
-public:
-    RDFHandler();
-    void fill_tree(const char *treeName, const char *fileName);
-    int AddFile(std::string filename);
-    int AddFiles(std::vector<std::string> filenames);
-
-    int CreateRDataFrame();
-
-
-    ClassDef(RDFHandler,1);
+        RDataFrameHandler();
+    private:
+        ROOT::RDataFrame* RDataFrameObject;
 
 };
+
+#endif

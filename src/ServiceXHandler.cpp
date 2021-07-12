@@ -316,8 +316,8 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
     auto outcome = m_client->ListObjects(objRequest);
 
     if (outcome.IsSuccess()) {
-        std::cout << "Objects in bucket '" << BucketName << "':" 
-            << std::endl << std::endl;
+        // std::cout << "Objects in bucket '" << BucketName << "':" 
+            // << std::endl << std::endl;
 
         Aws::Vector<Aws::S3::Model::Object> objects =
             outcome.GetResult().GetContents();
