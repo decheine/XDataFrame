@@ -21,7 +21,8 @@ class Hasher {
             boost::algorithm::hex(charDigest, charDigest + sizeof(md5::digest_type), std::back_inserter(result));
             return result;
         }
-        std::string GetHash(std::string filename);
+        std::string GetHash(std::string string);
+        std::string GetHashOf(std::string filename);
     private:
         // Hashmap will map hashed submit.json's to their request_id's
         std::map<std::string, std::string> hashTable;

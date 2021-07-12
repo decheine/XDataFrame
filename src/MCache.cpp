@@ -25,10 +25,21 @@ MCache::MCache() {
 
 }
 
+/**
+ * @brief stub
+ * 
+ */
 void MCache::LoadCache(){
     return;
 }
 
+/**
+ * @brief checks if a hash entry exists
+ * 
+ * @param hash 
+ * @return true 
+ * @return false 
+ */
 bool MCache::EntryExists(std::string hash){
     fs::path entryPath = fs::path(GetCacheDir() + "/" + hash + "/");
     bool exists = fs::is_directory(entryPath);

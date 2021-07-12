@@ -108,7 +108,7 @@ int main(int argc, char* argv[]){
 
     Hasher hasher;
     std::string hashVal;
-    hashVal = hasher.GetHash("/submit_request.json");
+    hashVal = hasher.GetHashOf("/submit_request.json");
     std::cout << "request_id: " << testRequest.request_id << "\n";
     std::string pathkey;
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
