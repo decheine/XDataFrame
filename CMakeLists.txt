@@ -110,7 +110,7 @@ message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 # add_library(ServiceXHandler ServiceXHandler.cpp ServiceXHandler.h)
 add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
 
-add_libray(XDataFrameLib SHARED
+add_library(XDataFrameLib SHARED
         src/Hasher.cpp
         src/MCache.cpp
         src/MathLibrary.cpp
