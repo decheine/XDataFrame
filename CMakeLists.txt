@@ -91,8 +91,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cp
 enable_testing()
 add_subdirectory(tests)
 
-file(GLOB SOURCES src/*.cpp)
-
 # Executable
 # add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
@@ -106,9 +104,22 @@ message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 
 # set(XDATAFRAME_FILES src/ServiceXHandler.cpp)
 
+# LIBRARY
+
 # add_library(mylibs ${XDATAFRAME_FILES})
 # add_library(ServiceXHandler ServiceXHandler.cpp ServiceXHandler.h)
 add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
+
+add_libray(XDataFrameLib SHARED
+        src/Hasher.cpp
+        src/MCache.cpp
+        src/MathLibrary.cpp
+        src/RDataFrameHandler.cpp
+        src/Request.cpp
+        src/ServiceXHandler.cpp
+        src/User.cpp
+)
+
 
 file(GLOB SOURCES src/*.cpp)
 add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
@@ -143,6 +154,9 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
                                         
                                         )
 
+
+# add_subdirectory(demo)
+add_executable(Demo demo/demo.cxx)
 
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
