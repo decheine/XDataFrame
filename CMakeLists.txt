@@ -110,15 +110,15 @@ message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 # add_library(ServiceXHandler ServiceXHandler.cpp ServiceXHandler.h)
 add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
 
-add_library(XDataFrameLib SHARED
-        src/Hasher.cpp
-        src/MCache.cpp
-        src/MathLibrary.cpp
-        src/RDataFrameHandler.cpp
-        src/Request.cpp
-        src/ServiceXHandler.cpp
-        src/User.cpp
-)
+# add_library(XDataFrameLib SHARED
+#         src/Hasher.cpp
+#         src/MCache.cpp
+#         src/MathLibrary.cpp
+#         src/RDataFrameHandler.cpp
+#         src/Request.cpp
+#         src/ServiceXHandler.cpp
+#         src/User.cpp
+# )
 
 
 file(GLOB SOURCES src/*.cpp)
@@ -191,6 +191,11 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 # if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 #     include(CTest)
 # endif()
+
+# install(TARGETS XDataFrameLib
+#         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+# )
 
 install(TARGETS XDataFrame
         CONFIGURATIONS Debug

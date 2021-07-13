@@ -42,13 +42,6 @@
 #include "Hasher.h"
 #include "MCache.h"
 
-
-// size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
-//     data->append((char*)ptr, size * nmemb);
-//     return size * nmemb;
-// }
-
-
 // Helper Functions
 
 /**
@@ -73,8 +66,6 @@ std::string ReadJsonFromFile(std::string filename){
 }
 
 
-
-
 int main(int argc, char* argv[]){
     if(argc > 1){
         if (strcmp(argv[1], "--version") == 0) {
@@ -89,10 +80,7 @@ int main(int argc, char* argv[]){
 
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
-    // User theUser();
     std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
-
-    // std::string jsonstringresponse = xHandler.FetchData("345974d4-d2ec-49bb-bef2-6683b7e461d5");
 
     Request testRequest;
 
@@ -124,7 +112,8 @@ int main(int argc, char* argv[]){
     RDataFrameHandler rdfHandler;
     rdfHandler.AddFiles(filenameList);
     ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
-
+    auto d1 = myDataFrame.Display();
+    d1->Print();
     // rdfHandler.DisplayRDF();
 
     std::cout << "Finished\n";

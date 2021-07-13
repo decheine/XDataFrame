@@ -26,6 +26,8 @@
 
 #include <User.h>
 
+// DEPRECATED ?
+
 /**
  * @brief Creates a folder for a new user if it doesn't exist already
  * 

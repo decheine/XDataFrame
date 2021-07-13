@@ -90,12 +90,6 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
     std::ifstream myfile (fullDir);
     if (myfile.is_open())
     {
-        // std::string fields;
-        // while ( getline (myfile,line) ){
-        //     std::cout << line << '\n';
-        //     fields << line << std::endl;
-        // }
-
         std::string content;
         content.assign( (std::istreambuf_iterator<char>(myfile) ),
                 (std::istreambuf_iterator<char>()    ) );   
@@ -127,31 +121,13 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 
         // TODO: Needs to search and verify that the nodes are there before they are referenced.
 
-        // show_val(tree["sub"].child(0)[0]);  // "foo: 1"
-        // show_val(subFirst[0]);
-        // show_keyval(api_endpointNode[0]);
-        // std::cout << "Number of children of endpoint: " << api_endpointNode.num_children() << std::endl;
-
-        // show_val(typeNode[0]);
-        // show_val(tokenNode[0]);
-
         show_keyval(endpointNode);
-        // show_keyval(tokenNode);
-        // show_keyval(typeNode);
         
         std::string endpoint;
         std::string token;
         std::string mytype;
 
         c4::from_chars(endpointNode.val(), &endpoint);
-        // c4::from_chars(tokenNode.val(), &token);
-        // c4::from_chars(typeNode.val(), &mytype);
-
-        // std::cout << "Endpoint: " << endpoint << std::endl;
-        // std::cout << "Token: " << token << std::endl;
-        // std::cout << "Type: " << mytype << std::endl;
-
-
 
         myfile.close();
 
@@ -170,6 +146,12 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
     return properties;
 }
 
+/**
+ * @brief Deprecated. Fetched data from a hardcoded servicex endpoint.
+ * 
+ * @param request_id 
+ * @return std::string 
+ */
 std::string ServiceXHandler::FetchData(std::string request_id){
     // CURL *curl = curl_easy_init();
     // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
@@ -288,8 +270,8 @@ Json::Value ServiceXHandler::JsonFromStr(std::string jsonStr){
 
 
 /**
- * @brief Gets MinIO bucket data and prints it. For now, uses a hard-coded bucket name and 
- * request_id
+ * @brief Gets MinIO bucket data and prints it. Takes in a bucket name (request_id) and a pathkey
+ * that specifies where the program will write the downloaded files to disk.
  * 
  * @return A list of downloaded file names
  */
@@ -382,25 +364,8 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
     return filenames;
 }
 
-
-
-// bool ServiceXHandler::GetMd5(std::string &str_md5, const char  * const buffer, size_t buffer_size){
-//     if (buffer == nullptr){
-//         return false;
-//     }
-//     boost::uuids::detail::md5 boost_md5;
-//     boost_md5.process_bytes(buffer, buffer_size);
-//     boost::uuids::detail::md5::digest_type digest;
-//     boost_md5.get_digest(digest);
-//     const auto char_digest = reinterpret_cast<const char*>(&digest);
-//     str_md5.clear();
-//     boost::algorithm::hex(char_digest,char_digest+sizeof(boost::uuids::detail::md5::digest_type), std::back_inserter(str_md5));
-//     return true;
-// }
-
-
 /**
- * @brief 
+ * @brief Stub
  * 
  */
 void HashSubmitJson(){}

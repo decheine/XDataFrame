@@ -13,20 +13,6 @@ Much of this (for now) takes from theh RDataFrame tutorial
 
 #include "RDataFrameHandler.h"
 
-void RDataFrameHandler::fill_tree(const char *treeName, const char *fileName){
-    ROOT::RDataFrame d(10);
-    int i(0);
-    d.Define("b1", [&i]() { return (double)i; })
-        .Define("b2",
-                [&i]() {
-                    auto j = i * i;
-                    ++i;
-                    return j;
-                })
-        .Snapshot(treeName, fileName);
-    return;
-}
-
 /**
  * @brief Creates the RDataFrame objecct with the file list in the RDataFrameHandler
  * Returns 0 if successful
@@ -34,9 +20,8 @@ void RDataFrameHandler::fill_tree(const char *treeName, const char *fileName){
  * @return ROOT::RDataFrame
  */
 ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
-    // auto fileName = "df001_introduction.root";
+    // TODO: read the files fetched and get the tree name they have
     auto treeName = "treeme";
-    // fill_tree(treeName, fileName);
 
     // We read the tree from the file and create a RDataFrame, a class that
     // allows us to interact with the data contained in the tree.
@@ -47,6 +32,8 @@ ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
     ROOT::RDataFrame df(treeName, filenames);
 
     RDataFrameObject = &df;
+
+    // Testing for printing out the RDF.
 
     std::cout << "Displaying\n";
 
@@ -90,9 +77,7 @@ int RDataFrameHandler::AddFiles(std::vector<std::string> filenames){
     return 0;
 }
 
-RDataFrameHandler::RDataFrameHandler(){
-    
-}
+RDataFrameHandler::RDataFrameHandler(){}
 
 
 void RDataFrameHandler::DisplayRDF(){

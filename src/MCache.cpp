@@ -50,24 +50,11 @@ bool MCache::EntryExists(std::string hash){
     }
 }
 
-
 /**
- * @brief Save request_id to the hash folder.
+ * @brief Sets the cache directory to the absolute file directory "directory"
  * 
- * @param hash 
- * @param request_id 
- * @return true 
- * @return false 
+ * @param directory 
  */
-bool MCache::SaveRequestId(std::string hash, std::string request_id){
-    const char* homeDir = getenv("HOME");
-
-    // Check if hash exists.
-    // If it doesn't, create it
-
-    return 0;
-}
-
 void MCache::SetCacheDir(std::string directory){
     cacheDir = directory;
 }
@@ -76,6 +63,12 @@ std::string MCache::GetCacheDir(){
     return cacheDir;
 }
 
+/**
+ * @brief Gets the request_id of a given hash entry
+ * 
+ * @param hash 
+ * @return std::string 
+ */
 std::string MCache::ReadRequestId(std::string hash){
     fs::path hashFolderPath = fs::path(cacheDir + "/" + hash);
     if( fs::is_directory(hashFolderPath)) {
@@ -103,6 +96,15 @@ std::string MCache::ReadRequestId(std::string hash){
     return "";
 }
 
+/**
+ * @brief Writes a given request_id into the cache entry corresponding to a given hash. 
+ * Stores this in a file in the hash folder called "request_id.txt"
+ * 
+ * @param hash 
+ * @param requestId 
+ * @return true 
+ * @return false 
+ */
 bool MCache::WriteRequestID(std::string hash, std::string requestId){
     fs::path cachePath = fs::path(cacheDir);
     if(fs::is_directory(cachePath)){
@@ -133,6 +135,13 @@ bool MCache::WriteRequestID(std::string hash, std::string requestId){
     return 0;
 }
 
+/**
+ * @brief Creates an entry in the cache from a given hash
+ * 
+ * @param hash 
+ * @return true 
+ * @return false 
+ */
 bool MCache::CreateCacheEntry(std::string hash){
     // std::string tmpDir = fs::temp_directory_path();
     fs::path home = fs::path(std::getenv("HOME"));

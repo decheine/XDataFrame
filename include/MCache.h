@@ -12,7 +12,6 @@ class MCache {
 
     public:
         void LoadCache();
-        bool SaveRequestId(std::string hash, std::string request_id);
         bool CreateCacheEntry(std::string hash);
         bool WriteRequestID(std::string hash, std::string requestId);
         std::string ReadRequestId(std::string hash);
