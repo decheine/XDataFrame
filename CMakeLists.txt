@@ -138,8 +138,7 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
                                         ryml::ryml
                                         CURL::libcurl
                                         OpenSSL::Crypto
-                                        ${AWSSDK_LINK_LIBRARIES}
-                                        CURL::libcurl
+                                        # ${AWSSDK_LINK_LIBRARIES}
                                         Math
                                         ${Boost_LIBRARIES}
 )
@@ -150,7 +149,6 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
                                         ${CURL_LINK_LIBRARIES}
-                                        CURL::libcurl
                                         
                                         )
 
