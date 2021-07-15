@@ -1,8 +1,6 @@
 #ifndef RDATAFRAMEHANDLER_H
 #define RDATAFRAMEHANDLER_H
 
-#include <TLorentzVector.h>
-
 // ROOT includes
 
 #include <ROOT/RDataFrame.hxx>

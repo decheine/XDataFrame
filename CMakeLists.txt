@@ -159,17 +159,14 @@ add_executable(Demo demo/demo.cxx)
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 
+message("project binary dir " "")
 target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )   
 target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
-
-
 
 # Setting the application directories, like bin and lib
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-
 
 # Add compile flags
 SET(GCC_COVERAGE_COMPILE_FLAGS "-DBOOST_NO_CXX11_SCOPED_ENUMS")
@@ -189,13 +186,4 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 # if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 #     include(CTest)
 # endif()
-
-# install(TARGETS XDataFrameLib
-#         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-# )
-
-install(TARGETS XDataFrame
-        CONFIGURATIONS Debug
-        RUNTIME DESTINATION ${CMAKE_BINARY_DIR}/../install/+bin)
 
