@@ -4,6 +4,7 @@
 // ROOT includes
 
 #include <ROOT/RDataFrame.hxx>
+
 #include <ROOT/RDF/RDisplay.hxx>
 
 

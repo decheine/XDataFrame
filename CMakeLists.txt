@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(XDataFrame VERSION 1.0)
+project(XDataFrameProject VERSION 1.0)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -17,8 +16,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # root-config --libs => -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps 
 #                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
 #                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
-
-# set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems vcpkg.cmake)
 
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
 
@@ -61,38 +58,15 @@ find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework )
 # )
 
 
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include /home/nick/local/yaml-cpp/include 
         ${CURL_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIR}
         )
 
-# Generate dictionaries for ROOT
-# ROOT_GENERATE_DICTIONARY(G__XDataFrame XDataFrame.h LINKDEF XDataFrameLinkDef.h)
-
-
-
-# Adding project subdirectories for different functional parts/modules
-# RDataFrame
-# add_subdirectory(RDataFrameHandler)
-
-# ServiceX
-# add_subdirectory(ServiceXHandler)
-
-# Using Rapid YAML project for yaml parsing
-
-# Adding local libraries ?
-# add_library(RDataFrameHandler G__RDataFrameHandler)
 
 # Testing
-
-
-# add_subdirectory(src)
 enable_testing()
 add_subdirectory(tests)
-
-# Executable
-# add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
 message("-- Curl libraries " ${CURL_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
@@ -102,13 +76,13 @@ message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 
 # target_link_directories(XDataFrame PUBLIC /usr/lib/x86_64-linux-gnu/curl BEFORE)
 
-# set(XDATAFRAME_FILES src/ServiceXHandler.cpp)
 
-# LIBRARY
+root_generate_dictionary(G__XDataFrame include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
 
-# add_library(mylibs ${XDATAFRAME_FILES})
-# add_library(ServiceXHandler ServiceXHandler.cpp ServiceXHandler.h)
 add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
+
+add_library(XDataFrame SHARED )
+
 
 # add_library(XDataFrameLib SHARED
 #         src/Hasher.cpp
@@ -118,7 +92,44 @@ add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
 #         src/Request.cpp
 #         src/ServiceXHandler.cpp
 #         src/User.cpp
+#         include/Hasher.h
+#         include/MCache.h
+#         include/MathLibrary.h
+#         include/RDataFrameHandler.h
+#         include/Request.h
+#         include/ServiceXHandler.h
+#         include/User.h
+#         include/XDataFrame.h
 # )
+
+
+# target_link_libraries(XDataFrameLib PUBLIC 
+#                                 ryml::ryml
+#                                 ROOT::Core
+#                                 ROOT::RIO
+#                                 ROOT::Net
+#                                 ROOT::Hist 
+#                                 ROOT::Tree 
+#                                 ROOT::Thread 
+#                                 ROOT::MultiProc
+#                                 ROOT::ROOTDataFrame
+#                                 ROOT::Gpad
+#                                 ROOT::Rint
+#                                 CURL::libcurl
+#                                 OpenSSL::Crypto
+#                                 Math
+#                                 ${Boost_LIBRARIES}
+
+# )
+
+# target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
+#                                         aws-cpp-sdk-dynamodb
+#                                         aws-cpp-sdk-s3
+#                                         aws-cpp-sdk-core
+#                                         ${CURL_LINK_LIBRARIES}
+# )
+
+# Executable part
 
 
 file(GLOB SOURCES src/*.cpp)
@@ -144,7 +155,6 @@ target_link_libraries(XDataFrame PUBLIC ROOT::Core
 )
 
 target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
-                                        # ${ARROW_LIBS}
                                         aws-cpp-sdk-dynamodb
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
@@ -159,7 +169,6 @@ add_executable(Demo demo/demo.cxx)
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 
-message("project binary dir " "")
 target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )   
 target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
 

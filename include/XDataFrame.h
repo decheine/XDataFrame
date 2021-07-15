@@ -1,6 +1,12 @@
+#ifndef XDATAFRAME_H
+#define XDATAFRAME_H
 
+// Standard includes
+#include <stdlib.h>
+#include <iostream>
 
 #include <ROOT/RDataFrame.hxx>
+#include <ROOT/RDF/RDisplay.hxx>
 
 
 /**
@@ -12,10 +18,14 @@
  * 
  */
 class XDataFrame {
-    public:
-        int y;
-
     private:
         int x;
+    public:
+        int y;
+        ROOT::RDataFrame GetRDataFrame(std::string input);
+
+    ClassDef(XDataFrame, 1)
 
 };
+
+#endif
