@@ -28,7 +28,7 @@ find_package(jsoncpp CONFIG REQUIRED)
 
 # AWS SDK
 # set(CMAKE_PREFIX_PATH ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
-set(LD_LIBRARY_PATH /usr/local/lib)
+# set(LD_LIBRARY_PATH /usr/local/lib)
 set(AWSSDK_DIR ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/AWSSDK)
 set(aws-cpp-sdk-core_DIR ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-core)
 set(aws-cpp-sdk-s3_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-s3)
@@ -73,15 +73,46 @@ message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
 message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 
+# Test, basic lib
+add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
+
+
 
 # target_link_directories(XDataFrame PUBLIC /usr/lib/x86_64-linux-gnu/curl BEFORE)
 
+# Online there this is the jank solution to the "relocation R_X86_64_PC32 ... shared object; recompile with -fPIC"
+# Doesn't work here, causes more issues.
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fPIC")
 
-root_generate_dictionary(G__XDataFrame include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
+# root_generate_dictionary(G__XDataFrameLib include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
 
-add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
+# add_library(XDataFrameLib SHARED src/XDataFrame.cxx include/XDataFrame.h G__XDataFrame.cxx)
+# target_include_directories(XDataFrameLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+# target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
+#                                         ROOT::RIO
+#                                         ROOT::Net
+#                                         ROOT::Hist 
+#                                         ROOT::Tree 
+#                                         ROOT::Thread 
+#                                         ROOT::MultiProc
+#                                         ROOT::ROOTDataFrame
+#                                         ROOT::Gpad
+#                                         ROOT::Rint
+#                                         ryml::ryml
+#                                         CURL::libcurl
+#                                         OpenSSL::Crypto
+#                                         # ${AWSSDK_LINK_LIBRARIES}
+#                                         Math
+#                                         ${Boost_LIBRARIES}
+# )
 
-add_library(XDataFrame SHARED )
+# target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
+#                                         aws-cpp-sdk-dynamodb
+#                                         aws-cpp-sdk-s3
+#                                         aws-cpp-sdk-core
+#                                         ${CURL_LINK_LIBRARIES}
+                                        
+#                                         )
 
 
 # add_library(XDataFrameLib SHARED

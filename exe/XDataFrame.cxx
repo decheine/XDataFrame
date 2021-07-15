@@ -37,7 +37,6 @@
 // Project
 #include "ServiceXHandler.h"
 #include "RDataFrameHandler.h"
-#include "User.h"
 #include "Request.h"
 #include "Hasher.h"
 #include "MCache.h"
@@ -91,9 +90,6 @@ int main(int argc, char* argv[]){
     // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
-
-
-    User myUser;
 
     Hasher hasher;
     std::string hashVal;

@@ -19,12 +19,15 @@
  */
 class XDataFrame {
     private:
-        int x;
+        Double_t x;
     public:
-        int y;
+        // Constructor and intitializer. After the colon, variables are initialized with the values listed
+        XDataFrame() : x(2.5) {}
         ROOT::RDataFrame GetRDataFrame(std::string input);
+        Double_t GetX() const;
 
-    ClassDef(XDataFrame, 1)
+
+        ClassDef(XDataFrame, 1)
 
 };
 
