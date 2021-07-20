@@ -118,8 +118,6 @@ message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
 message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 
-# Test, basic lib
-add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
 
 ###########
 
@@ -169,51 +167,11 @@ target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
 
 
 #############
-
 # Executable part
 
-# Should probably change this from GLOBs
-file(GLOB SOURCES src/*.cpp)
-add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
-
-# add_dependencies(XDataFrame aws-sdk-cpp)
-
-# Linking Libraries
-target_link_libraries(XDataFrame PUBLIC ROOT::Core
-                                        ROOT::RIO
-                                        ROOT::Net
-                                        ROOT::Hist 
-                                        ROOT::Tree 
-                                        ROOT::Thread 
-                                        ROOT::MultiProc
-                                        ROOT::ROOTDataFrame
-                                        ROOT::Gpad
-                                        ROOT::Rint
-                                        ryml::ryml
-                                        CURL::libcurl
-                                        # OpenSSL::Crypto
-                                        # ${AWSSDK_LINK_LIBRARIES}
-                                        Math
-                                        ${Boost_LIBRARIES}
-)
-
-target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
-                                        aws-cpp-sdk-dynamodb
-                                        aws-cpp-sdk-s3
-                                        aws-cpp-sdk-core
-                                        ${CURL_LINK_LIBRARIES}                                        
-)
-
-
-# add_subdirectory(demo)
 add_executable(Demo demo/demo.cxx)
 
 target_link_libraries(Demo PUBLIC XDataFrameLib)
-
-# configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
-
-target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )   
-target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
 
 # Setting the application directories, like bin and lib
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
