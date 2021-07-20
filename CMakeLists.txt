@@ -21,12 +21,16 @@ find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread Multi
 
 # instruct cmake to search for ryml
 set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
-find_package(ryml REQUIRED)
+find_package(ryml CONFIG REQUIRED)
 
 set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
 find_package(jsoncpp CONFIG REQUIRED)
 
-# find_package(OpenSSL REQUIRED)
+find_package(OpenSSL REQUIRED)
+
+message(" - ryml include " ${ryml_LIBRARIES})
+message(" - CURL include " ${CURL_INCLUDE_DIRS})
+
 
 # Amazon AWS SDK External Project
 # include(ExternalProject)
@@ -71,6 +75,7 @@ find_package(jsoncpp CONFIG REQUIRED)
 # AWS SDK
 # set(CMAKE_PREFIX_PATH ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
 # set(LD_LIBRARY_PATH /usr/local/lib)
+
 set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
 # set(aws-cpp-sdk-core_DIR ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-core)
 # set(aws-cpp-sdk-s3_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-s3)
@@ -80,18 +85,23 @@ set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
 # set(aws-checksums_DIR ~/IRIS-HEP/vcpkg/packages/aws-checksums_x64-linux/share/aws-checksums/)
 # set(aws-c-common_DIR ~/IRIS-HEP/vcpkg/packages/aws-c-common_x64-linux/share/aws-c-common/)
 
+message("- Finding AWSSDK")
 find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
+message("- Done finding AWSSDK ")
 
 # set(CURL_DIR /usr/bin/curl)
-find_package( CURL REQUIRED)
+find_package( CURL REQUIRED )
 
 
 # BOOST
 find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework )
 
+# Include directories for all the packages/dependencies
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include 
         /home/nick/local/yaml-cpp/include 
-        ${CURL_INCLUDE_DIRS}
+        /home/nick/IRIS-HEP/ryaml/install/include
+        /home/nick/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/include
+        # ${CURL_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIR}
         )
 
@@ -108,39 +118,39 @@ message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 # Test, basic lib
 add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
 
-############
+###########
 
-# root_generate_dictionary(G__XDataFrameLib include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
+root_generate_dictionary(G__XDataFrameLib include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
 
-# add_library(XDataFrameLib SHARED src/XDataFrame.cxx include/XDataFrame.h G__XDataFrame.cxx)
-# target_include_directories(XDataFrameLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-# target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
-#                                         ROOT::RIO
-#                                         ROOT::Net
-#                                         ROOT::Hist 
-#                                         ROOT::Tree 
-#                                         ROOT::Thread 
-#                                         ROOT::MultiProc
-#                                         ROOT::ROOTDataFrame
-#                                         ROOT::Gpad
-#                                         ROOT::Rint
-#                                         ryml::ryml
-#                                         CURL::libcurl
-#                                         OpenSSL::Crypto
-#                                         # ${AWSSDK_LINK_LIBRARIES}
-#                                         Math
-#                                         ${Boost_LIBRARIES}
-# )
+add_library(XDataFrameLib SHARED src/XDataFrame.cpp include/XDataFrame.h G__XDataFrameLib.cxx)
+target_include_directories(XDataFrameLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"/include)
+target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
+                                        ROOT::RIO
+                                        ROOT::Net
+                                        ROOT::Hist 
+                                        ROOT::Tree 
+                                        ROOT::Thread 
+                                        ROOT::MultiProc
+                                        ROOT::ROOTDataFrame
+                                        ROOT::Gpad
+                                        ROOT::Rint
+                                        ryml::ryml
+                                        CURL::libcurl
+                                        OpenSSL::Crypto
+                                        # ${AWSSDK_LINK_LIBRARIES}
+                                        Math
+                                        ${Boost_LIBRARIES}
+)
 
-# target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
-#                                         aws-cpp-sdk-dynamodb
-#                                         aws-cpp-sdk-s3
-#                                         aws-cpp-sdk-core
-#                                         ${CURL_LINK_LIBRARIES}
+target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
+                                        aws-cpp-sdk-dynamodb
+                                        aws-cpp-sdk-s3
+                                        aws-cpp-sdk-core
+                                        ${CURL_LINK_LIBRARIES}
                                         
-# )
+)
 
-##############
+#############
 
 # Executable part
 
@@ -174,14 +184,14 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-dynamodb
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
-                                        ${CURL_LINK_LIBRARIES}
-                                        
-                                        )
+                                        ${CURL_LINK_LIBRARIES}                                        
+)
 
 
 # add_subdirectory(demo)
 add_executable(Demo demo/demo.cxx)
 
+target_link_libraries(Demo XDataFrameLib)
 
 configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 
@@ -199,8 +209,6 @@ SET(GCC_COVERAGE_COMPILE_FLAGS "-DBOOST_NO_CXX11_SCOPED_ENUMS")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 # Installation
-
-
 
 
 # add_test(testname Exename arg1 arg2 ...)

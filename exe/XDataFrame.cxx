@@ -107,8 +107,8 @@ int main(int argc, char* argv[]){
 
     RDataFrameHandler rdfHandler;
     rdfHandler.AddFiles(filenameList);
-    ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
-    auto d1 = myDataFrame.Display();
+    ROOT::RDataFrame* myDataFrame = rdfHandler.CreateRDataFrame();
+    auto d1 = myDataFrame->Display();
     d1->Print();
     // rdfHandler.DisplayRDF();
 

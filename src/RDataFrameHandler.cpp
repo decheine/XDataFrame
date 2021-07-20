@@ -19,7 +19,7 @@ Much of this (for now) takes from theh RDataFrame tutorial
  * Returns 1 if not successful
  * @return ROOT::RDataFrame
  */
-ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
+ROOT::RDataFrame* RDataFrameHandler::CreateRDataFrame(){
     // TODO: read the files fetched and get the tree name they have
     auto treeName = "treeme";
 
@@ -46,7 +46,7 @@ ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
     d2->Print();
 
 
-    return df;
+    return RDataFrameObject;
 }
 
 /**

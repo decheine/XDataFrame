@@ -17,7 +17,7 @@ class RDataFrameHandler {
         int AddFile(std::string filename);
         int AddFiles(std::vector<std::string> filenames);
         void DisplayRDF();
-        ROOT::RDataFrame CreateRDataFrame();
+        ROOT::RDataFrame* CreateRDataFrame();
 
         RDataFrameHandler();
     private:
