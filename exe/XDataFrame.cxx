@@ -85,15 +85,28 @@ int main(int argc, char* argv[]){
 
     MCache cache;
 
+    std::string submitRequestJson = "/submit_request.json";
 
-    testRequest.SendRequest(values, "/submit_request.json", &cache);
+    const char* homeDir = getenv("HOME");
+    // std::cout << "homedir: " << homeDir << "\n"; 
+    const std::string fullDir = homeDir + submitRequestJson ;
+
+    // Read json file
+    std::ifstream myFile(fullDir);
+    std::ostringstream tmp;
+    tmp << myFile.rdbuf();
+    std::string s = tmp.str();
+    std::cout << s << std::endl;
+    const char* jsonObj = s.c_str();
+
+    testRequest.SendRequest(values, s, &cache);
     // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
 
     Hasher hasher;
     std::string hashVal;
-    hashVal = hasher.GetHashOf("/submit_request.json");
+    hashVal = hasher.GetHashOf(s);
     std::cout << "request_id: " << testRequest.request_id << "\n";
     std::string pathkey;
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";

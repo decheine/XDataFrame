@@ -15,15 +15,15 @@ ROOT::RDataFrame* XDataFrame(std::string inputString){
 
     MCache cache;
 
-
-    testRequest.SendRequest(values, "/submit_request.json", &cache);
+    //Change this to 
+    testRequest.SendRequest(values, inputString, &cache);
     // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
 
     Hasher hasher;
     std::string hashVal;
-    hashVal = hasher.GetHashOf("/submit_request.json");
+    hashVal = hasher.GetHashOf(inputString);
     std::cout << "request_id: " << testRequest.request_id << "\n";
     std::string pathkey;
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";

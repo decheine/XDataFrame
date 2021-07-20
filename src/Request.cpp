@@ -76,21 +76,19 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
 
     const char* homeDir = getenv("HOME");
     // std::cout << "homedir: " << homeDir << "\n"; 
-    const std::string fullDir = homeDir + submitRequestJson ;
+    // const std::string fullDir = homeDir + submitRequestJson ;
 
     // Read json file
-    std::ifstream myFile(fullDir);
-    std::ostringstream tmp;
-    // std::cout << "reading buffer \n";
-
-    tmp << myFile.rdbuf();
-    std::string s = tmp.str();
+    // std::ifstream myFile(fullDir);
+    // std::ostringstream tmp;
+    // tmp << myFile.rdbuf();
+    // std::string s = tmp.str();
     // std::cout << s << std::endl;
     // const char* jsonObj = s.c_str();
 
     // Hash and check
     Hasher hasher;
-    std::string hashString = hasher.GetHash(s);
+    std::string hashString = hasher.GetHash(submitRequestJson);
     // std::cout << "got hash: " << hashString << "\n";
 
     
@@ -104,7 +102,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
         std::string requestURL = values["endpoint"] + "servicex/transformation";
         std::cout << "api endpoint: " << requestURL << "\n";
         // Store submitrequestjson to variable
-        SubmitRequestJson = ServiceXHandler::JsonFromStr(s);
+        SubmitRequestJson = ServiceXHandler::JsonFromStr(submitRequestJson);
 
         // make post request
 
@@ -124,7 +122,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
 
         char szJsonData[1024];  
         memset(szJsonData, 0, sizeof(szJsonData));
-        strcpy(szJsonData, s.c_str());  
+        strcpy(szJsonData, submitRequestJson.c_str());  
         try{
             if (curl) {
                 

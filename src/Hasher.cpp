@@ -33,19 +33,7 @@ std::string Hasher::GetHashOf(std::string filenameString){
         md5 hash;
         md5::digest_type digest;
 
-        const char* homeDir = getenv("HOME");
-        // std::cout << "homedir: " << homeDir << "\n"; 
-        const std::string fullDir = homeDir + filenameString ;
-
-        // Read json file
-        std::ifstream myFile(fullDir);
-        std::ostringstream tmp;
-        // std::cout << "reading buffer \n";
-
-        tmp << myFile.rdbuf();
-        std::string s = tmp.str();
-
-        hash.process_bytes(s.data(), s.size());
+        hash.process_bytes(filenameString.data(), filenameString.size());
         hash.get_digest(digest);
 
         return toString(digest);
