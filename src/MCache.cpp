@@ -175,7 +175,7 @@ bool MCache::CreateCacheEntry(std::string hash){
         // else
         // std::cout << p << " does not exist\n";
     } catch (const fs::filesystem_error& ex){
-        std::cout << ex.what() << '\n';
+        std::cout << "Create Cache Entry error: " << ex.what() << '\n';
         return 1;
     }
     

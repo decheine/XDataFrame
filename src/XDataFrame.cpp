@@ -1,3 +1,4 @@
+#include <string>
 
 #include "XDataFrame.h"
 
@@ -7,6 +8,7 @@
 
 
 ROOT::RDataFrame* XDataFrame(std::string inputString){
+
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
     std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");

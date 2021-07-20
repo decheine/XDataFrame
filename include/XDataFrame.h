@@ -4,7 +4,7 @@
 // Standard includes
 #include <stdlib.h>
 #include <iostream>
-
+#include <string> 
 
 
 // ROOT
@@ -70,5 +70,6 @@
 // };
 
 ROOT::RDataFrame* XDataFrame(std::string inputString);
+
 
 #endif

@@ -20,7 +20,10 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
 
 # instruct cmake to search for ryml
-set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
+# set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
+set(c4core_DIR /home/nick/IRIS-HEP/vcpkg/packages/c4core_x64-linux/share/c4core)
+
+set(ryml_DIR /home/nick/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
 find_package(ryml CONFIG REQUIRED)
 
 set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
@@ -122,7 +125,22 @@ add_library(Math SHARED src/MathLibrary.cpp include/MathLibrary.h)
 
 root_generate_dictionary(G__XDataFrameLib include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
 
-add_library(XDataFrameLib SHARED src/XDataFrame.cpp include/XDataFrame.h G__XDataFrameLib.cxx)
+add_library(XDataFrameLib SHARED 
+                                src/XDataFrame.cpp 
+                                include/XDataFrame.h 
+                                G__XDataFrameLib.cxx
+                                src/Hasher.cpp
+                                src/MCache.cpp
+                                src/RDataFrameHandler.cpp
+                                src/Request.cpp
+                                src/ServiceXHandler.cpp
+                                include/Hasher.h
+                                include/MCache.h
+                                include/RDataFrameHandler.h
+                                include/Request.h
+                                include/ServiceXHandler.h
+                               
+)
 target_include_directories(XDataFrameLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"/include)
 target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
                                         ROOT::RIO
@@ -134,11 +152,9 @@ target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
                                         ROOT::ROOTDataFrame
                                         ROOT::Gpad
                                         ROOT::Rint
-                                        ryml::ryml
                                         CURL::libcurl
                                         OpenSSL::Crypto
                                         # ${AWSSDK_LINK_LIBRARIES}
-                                        Math
                                         ${Boost_LIBRARIES}
 )
 
@@ -146,9 +162,11 @@ target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-dynamodb
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
+                                        ryml::ryml
                                         ${CURL_LINK_LIBRARIES}
-                                        
+                                                                       
 )
+
 
 #############
 
@@ -159,7 +177,6 @@ file(GLOB SOURCES src/*.cpp)
 add_executable(XDataFrame exe/XDataFrame.cxx ${SOURCES})
 
 # add_dependencies(XDataFrame aws-sdk-cpp)
-
 
 # Linking Libraries
 target_link_libraries(XDataFrame PUBLIC ROOT::Core
@@ -191,9 +208,9 @@ target_link_libraries(XDataFrame PRIVATE jsoncpp_object jsoncpp_static
 # add_subdirectory(demo)
 add_executable(Demo demo/demo.cxx)
 
-target_link_libraries(Demo XDataFrameLib)
+target_link_libraries(Demo PUBLIC XDataFrameLib)
 
-configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
+# configure_file(include/XDataFrameConfig.h.in include/XDataFrameConfig.h)
 
 target_include_directories(XDataFrame PUBLIC "${PROJECT_BINARY_DIR}" )   
 target_include_directories(XDataFrame PRIVATE ${AWSSDK_INCLUDE_DIRS})   
