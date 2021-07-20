@@ -7,8 +7,8 @@
 // ClassImp(XDataFrame)
 
 
-ROOT::RDataFrame* XDataFrame(std::string inputString){
-
+ROOT::RDataFrame XDataFrame(std::string inputString){
+    std::cout << "begin\n";
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
     std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
@@ -19,7 +19,7 @@ ROOT::RDataFrame* XDataFrame(std::string inputString){
 
     //Change this to 
     testRequest.SendRequest(values, inputString, &cache);
-    // std::cout << "Saving json of response\n"; 
+    std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
 
@@ -39,7 +39,7 @@ ROOT::RDataFrame* XDataFrame(std::string inputString){
 
     RDataFrameHandler rdfHandler;
     rdfHandler.AddFiles(filenameList);
-    ROOT::RDataFrame* myDataFrame = rdfHandler.CreateRDataFrame();
+    ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
     // auto d1 = myDataFrame.Display();
     // d1->Print();
     // rdfHandler.DisplayRDF();

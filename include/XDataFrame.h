@@ -69,7 +69,7 @@
 
 // };
 
-ROOT::RDataFrame* XDataFrame(std::string inputString);
+ROOT::RDataFrame XDataFrame(std::string inputString);
 
 
 #endif

@@ -19,7 +19,7 @@ Much of this (for now) takes from theh RDataFrame tutorial
  * Returns 1 if not successful
  * @return ROOT::RDataFrame
  */
-ROOT::RDataFrame* RDataFrameHandler::CreateRDataFrame(){
+ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
     // TODO: read the files fetched and get the tree name they have
     auto treeName = "treeme";
 
@@ -33,20 +33,7 @@ ROOT::RDataFrame* RDataFrameHandler::CreateRDataFrame(){
 
     RDataFrameObject = &df;
 
-    // Testing for printing out the RDF.
-
-    std::cout << "Displaying\n";
-
-    auto d1 = df.Display();
-    d1->Print();
-
-    std::cout << "Displaying 2 \n";
-
-    auto d2 = RDataFrameObject->Display();
-    d2->Print();
-
-
-    return RDataFrameObject;
+    return df;
 }
 
 /**

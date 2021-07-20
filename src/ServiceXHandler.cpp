@@ -87,9 +87,11 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 
     std::string line;
     const std::string fullDir = homeDir + targetName;
+    std::cout << "Reading file " + fullDir + "\n";
     std::ifstream myfile (fullDir);
     if (myfile.is_open())
     {
+        std::cout << "file opened\n";
         std::string content;
         content.assign( (std::istreambuf_iterator<char>(myfile) ),
                 (std::istreambuf_iterator<char>()    ) );   
@@ -104,14 +106,15 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 
         // get a reference to the "foo" node
         ryml::NodeRef node = tree["api_endpoints"];
-        // std::cout << "Number of children: " << node.num_children() << std::endl;
-        ryml::NodeRef subNode = node.find_child("sub2");
-        ryml::NodeRef subFirst = node.child(0);
+        std::cout << "Number of children: " << node.num_children() << std::endl;
+        // ryml::NodeRef subNode = node.find_child("sub2");
+        // ryml::NodeRef subFirst = node.child(0);
 
         // ryml::NodeRef api_endpointNode = tree["api_endpoints"];
         char src[] = "type";
         c4::substr epName = src; 
         // ryml::NodeRef endpointNode = tree["api_endpoints"].find_child(epName);
+        std::cout << "getting api_endpoints child\n";
         ryml::NodeRef api_endpointNode = tree["api_endpoints"].child(0);
         // ryml::NodeRef typeNode = tree["api_endpoints"];
         
@@ -120,13 +123,14 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
         ryml::NodeRef tokenNode = api_endpointNode.find_child("token");
 
         // TODO: Needs to search and verify that the nodes are there before they are referenced.
-
-        show_keyval(endpointNode);
+        std::cout << "Trying show_keyval...\n";
+        show_val(endpointNode);
         
         std::string endpoint;
         std::string token;
         std::string mytype;
 
+        std::cout << "getting endpoint\n";
         c4::from_chars(endpointNode.val(), &endpoint);
 
         myfile.close();
@@ -137,9 +141,8 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
         // properties["token"] = token;
         // properties["type"] = mytype;
         
-
+        std::cout << "returning properties\n";
         return properties;
-       
     } else std::cout << "Unable to open file\n"; 
     
     std::cout << " - Read servicex.yaml\n";

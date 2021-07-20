@@ -83,18 +83,18 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     // std::ostringstream tmp;
     // tmp << myFile.rdbuf();
     // std::string s = tmp.str();
-    // std::cout << s << std::endl;
+    std::cout << "Getting hash of request string" << std::endl;
     // const char* jsonObj = s.c_str();
 
     // Hash and check
     Hasher hasher;
     std::string hashString = hasher.GetHash(submitRequestJson);
-    // std::cout << "got hash: " << hashString << "\n";
+    std::cout << "got hash: " << hashString << "\n";
 
     
     // Look for hash entry on disk
     bool hashFound = true;
-    // std::cout << "checking cache for " + hashString + "\n";
+    std::cout << "checking cache for " + hashString + "\n";
     hashFound = cache->EntryExists(hashString);
 
 
