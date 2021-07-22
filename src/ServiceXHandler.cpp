@@ -7,6 +7,8 @@
 #include <regex>
 #include <iterator> 
 #include <map>
+#include <unistd.h>
+
 
 // Yaml processor
 #include <c4/yml/preprocess.hpp>
@@ -35,6 +37,8 @@
 
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
+
+
 
 // Project
 #include "ServiceXHandler.h"
@@ -160,17 +164,17 @@ std::string ServiceXHandler::FetchData(std::string request_id){
     // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
     std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
     std::string tmpURL =  (serviceXURL + request_id);
-    std::cout << "tmpurl: " << tmpURL << "\n";
+    // std::cout << "tmpurl: " << tmpURL << "\n";
     const char* targetURL = tmpURL.c_str();
     
     curl_global_init(CURL_GLOBAL_DEFAULT);
 
     // GET request
-    std::cout << "Doing GET request\n";
+    // std::cout << "Doing GET request\n";
     CURL *curl = curl_easy_init();
     std::string response_string;
     std::string header_string;
-    std::cout << "targeturl: " << targetURL << "\n";
+    // std::cout << "targeturl: " << targetURL << "\n";
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL, targetURL);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
@@ -185,10 +189,10 @@ std::string ServiceXHandler::FetchData(std::string request_id){
         // curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
 
 
-        std::cout << "easy perform\n";
+        // std::cout << "easy perform\n";
         curl_easy_perform(curl);
-        std::cout << "done easy perform\n";
-        std::cout << response_string;
+        // std::cout << "done easy perform\n";
+        // std::cout << response_string;
         curl_easy_cleanup(curl);
         curl_global_cleanup();
         curl = NULL;
@@ -196,6 +200,29 @@ std::string ServiceXHandler::FetchData(std::string request_id){
 
     // std::cout << "Response: " << response_string << std::endl;
     return response_string;
+}
+
+
+int ServiceXHandler::WaitOnJob(std::string request_id){
+
+    // Get status, check if it is "complete".
+
+    // Get status
+    std::string tmpStatus;
+    Json::Value jsonStatus;
+    std::string isCompleted = "";
+    
+    while(isCompleted != "Complete"){
+
+    
+        tmpStatus = FetchData(request_id);
+        jsonStatus = JsonFromStr(tmpStatus);
+        isCompleted = jsonStatus["status"].asCString();
+        std::cout << "Job status of " + request_id + ":\t" + jsonStatus["status"].asCString() << std::endl;
+    }
+
+
+    return 0;
 }
 
 
@@ -229,7 +256,7 @@ Json::Value ServiceXHandler::JsonFromStr(std::string jsonStr){
     builder["collectComments"] = false;
     Json::Value value;
     std::string errs;
-    std::cout << "parsing jsonfromstr\n"; 
+    // std::cout << "parsing jsonfromstr\n"; 
     bool parsingSuccessful = reader->parse(
         jsonStr.c_str(),
         jsonStr.c_str() + jsonStr.size(),

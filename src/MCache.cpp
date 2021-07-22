@@ -145,7 +145,7 @@ bool MCache::WriteRequestID(std::string hash, std::string requestId){
 bool MCache::CreateCacheEntry(std::string hash){
     // std::string tmpDir = fs::temp_directory_path();
     fs::path home = fs::path(std::getenv("HOME"));
-    std::cout << "home: " << home.string() << "\n";
+    // std::cout << "home: " << home.string() << "\n";
     // Does exist
     try {
                 // Create folder

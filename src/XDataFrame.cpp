@@ -19,7 +19,7 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
 
     //Change this to 
     testRequest.SendRequest(values, inputString, &cache);
-    std::cout << "Saving json of response\n"; 
+    // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 
 
@@ -38,7 +38,10 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     std::cout << "Checking status of job " + testRequest.request_id + "\n";
     std::string updateString;
     updateString = xHandler.FetchData(testRequest.request_id);
-    std::cout << "Response: " + updateString + "\n";
+    // std::cout << "Response: " + updateString + "\n";
+
+    xHandler.WaitOnJob(testRequest.request_id);
+
 
     std::vector<std::string> filenameList;
     filenameList = xHandler.GetMinIOData(testRequest.request_id, pathkey);
