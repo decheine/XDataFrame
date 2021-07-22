@@ -2,11 +2,6 @@
 
 #include "XDataFrame.h"
 
-// Double_t XDataFrame::GetX() const {return x;}
-
-// ClassImp(XDataFrame)
-
-
 ROOT::RDataFrame XDataFrame(std::string inputString){
     std::cout << "begin\n";
     ServiceXHandler xHandler;
@@ -46,7 +41,7 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     std::vector<std::string> filenameList;
     filenameList = xHandler.GetMinIOData(testRequest.request_id, pathkey);
 
-    std::cout << "Filename 1: " + filenameList.at(0) + "\n";
+    // std::cout << "Filename 1: " + filenameList.at(0) + "\n";
 
     // RDataFrame Part
 

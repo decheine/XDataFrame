@@ -212,9 +212,10 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
     Json::Value jsonStatus;
     std::string isCompleted = "";
     
-    while(isCompleted != "Complete"){
+    unsigned int microsecond = 1000000;
 
-    
+    while(isCompleted != "Complete"){
+        usleep(5 * microsecond);//sleeps for 5 second
         tmpStatus = FetchData(request_id);
         jsonStatus = JsonFromStr(tmpStatus);
         isCompleted = jsonStatus["status"].asCString();
