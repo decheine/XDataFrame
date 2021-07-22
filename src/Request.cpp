@@ -24,6 +24,8 @@
  * @brief Gets the status of a servicex endpoint. Only for one hardcoded endpoint, can be extended/refactored
  * to fetch the status from an endpoint specified by an argument. Not needed at the moment.
  * 
+ * DEPRECATED
+ * 
  * @return std::string 
  */
 std::string Request::GetStatus(){

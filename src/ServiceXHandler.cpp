@@ -198,26 +198,6 @@ std::string ServiceXHandler::FetchData(std::string request_id){
     return response_string;
 }
 
-void getStatus(std::string request_id){
-
-}
-
-
-void MakeDirectory(){
-
-    // const char* homeDir = getenv("HOME");
-
-    // const std::string fullDir = homeDir + ""
-
-
-
-    // boost::filesystem::path dir("");
-	// if(boost::filesystem::create_directory(dir)) {
-	// 	std::cout << "Success" << "\n";
-	// }
-    return;
-}
-
 
 int ServiceXHandler::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
