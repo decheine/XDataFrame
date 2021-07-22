@@ -11,6 +11,7 @@
 
 class RDataFrameHandler {
     public:
+        // Vector of absolute paths of the files
         std::vector<std::string> filenames;
 
         void fill_tree(const char *treeName, const char *fileName);
@@ -18,6 +19,9 @@ class RDataFrameHandler {
         int AddFiles(std::vector<std::string> filenames);
         void DisplayRDF();
         ROOT::RDataFrame CreateRDataFrame();
+        std::string GetTreeName(std::string filepath);
+
+
 
         RDataFrameHandler();
     private:

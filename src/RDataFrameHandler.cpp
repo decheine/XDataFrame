@@ -11,6 +11,12 @@ Much of this (for now) takes from theh RDataFrame tutorial
 #include <iterator> 
 #include <map>
 
+// ROOT
+#include <TTree.h>
+#include <TFile.h>
+#include <TKey.h>
+
+// Header
 #include "RDataFrameHandler.h"
 
 /**
@@ -21,19 +27,55 @@ Much of this (for now) takes from theh RDataFrame tutorial
  */
 ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
     // TODO: read the files fetched and get the tree name they have
-    auto treeName = "treeme";
 
+
+    std::cout << "getting tree name\n";
+    // just the first file. Should probably check all the others too.
+    std::string treeName = GetTreeName(filenames.at(0));
+    
     // We read the tree from the file and create a RDataFrame, a class that
     // allows us to interact with the data contained in the tree.
     // We select a default column, a *branch* to adopt ROOT jargon, which will
     // be looked at if none is specified by the user when dealing with filters
     // and actions.
-    std::cout << "Filename1: " << filenames[0] << "\n";
+    // std::cout << "Filename1: " << filenames[0] << "\n";
     ROOT::RDataFrame df(treeName, filenames);
 
     RDataFrameObject = &df;
 
     return df;
+}
+
+std::string RDataFrameHandler::GetTreeName(std::string filepath){
+    TFile *f = TFile::Open(filepath.c_str());    
+    // TIter keyList(f->GetListOfKeys());
+    // TKey *key;
+    // for(auto k : *f->GetListOfKeys()) {
+    //     TKey *key = static_cast<TKey*>(k);
+    //     TClass *cl = gROOT->GetClass(key->GetClassName());
+    //     if (!cl->InheritsFrom("TTree")) continue;
+    //     TTree *T = key->ReadObj<TTree>();
+    // }
+
+    TIter next(f->GetListOfKeys()); 
+    TKey *key; 
+    TTree *T; 
+    std::string keyname;
+    while ((key=(TKey*)next())) { 
+        if (strcmp(key->GetClassName(),"TTree")) continue; //do not use keys that are not trees 
+        T = (TTree*)f->Get(key->GetName()); //fetch the Tree header in memory 
+        // totalEvents = T->GetEntries(); 
+        printf("tree name: %50s\t\n",key->GetName()); 
+        keyname = key->GetName();
+        delete T; 
+    }
+
+
+    // TObject *obj = key->ReadObj();
+    
+
+
+    return keyname;
 }
 
 /**

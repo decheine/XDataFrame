@@ -31,9 +31,19 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
     // Only call this if user specifically wants to refresh the data or if there are no data files. 
     // For now, do it every time. 
+
+    // Wait until job is done.
+    
+    // Check on status of job
+    std::cout << "Checking status of job " + testRequest.request_id + "\n";
+    std::string updateString;
+    updateString = xHandler.FetchData(testRequest.request_id);
+    std::cout << "Response: " + updateString + "\n";
+
     std::vector<std::string> filenameList;
     filenameList = xHandler.GetMinIOData(testRequest.request_id, pathkey);
 
+    std::cout << "Filename 1: " + filenameList.at(0) + "\n";
 
     // RDataFrame Part
 

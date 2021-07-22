@@ -159,7 +159,6 @@ std::string ServiceXHandler::FetchData(std::string request_id){
     // CURL *curl = curl_easy_init();
     // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
     std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
-    const char* requestURL =  "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
     std::string tmpURL =  (serviceXURL + request_id);
     std::cout << "tmpurl: " << tmpURL << "\n";
     const char* targetURL = tmpURL.c_str();
@@ -173,7 +172,7 @@ std::string ServiceXHandler::FetchData(std::string request_id){
     std::string header_string;
     std::cout << "targeturl: " << targetURL << "\n";
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, requestURL);
+        curl_easy_setopt(curl, CURLOPT_URL, targetURL);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
         curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
         curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, -1L);

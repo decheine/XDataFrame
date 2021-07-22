@@ -125,8 +125,6 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
         strcpy(szJsonData, submitRequestJson.c_str());  
         try{
             if (curl) {
-                
-
                 // agent[sizeof(agent) - 1] = 0;
                 // curl_easy_setopt(curl, CURLOPT_USERAGENT, agent);
                 const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation";
@@ -148,7 +146,6 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szJsonData);
-
 
                 std::cout << "Performing curl request\n";
                 res = curl_easy_perform(curl);
