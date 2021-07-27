@@ -1,7 +1,55 @@
 # XDataFrame
 ServiceX to RDataFrame framework
 
+
+
+
+## Installation
+
+
+
+
+### Dependencies
+
+Before building, the project's dependencies need to be installed. These dependencies are
+  * AWS C++ sdk (core, dynamodb, s3)
+  * ryml
+  * c4core
+  * jsoncpp
+  * Boost
+      * system, filesystem, unit_test_framework
+  * and obviously ROOT
+
+This project depends on projects that use [vcpkg](https://vcpkg.io/en/index.html) as a package manager.
+
+If you haven't used vcpkg before, you can clone it anywhere, but it's probably best put in your home user directory. From there, run
+
+```
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh
+./vcpkg integrate install
+```
+
 ### Building
+
+To install the project you can create an optional folder for it to include other projects in that will utilize XDataFrame, to keep it all together.
+
+Clone the repo
+
+```bash
+git clone https://github.com/decheine/XDataFrame
+cd XDataFrame
+```
+
+Create a build directory
+
+```bash
+mkdir build
+```
+
+If needed, edit the CMakeLists.txt to point to your own installations 
+
 From build directory, run the following to generate build files
 
 ```

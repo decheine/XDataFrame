@@ -12,7 +12,7 @@
 #include <json/writer.h>
 
 // ryml
-#include <ryml.hpp>
+#include <ryml/ryml.hpp>
 
 class ServiceXHandler {
     public:

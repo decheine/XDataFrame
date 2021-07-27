@@ -9,24 +9,33 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-# set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
-# Locate the ROOT package and include the components the project needs
-# MultiProc     ROOT's multi-threading framework
-# root-config --libs => -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps 
-#                       -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore 
-#                       -lThread -lMultiProc -lROOTDataFrame -pthread -lm -ldl -rdynamic
+
+
+####################################################
+# SPECIFY YOUR vcpkg.cmake LOCATION ON YOUR SYSTEM #
+####################################################
+
+set(VCPKG_LOCATION /home/nick/IRIS-HEP/vcpkg)
+
+# Set your machines "triplet". On a 64 bit Windows machine, change to "x64-windows"
+set(TRIPLET     x64-linux)
+
+
+# set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
+include(/home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
+# Locate packages
 
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
 
-# instruct cmake to search for ryml
 # set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
 set(c4core_DIR /home/nick/IRIS-HEP/vcpkg/packages/c4core_x64-linux/share/c4core)
 
-set(ryml_DIR /home/nick/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
+# set(ryml_DIR /home/nick/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
 find_package(ryml CONFIG REQUIRED)
 
-set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
+# set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
 find_package(jsoncpp CONFIG REQUIRED)
 
 find_package(OpenSSL REQUIRED)
@@ -74,19 +83,8 @@ message(" - CURL include " ${CURL_INCLUDE_DIRS})
 # include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
 # link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
-
 # AWS SDK
-# set(CMAKE_PREFIX_PATH ~/IRIS-HEP/vcpkg/packages/curl_x64-linux/share/curl)
-# set(LD_LIBRARY_PATH /usr/local/lib)
-
 set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
-# set(aws-cpp-sdk-core_DIR ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-core)
-# set(aws-cpp-sdk-s3_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-s3)
-# set(aws-cpp-sdk-kinesis_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-kinesis)
-# set(aws-cpp-sdk-dynamodb_DIR  ~/IRIS-HEP/vcpkg/packages/aws-sdk-cpp_x64-linux/share/aws-cpp-sdk-dynamodb)
-# set(aws-c-event-stream_DIR ~/IRIS-HEP/vcpkg/packages/aws-c-event-stream_x64-linux/share/aws-c-event-stream/)
-# set(aws-checksums_DIR ~/IRIS-HEP/vcpkg/packages/aws-checksums_x64-linux/share/aws-checksums/)
-# set(aws-c-common_DIR ~/IRIS-HEP/vcpkg/packages/aws-c-common_x64-linux/share/aws-c-common/)
 
 message("- Finding AWSSDK")
 find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
@@ -96,17 +94,17 @@ message("- Done finding AWSSDK ")
 find_package( CURL REQUIRED )
 
 
+# boost should be /usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0
+# set(Boost_USE_STATIC_LIBS        ON)
+# set(Boost_USE_MULTITHREADED      ON)
+# set(Boost_USE_STATIC_RUNTIME    OFF)
 # BOOST
+# set(Boost_DIR "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0")
 find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework )
 
-# Include directories for all the packages/dependencies
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include 
-        /home/nick/local/yaml-cpp/include 
-        /home/nick/IRIS-HEP/ryaml/install/include
-        /home/nick/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/include
-        # ${CURL_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIR}
-        )
+
+
+
 
 
 # Testing
@@ -116,11 +114,32 @@ add_subdirectory(tests)
 message("-- Curl libraries " ${CURL_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
+message("-- Boost libraries: " ${Boost_LIBRARIES})
+
 message("-- Boost include dir " ${Boost_INCLUDE_DIR})
+
+message("- include dir ")
+
+# Handling vcpkg includes
+
+# Must handle TRIPLET, depending on platform, like x64-linux or x64-windows
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}
+        ${VCPKG_LOCATION}/installed/${TRIPLET}/include
+        ${Boost_INCLUDE_DIRS}
+        
+        # /home/nick/local/yaml-cpp/include 
+        # /home/nick/IRIS-HEP/ryaml/install/include
+        # /home/nick/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/include
+        # ${CURL_INCLUDE_DIRS}
+        )
 
 
 ###########
 
+
+
+# Generate dictionary
 root_generate_dictionary(G__XDataFrameLib include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
 
 add_library(XDataFrameLib SHARED 
@@ -139,7 +158,12 @@ add_library(XDataFrameLib SHARED
                                 include/ServiceXHandler.h
                                
 )
-target_include_directories(XDataFrameLib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"/include)
+target_include_directories(XDataFrameLib PUBLIC ${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include 
+                                                ${VCPKG_LOCATION}/installed/${TRIPLET}/include
+)
+
+# target_link_libraries(XDataFrameLib boost_system)
+
 target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
                                         ROOT::RIO
                                         ROOT::Net
@@ -152,8 +176,8 @@ target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
                                         ROOT::Rint
                                         CURL::libcurl
                                         OpenSSL::Crypto
-                                        # ${AWSSDK_LINK_LIBRARIES}
                                         ${Boost_LIBRARIES}
+
 )
 
 target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
@@ -162,8 +186,11 @@ target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-core
                                         ryml::ryml
                                         ${CURL_LINK_LIBRARIES}
-                                                                       
+                                        
+                                                                           
 )
+
+
 
 
 #############

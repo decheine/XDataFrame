@@ -9,11 +9,10 @@
 #include <map>
 #include <unistd.h>
 
-
 // Yaml processor
 #include <c4/yml/preprocess.hpp>
 #include <c4/yml/std/string.hpp>
-#include <ryml.hpp>
+#include <ryml/ryml.hpp>
 
 // Curl
 #include <curl/curl.h>
@@ -23,9 +22,6 @@
 
 // Boost filesystem
 #include <boost/filesystem.hpp>
-//hashing
-// #include <boost/algorithm/hex.hpp>
-// #include <boost/uuid/detail/md5.hpp>
 
 // AWS SDK
 #include <aws/core/Aws.h>
@@ -38,14 +34,10 @@
 #include <aws/s3/model/PutObjectRequest.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
 
-
-
 // Project
 #include "ServiceXHandler.h"
 
-
 namespace fs = boost::filesystem;
-
 
 /// YAML Methods
 
