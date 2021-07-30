@@ -12,15 +12,22 @@ ServiceX to RDataFrame framework
 ### Dependencies
 
 Before building, the project's dependencies need to be installed. These dependencies are
-  * AWS C++ sdk (core, dynamodb, s3)
-  * ryml
+  * [AWS C++ sdk](https://github.com/aws/aws-sdk-cpp) (core, dynamodb, s3)
+  * [ryml](https://github.com/biojppm/rapidyaml)
   * c4core
   * jsoncpp
   * Boost
       * system, filesystem, unit_test_framework
   * and obviously ROOT
 
-This project depends on projects that use [vcpkg](https://vcpkg.io/en/index.html) as a package manager.
+
+
+#### AWS SDK
+
+First follow the README for building the [AWS C++ SDK](https://github.com/aws/aws-sdk-cpp) from source. This has been tested and works smoothly with Linux, but building on Windows with Visual Studio might be a different story. 
+
+
+This project depends on some projects that use [vcpkg](https://vcpkg.io/en/index.html) as a package manager.
 
 If you haven't used vcpkg before, you can clone it anywhere, but it's probably best put in your home user directory. From there, run
 
@@ -30,6 +37,9 @@ cd vcpkg
 ./bootstrap-vcpkg.sh
 ./vcpkg integrate install
 ```
+
+
+
 
 ### Building
 
