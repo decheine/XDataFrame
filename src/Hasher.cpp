@@ -9,6 +9,7 @@
  * @param filenameString 
  * @return std::string 
  */
+ // TODO: Should this be a filename string?
 std::string Hasher::GetHash(std::string filenameString){
         md5 hash;
         md5::digest_type digest;
@@ -17,7 +18,7 @@ std::string Hasher::GetHash(std::string filenameString){
         hash.get_digest(digest);
 
         // std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
-
+        // TODO: Remove text returns or use ROOT's logging infrastructure
         std::cout << "returning " << toString(digest) << std::endl;
 
         return toString(digest);

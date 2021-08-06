@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(XDataFrameProject VERSION 1.0)
 
 # specify the C++ standard
+# TODO: How much of this is specified by ROOT when building this library?
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 

@@ -14,6 +14,8 @@
 // ryml
 #include <ryml/ryml.hpp>
 
+// TODO: Comments! :-)
+// TODO: Make as much of this private as you can, including the indcludes!
 class ServiceXHandler {
     public:
         double x;

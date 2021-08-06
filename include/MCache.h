@@ -7,7 +7,7 @@
 #include <boost/filesystem.hpp>
 #include <map>
 
-
+// TODO: Some comments on what this is?
 class MCache {
 
     public:

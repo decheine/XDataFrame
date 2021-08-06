@@ -15,6 +15,7 @@ using boost::uuids::detail::md5;
 
 class Hasher {
     public:
+        // TODO: Make this a local function, remove md5 include (hex to?) from this header?
         std::string toString(const md5::digest_type &digest){
             const auto charDigest = reinterpret_cast<const char *>(&digest);
             std::string result;

@@ -15,6 +15,8 @@
  * Contains the endpoint, token, type. 
  * 
  */
+// TODO: This feels like it is meant for a single request. However the API seems to imply one can
+// run multiple requests, etc. Redisgn API so object has clear purpose?
 class Request {
     public:
         // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
@@ -23,6 +25,8 @@ class Request {
         // Function utilized by curl methods to write down return values as they are received.
         static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data);
 
+        // TODO: How much should be set by ctor? Does it make sense to change these values once
+        // this object is setup?
         void SetEndpoint(char*endpoint);
         void SetToken(char* token);
         void SetType(char* type);
@@ -52,6 +56,7 @@ class Request {
 
 
     private:
+        // TODO: Haha. Sadly, private members then become public API and have to be maintained! ;-)
         // Who needs private members? public is just easier and I'm lazy
         // Will change them over later
 
