@@ -83,20 +83,14 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
 
     xHandler.WaitOnJob(testRequest.GetRequestID());
 
-
     std::vector<std::string> filenameList;
     filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);
-
-    // std::cout << "Filename 1: " + filenameList.at(0) + "\n";
 
     // RDataFrame Part
 
     RDataFrameHandler rdfHandler;
     rdfHandler.AddFiles(filenameList);
     ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
-    // auto d1 = myDataFrame.Display();
-    // d1->Print();
-    // rdfHandler.DisplayRDF();
 
     std::cout << "Finished\n";
     return myDataFrame;
