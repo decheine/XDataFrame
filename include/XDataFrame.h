@@ -2,49 +2,11 @@
 #define XDATAFRAME_H
 
 // Standard includes
-#include <stdlib.h>
-#include <iostream>
 #include <string> 
 
 
 // ROOT
-#include "TF1.h"
-#include "TRint.h"
-#include "TCanvas.h"
-#include "TFile.h"
-#include "TBrowser.h"
 #include <ROOT/RDataFrame.hxx>
-#include <ROOT/RDF/RDisplay.hxx>
-
-// ryml
-#include <ryml/ryml.hpp>
-
-// Curl
-#include <curl/curl.h>
-
-// Jsoncpp
-#include <json/reader.h>
-#include <json/value.h>
-#include <json/writer.h>
-
-// AWS SDK
-#include <aws/core/Aws.h>
-#include <aws/core/SDKConfig.h>
-
-#include <aws/s3/S3Client.h>
-#include <aws/s3/model/ListObjectsRequest.h>
-#include <aws/s3/model/GetObjectRequest.h>
-
-#include <aws/s3/model/PutObjectRequest.h>
-#include <aws/core/auth/AWSCredentialsProvider.h>
-
-// Project
-#include "ServiceXHandler.h"
-#include "RDataFrameHandler.h"
-#include "Request.h"
-#include "Hasher.h"
-#include "MCache.h"
-
 
 
 /**
@@ -71,6 +33,8 @@
 
 // TODO: For what this is, this is a HUGE number of includes. Minimize as much as possible the
 // number of includes?
+// Done, moved the includes over to XDataFrame.cpp, where they are actually used.
+
 ROOT::RDataFrame XDataFrame(std::string inputString);
 
 

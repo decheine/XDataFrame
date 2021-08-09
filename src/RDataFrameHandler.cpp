@@ -16,6 +16,8 @@ Much of this (for now) takes from theh RDataFrame tutorial
 #include <TFile.h>
 #include <TKey.h>
 
+#include <ROOT/RDF/RDisplay.hxx>
+
 // Header
 #include "RDataFrameHandler.h"
 
@@ -107,12 +109,3 @@ int RDataFrameHandler::AddFiles(std::vector<std::string> filenames){
 }
 
 RDataFrameHandler::RDataFrameHandler(){}
-
-
-void RDataFrameHandler::DisplayRDF(){
-    // ROOT::RDataFrame rdf = *RDataFrameObject;
-    std::cout << "Displaying\n";
-
-    auto d1 = RDataFrameObject->Display();
-    d1->Print();
-}

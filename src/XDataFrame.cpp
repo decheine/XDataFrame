@@ -1,4 +1,47 @@
-#include <string>
+
+// Standard includes
+#include <stdlib.h>
+#include <iostream>
+#include <string> 
+
+// ROOT
+#include "TF1.h"
+#include "TRint.h"
+#include "TCanvas.h"
+#include "TFile.h"
+#include "TBrowser.h"
+#include <ROOT/RDataFrame.hxx>
+#include <ROOT/RDF/RDisplay.hxx>
+
+// ryml
+#include <ryml/ryml.hpp>
+
+// Curl
+#include <curl/curl.h>
+
+// Jsoncpp
+#include <json/reader.h>
+#include <json/value.h>
+#include <json/writer.h>
+
+// AWS SDK
+#include <aws/core/Aws.h>
+#include <aws/core/SDKConfig.h>
+
+#include <aws/s3/S3Client.h>
+#include <aws/s3/model/ListObjectsRequest.h>
+#include <aws/s3/model/GetObjectRequest.h>
+
+#include <aws/s3/model/PutObjectRequest.h>
+#include <aws/core/auth/AWSCredentialsProvider.h>
+
+// Project
+#include "ServiceXHandler.h"
+#include "RDataFrameHandler.h"
+#include "Request.h"
+#include "Hasher.h"
+#include "MCache.h"
+
 
 #include "XDataFrame.h"
 
@@ -8,12 +51,15 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     std::vector<std::string> userYaml;
     std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
-    Request testRequest;
+    // Initialize a Request object.
+    // Want to be able to extend functionality and add args to XDataFrame() to control behavior
+    // of this
+    Request testRequest(values);
 
     MCache cache;
 
     //Change this to 
-    testRequest.SendRequest(values, inputString, &cache);
+    testRequest.SendRequest(inputString, &cache);
     // std::cout << "Saving json of response\n"; 
     // testRequest.SaveJson(testRequest.SubmitRequestJson);
 

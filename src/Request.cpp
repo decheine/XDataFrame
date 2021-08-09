@@ -34,7 +34,6 @@ std::string Request::GetStatus(){
     // if(this->endpoint)
 
     std::string servicexURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
-    const char* requestURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/345974d4-d2ec-49bb-bef2-6683b7e461d5";
     const char* targetURL = (servicexURL + request_id).c_str();
     
     curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -45,7 +44,7 @@ std::string Request::GetStatus(){
     std::string response_string;
     std::string header_string;
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, requestURL);
+        curl_easy_setopt(curl, CURLOPT_URL, targetURL);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
         curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
         curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1L);
@@ -68,12 +67,29 @@ std::string Request::GetStatus(){
     return response_string;
 }
 
+/**
+ * @brief Helper function for curl request sending, it helps write the returned values of curl requests
+ * 
+ * @param ptr 
+ * @param size 
+ * @param nmemb 
+ * @param data 
+ * @return size_t 
+ */
 size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data){
     data->append((char*)ptr, size * nmemb);
     return size * nmemb;
 }
 
-int Request::SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson, MCache* cache) {
+/**
+ * @brief 
+ * 
+ * @param values 
+ * @param submitRequestJson 
+ * @param cache 
+ * @return int 
+ */
+int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
     std::cout << "Reading json\n"; 
 
     const char* homeDir = getenv("HOME");
@@ -101,7 +117,7 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
 
 
     if(hashFound == false){
-        std::string requestURL = values["endpoint"] + "servicex/transformation";
+        std::string requestURL = GetValues()["endpoint"] + "servicex/transformation";
         std::cout << "api endpoint: " << requestURL << "\n";
         // Store submitrequestjson to variable
         SubmitRequestJson = ServiceXHandler::JsonFromStr(submitRequestJson);
@@ -192,6 +208,12 @@ int Request::SendRequest(std::map<std::string, std::string> values, std::string 
     return 0;
 }
 
+/**
+ * @brief Saves a json value to a json file named <request_id>.json
+ * 
+ * @param value 
+ * @return int 
+ */
 int Request::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
@@ -208,14 +230,25 @@ int Request::SaveJson(Json::Value value){
     return 0;
 }
 
+/**
+ * @brief request_id getter
+ * 
+ * @return std::string 
+ */
 std::string Request::GetRequestID(){
     return request_id;
 }
 
 
+std::map<std::string, std::string> Request::GetValues(){
+    return values;
+}
+
 Request::Request() {
 
 }
 
-
+Request::Request(std::map<std::string, std::string> myValues) {
+    values = myValues;
+}
 

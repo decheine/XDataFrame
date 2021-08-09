@@ -5,7 +5,6 @@
 
 #include <ROOT/RDataFrame.hxx>
 
-#include <ROOT/RDF/RDisplay.hxx>
 
 
 // TODO: Some comments on what this is.
@@ -14,10 +13,8 @@ class RDataFrameHandler {
         // Vector of absolute paths of the files
         std::vector<std::string> filenames;
 
-        void fill_tree(const char *treeName, const char *fileName);
         int AddFile(std::string filename);
         int AddFiles(std::vector<std::string> filenames);
-        void DisplayRDF();
         ROOT::RDataFrame CreateRDataFrame();
         std::string GetTreeName(std::string filepath);
 

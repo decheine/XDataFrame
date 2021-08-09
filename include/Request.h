@@ -22,6 +22,10 @@ class Request {
         // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
         // This version takes as input a map of servicex.yaml. submit_request.json
         Request();
+
+        // constructor
+        Request(std::map<std::string, std::string> myValues);
+
         // Function utilized by curl methods to write down return values as they are received.
         static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data);
 
@@ -38,7 +42,7 @@ class Request {
         std::string GetRequestID();
 
         // Submission method. Call to send the curl request to ServiceX with a submit_request.json
-        int SendRequest(std::map<std::string, std::string> values, std::string submitRequestJson, MCache* cache);
+        int SendRequest(std::string submitRequestJson, MCache* cache);
 
         int SaveJson(Json::Value val);
 
@@ -53,12 +57,16 @@ class Request {
 
         Json::Value SubmitRequestJson;
 
-
+        std::map<std::string, std::string> GetValues();
 
     private:
         // TODO: Haha. Sadly, private members then become public API and have to be maintained! ;-)
         // Who needs private members? public is just easier and I'm lazy
         // Will change them over later
+
+
+        std::map<std::string, std::string> values;
+
 
 };
 
