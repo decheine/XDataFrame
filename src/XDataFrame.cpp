@@ -67,7 +67,7 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     Hasher hasher;
     std::string hashVal;
     hashVal = hasher.GetHashOf(inputString);
-    std::cout << "request_id: " << testRequest.request_id << "\n";
+    std::cout << "request_id: " << testRequest.GetRequestID() << "\n";
     std::string pathkey;
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
     // Only call this if user specifically wants to refresh the data or if there are no data files. 
@@ -76,16 +76,16 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     // Wait until job is done.
     
     // Check on status of job
-    std::cout << "Checking status of job " + testRequest.request_id + "\n";
+    std::cout << "Checking status of job " + testRequest.GetRequestID() + "\n";
     std::string updateString;
-    updateString = xHandler.FetchData(testRequest.request_id);
+    updateString = xHandler.FetchData(testRequest.GetRequestID());
     // std::cout << "Response: " + updateString + "\n";
 
-    xHandler.WaitOnJob(testRequest.request_id);
+    xHandler.WaitOnJob(testRequest.GetRequestID());
 
 
     std::vector<std::string> filenameList;
-    filenameList = xHandler.GetMinIOData(testRequest.request_id, pathkey);
+    filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);
 
     // std::cout << "Filename 1: " + filenameList.at(0) + "\n";
 

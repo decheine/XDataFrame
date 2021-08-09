@@ -34,7 +34,7 @@ std::string Request::GetStatus(){
     // if(this->endpoint)
 
     std::string servicexURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
-    const char* targetURL = (servicexURL + request_id).c_str();
+    const char* targetURL = (servicexURL + GetRequestID()).c_str();
     
     curl_global_init(CURL_GLOBAL_DEFAULT);
 
@@ -237,6 +237,10 @@ int Request::SaveJson(Json::Value value){
  */
 std::string Request::GetRequestID(){
     return request_id;
+}
+
+void Request::SetRequestID(std::string requestid){
+    request_id = requestid;
 }
 
 
