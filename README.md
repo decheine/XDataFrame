@@ -1,13 +1,7 @@
 # XDataFrame
 ServiceX to RDataFrame framework
 
-
-
-
 ## Installation
-
-
-
 
 ### Dependencies
 

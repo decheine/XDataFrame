@@ -14,7 +14,11 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 ####################################################
 # SPECIFY YOUR vcpkg.cmake LOCATION ON YOUR SYSTEM #
-####################################################
+###################################################
+
+message("test")
+
+
 
 set(VCPKG_LOCATION /home/nick/IRIS-HEP/vcpkg)
 
