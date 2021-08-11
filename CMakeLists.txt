@@ -7,9 +7,10 @@ project(XDataFrameProject VERSION 1.0)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
 
 
 
@@ -34,7 +35,17 @@ find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread Multi
 set(c4core_DIR /home/nick/IRIS-HEP/vcpkg/packages/c4core_x64-linux/share/c4core)
 
 # set(ryml_DIR /home/nick/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
-find_package(ryml CONFIG REQUIRED)
+# find_package(ryml CONFIG REQUIRED)
+
+
+include(FetchContent)
+FetchContent_Declare(ryml
+    GIT_REPOSITORY https://github.com/biojppm/rapidyaml.git
+    GIT_TAG master     # or a particular branch, tag or commit
+    GIT_SHALLOW FALSE  # ensure submodules are checked out
+)
+FetchContent_MakeAvailable(ryml)
+
 
 # set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
 find_package(jsoncpp CONFIG REQUIRED)
@@ -101,7 +112,7 @@ find_package( CURL REQUIRED )
 # set(Boost_USE_STATIC_RUNTIME    OFF)
 # BOOST
 # set(Boost_DIR "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0")
-find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework )
+find_package(Boost REQUIRED COMPONENTS system filesystem )
 
 
 
@@ -185,7 +196,7 @@ target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-dynamodb
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
-                                        ryml::ryml
+                                        ryml
                                         ${CURL_LINK_LIBRARIES}
                                         
                                                                            
