@@ -211,16 +211,12 @@ target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
                                         ryml
-                                        ${CURL_LINK_LIBRARIES}
-                                        
-                                                                           
+                                        ${CURL_LINK_LIBRARIES}                                              
 )
 
 
-
-
 #############
-# Executable part
+# Executable
 
 add_executable(Demo demo/demo.cxx)
 

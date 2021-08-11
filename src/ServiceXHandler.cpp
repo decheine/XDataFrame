@@ -54,6 +54,7 @@ void ServiceXHandler::show_val(c4::yml::NodeRef n)
     std::cout << n.val() << "\n";
 }
 
+// Used by curl to write retrieved data to memory
 static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
     data->append((char*)ptr, size * nmemb);
     return size * nmemb;
@@ -160,7 +161,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 }
 
 /**
- * @brief Deprecated. Fetched data from a hardcoded servicex endpoint.
+ * @brief Fetches data from a servicex endpoint specified by the request_id. 
  * 
  * @param request_id 
  * @return std::string 
@@ -208,7 +209,12 @@ std::string ServiceXHandler::FetchData(std::string request_id){
     return response_string;
 }
 
-
+/**
+ * @brief Checks the status of job <request_id> and waits until it's marked as "Complete"
+ * 
+ * @param request_id 
+ * @return int 
+ */
 int ServiceXHandler::WaitOnJob(std::string request_id){
 
     // Get status, check if it is "complete".
@@ -232,12 +238,17 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
     return 0;
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param value 
+ * @return int 
+ */
 int ServiceXHandler::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
     builder["indentation"] = "\t";
-
+    // TODO: verify that a request_id value is present and if not, display a warning
     std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
     std::string savedir = "" + value["request_id"].asString() + ".json";
     std::cout << "Saving file as " << savedir << std::endl;
@@ -380,8 +391,3 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
     return filenames;
 }
 
-/**
- * @brief Stub
- * 
- */
-void HashSubmitJson(){}
