@@ -72,67 +72,6 @@ message("- Done fetching AWSSDK ")
 
 
 
-
-# Amazon AWS SDK External Project
-# include(ExternalProject)
-
-# set(AWS_TAGLIB "aws-sdk-cpp")
-
-# set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
-
-# set(BUILD_SHARED_LIBS ON CACHE STRING "Link to shared libraries by default.")
-
-# # when needing to fully download, it takes me 2m42s ... not great
-# ExternalProject_Add(
-#         ${AWS_TAGLIB}
-#         GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp
-#         # GIT_TAG         origin/master
-#         CMAKE_ARGS      -DBUILD_ONLY="s3;cognito-identity"
-#                         -DBUILD_SHARED_LIBS=OFF
-#                         -DMINIMIZE_SIZE=ON
-#                         -DCPP_STANDARD=14
-#                         -DENABLE_TESTING=OFF
-#                         -DBUILD_DEPS=ON
-                        
-#         GIT_SHALLOW    ON
-# 	SOURCE_DIR     aws-sdk-cpp-prefix/src
-# 	BUILD_ALWAYS   OFF
-# 	INSTALL_DIR    ${EXTERNAL_INSTALL_LOCATION}
-	
-# 	# CMAKE_CACHE_ARGS
-# 	# 	-DBUILD_SHARED_LIBS:BOOL=ON
-# 	# 	-DENABLE_STATIC_RUNTIME:BOOL=OFF
-# 	# 	-DBUILD_EXAMPLES:BOOL=ON
-# 	# 	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-
-# 	# BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR> --config Release --target INSTALL
-# )
-# message(" - External project done")
-
-# include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-# link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
-
-# AWS SDK
-# set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
-
-# find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
-
-# set(CURL_DIR /usr/bin/curl)
-
-
-
-# boost should be /usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0
-# set(Boost_USE_STATIC_LIBS        ON)
-# set(Boost_USE_MULTITHREADED      ON)
-# set(Boost_USE_STATIC_RUNTIME    OFF)
-# BOOST
-# set(Boost_DIR "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0")
-
-
-
-
-
-
 # Testing
 enable_testing()
 add_subdirectory(tests)
