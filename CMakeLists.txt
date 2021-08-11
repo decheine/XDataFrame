@@ -34,11 +34,9 @@ find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread Multi
 # set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
 set(c4core_DIR /home/nick/IRIS-HEP/vcpkg/packages/c4core_x64-linux/share/c4core)
 
-# set(ryml_DIR /home/nick/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
-# find_package(ryml CONFIG REQUIRED)
-
-
 include(FetchContent)
+
+# RYML
 FetchContent_Declare(ryml
     GIT_REPOSITORY https://github.com/biojppm/rapidyaml.git
     GIT_TAG master     # or a particular branch, tag or commit
@@ -46,9 +44,16 @@ FetchContent_Declare(ryml
 )
 FetchContent_MakeAvailable(ryml)
 
+# JSONCPP
+FetchContent_Declare(jsoncpp
+    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
+    GIT_TAG master     # or a particular branch, tag or commit
+    GIT_SHALLOW FALSE  # ensure submodules are checked out
+)
+FetchContent_MakeAvailable(jsoncpp)
 
 # set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
-find_package(jsoncpp CONFIG REQUIRED)
+# find_package(jsoncpp CONFIG REQUIRED)
 
 find_package(OpenSSL REQUIRED)
 
