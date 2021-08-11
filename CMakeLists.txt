@@ -12,23 +12,19 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-
-####################################################
-# SPECIFY YOUR vcpkg.cmake LOCATION ON YOUR SYSTEM #
-####################################################
-
-set(VCPKG_LOCATION /home/nick/IRIS-HEP/vcpkg)
-
 # Set your machines "triplet". On a 64 bit Windows machine, change to "x64-windows"
 set(TRIPLET x64-linux)
 
-
 # set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
-include(/home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
+# include(/home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
 # Locate packages
 
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
+
+find_package(Boost REQUIRED COMPONENTS system filesystem )
+
+
 
 include(FetchContent)
 
@@ -56,8 +52,9 @@ FetchContent_MakeAvailable(jsoncpp)
 
 find_package(OpenSSL REQUIRED)
 
-message(" - ryml include " ${ryml_LIBRARIES})
-message(" - CURL include " ${CURL_INCLUDE_DIRS})
+find_package( CURL REQUIRED )
+
+set(BUILD_SHARED_LIBS ON CACHE STRING "Link to shared libraries by default.")
 
 
 message("- Fetching aws-sdk-cpp")
@@ -65,15 +62,8 @@ message("- Fetching aws-sdk-cpp")
 FetchContent_Declare(aws-sdk-cpp
         GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp
         GIT_SHALLOW     FALSE
-        CMAKE_ARGS      -D BUILD_ONLY="s3"
-                        -DBUILD_SHARED_LIBS=OFF
-                        -DMINIMIZE_SIZE=ON
-                        -DCPP_STANDARD=14
-                        -DENABLE_TESTING=OFF
-                        -DBUILD_DEPS=ON
-
 )
-set(aws-sdk-cpp_BUILD_ONLY "s3")
+
 set(BUILD_ONLY "s3")
 
 FetchContent_MakeAvailable(aws-sdk-cpp)
@@ -128,7 +118,7 @@ message("- Done fetching AWSSDK ")
 # find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
 
 # set(CURL_DIR /usr/bin/curl)
-find_package( CURL REQUIRED )
+
 
 
 # boost should be /usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0
@@ -137,7 +127,6 @@ find_package( CURL REQUIRED )
 # set(Boost_USE_STATIC_RUNTIME    OFF)
 # BOOST
 # set(Boost_DIR "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0")
-find_package(Boost REQUIRED COMPONENTS system filesystem )
 
 
 
@@ -148,7 +137,7 @@ find_package(Boost REQUIRED COMPONENTS system filesystem )
 enable_testing()
 add_subdirectory(tests)
 
-message("-- Curl libraries " ${CURL_LIBRARIES})
+message("-- Curl include " ${CURL_LINK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LIBRARIES})
 message("-- AWSSDK libraries " ${AWSSDK_LINK_LIBRARIES})
 message("-- Boost libraries: " ${Boost_LIBRARIES})
@@ -162,7 +151,7 @@ message("- include dir ")
 # Must handle TRIPLET, depending on platform, like x64-linux or x64-windows
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-        ${VCPKG_LOCATION}/installed/${TRIPLET}/include
+        # ${VCPKG_LOCATION}/installed/${TRIPLET}/include
         ${Boost_INCLUDE_DIRS}
         
         # /home/nick/local/yaml-cpp/include 
@@ -196,7 +185,7 @@ add_library(XDataFrameLib SHARED
                                
 )
 target_include_directories(XDataFrameLib PUBLIC ${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include 
-                                                ${VCPKG_LOCATION}/installed/${TRIPLET}/include
+                                                # ${VCPKG_LOCATION}/installed/${TRIPLET}/include
 )
 
 # target_link_libraries(XDataFrameLib boost_system)
