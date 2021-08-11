@@ -12,7 +12,7 @@
 #include <json/writer.h>
 
 // ryml
-#include <ryml/ryml.hpp>
+#include <ryml.hpp>
 
 // TODO: Comments! :-)
 // TODO: Make as much of this private as you can, including the indcludes!

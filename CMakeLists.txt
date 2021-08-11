@@ -40,6 +40,9 @@ FetchContent_Declare(ryml
 )
 FetchContent_MakeAvailable(ryml)
 
+# set(ryml_DIR ~/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
+# find_package(ryml CONFIG REQUIRED)
+
 # JSONCPP
 FetchContent_Declare(jsoncpp
     GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
@@ -55,6 +58,27 @@ find_package(OpenSSL REQUIRED)
 
 message(" - ryml include " ${ryml_LIBRARIES})
 message(" - CURL include " ${CURL_INCLUDE_DIRS})
+
+
+# message("- Fetching aws-sdk-cpp")
+
+# FetchContent_Declare(aws-sdk-cpp
+#         GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp
+#         GIT_SHALLOW     TRUE
+#         CMAKE_ARGS      -DBUILD_ONLY="s3;cognito-identity"
+#                         -DBUILD_SHARED_LIBS=OFF
+#                         -DMINIMIZE_SIZE=ON
+#                         -DCPP_STANDARD=14
+#                         -DENABLE_TESTING=OFF
+#                         -DBUILD_DEPS=ON
+
+# )
+
+# FetchContent_MakeAvailable(aws-sdk-cpp)
+
+# message("- Done fetching AWSSDK ")
+
+
 
 
 # Amazon AWS SDK External Project
@@ -99,9 +123,7 @@ message(" - CURL include " ${CURL_INCLUDE_DIRS})
 # AWS SDK
 set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
 
-message("- Finding AWSSDK")
 find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
-message("- Done finding AWSSDK ")
 
 # set(CURL_DIR /usr/bin/curl)
 find_package( CURL REQUIRED )

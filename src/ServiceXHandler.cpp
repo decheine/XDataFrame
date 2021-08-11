@@ -12,7 +12,7 @@
 // Yaml processor
 #include <c4/yml/preprocess.hpp>
 #include <c4/yml/std/string.hpp>
-#include <ryml/ryml.hpp>
+#include <ryml.hpp>
 
 // Curl
 #include <curl/curl.h>
@@ -89,16 +89,30 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
     {
         std::cout << "file opened\n";
         std::string content;
-        content.assign( (std::istreambuf_iterator<char>(myfile) ),
-                (std::istreambuf_iterator<char>()    ) );   
+        
+        // content.assign(((std::istreambuf_iterator<char>(myfile)),
+        //         std::istreambuf_iterator<char>()));   
+        
+        content.assign((std::istreambuf_iterator<char>(myfile)),
+                    std::istreambuf_iterator<char>());
+
+        std::cout << "content assigned \n";
 
         // ryml can parse in situ (and read-only buffers too):
 
+        std::string testyaml = "api_endpoints:\n  - endpoint: https://cmsopendata.servicex.ssl-hep.org/\n    type: cms_run1_aod\n    token: xxx";
+
+
         // strcpy(src, content.c_str());
         // char src[];
-        c4::substr srcview = c4::to_substr(content); // a mutable view to the source buffer
+        c4::substr srcview = c4::to_substr(testyaml); // a mutable view to the source buffer
+                std::cout << "to substr \n";
+
+
+
         // there are also overloads for reusing the tree and parser
         ryml::Tree tree = ryml::parse(srcview);
+                std::cout << "parsed \n";
 
         // get a reference to the "foo" node
         ryml::NodeRef node = tree["api_endpoints"];

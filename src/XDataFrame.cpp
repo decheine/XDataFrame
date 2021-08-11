@@ -14,7 +14,7 @@
 #include <ROOT/RDF/RDisplay.hxx>
 
 // ryml
-#include <ryml/ryml.hpp>
+#include <ryml.hpp>
 
 // Curl
 #include <curl/curl.h>
