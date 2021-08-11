@@ -13,7 +13,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 
-
 ####################################################
 # SPECIFY YOUR vcpkg.cmake LOCATION ON YOUR SYSTEM #
 ####################################################
@@ -21,7 +20,7 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(VCPKG_LOCATION /home/nick/IRIS-HEP/vcpkg)
 
 # Set your machines "triplet". On a 64 bit Windows machine, change to "x64-windows"
-set(TRIPLET     x64-linux)
+set(TRIPLET x64-linux)
 
 
 # set(CMAKE_TOOLCHAIN_FILE /home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
@@ -30,9 +29,6 @@ include(/home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
 # Locate packages
 
 find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
-
-# set(ryml_DIR /home/nick/IRIS-HEP/ryaml/install/lib/cmake/ryml )
-set(c4core_DIR /home/nick/IRIS-HEP/vcpkg/packages/c4core_x64-linux/share/c4core)
 
 include(FetchContent)
 
