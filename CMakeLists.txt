@@ -60,23 +60,25 @@ message(" - ryml include " ${ryml_LIBRARIES})
 message(" - CURL include " ${CURL_INCLUDE_DIRS})
 
 
-# message("- Fetching aws-sdk-cpp")
+message("- Fetching aws-sdk-cpp")
 
-# FetchContent_Declare(aws-sdk-cpp
-#         GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp
-#         GIT_SHALLOW     TRUE
-#         CMAKE_ARGS      -DBUILD_ONLY="s3;cognito-identity"
-#                         -DBUILD_SHARED_LIBS=OFF
-#                         -DMINIMIZE_SIZE=ON
-#                         -DCPP_STANDARD=14
-#                         -DENABLE_TESTING=OFF
-#                         -DBUILD_DEPS=ON
+FetchContent_Declare(aws-sdk-cpp
+        GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp
+        GIT_SHALLOW     FALSE
+        CMAKE_ARGS      -D BUILD_ONLY="s3"
+                        -DBUILD_SHARED_LIBS=OFF
+                        -DMINIMIZE_SIZE=ON
+                        -DCPP_STANDARD=14
+                        -DENABLE_TESTING=OFF
+                        -DBUILD_DEPS=ON
 
-# )
+)
+set(aws-sdk-cpp_BUILD_ONLY "s3")
+set(BUILD_ONLY "s3")
 
-# FetchContent_MakeAvailable(aws-sdk-cpp)
+FetchContent_MakeAvailable(aws-sdk-cpp)
 
-# message("- Done fetching AWSSDK ")
+message("- Done fetching AWSSDK ")
 
 
 
@@ -121,9 +123,9 @@ message(" - CURL include " ${CURL_INCLUDE_DIRS})
 # link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
 # AWS SDK
-set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
+# set(AWSSDK_DIR /usr/local/lib/cmake/AWSSDK)
 
-find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
+# find_package(AWSSDK CONFIG COMPONENTS core dynamodb s3 REQUIRED)
 
 # set(CURL_DIR /usr/bin/curl)
 find_package( CURL REQUIRED )
