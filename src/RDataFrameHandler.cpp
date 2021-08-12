@@ -43,7 +43,7 @@ ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame(){
     // std::cout << "Filename1: " << filenames[0] << "\n";
     ROOT::RDataFrame df(treeName, filenames);
 
-    RDataFrameObject = &df;
+    // RDataFrameObject = &df;
 
     return df;
 }

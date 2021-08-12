@@ -239,7 +239,7 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
 }
 
 /**
- * @brief 
+ * @brief Saves a json value to a json file named <request_id>.json
  * 
  * @param value 
  * @return int 

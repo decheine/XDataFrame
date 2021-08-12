@@ -66,7 +66,7 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
 
     Hasher hasher;
     std::string hashVal;
-    hashVal = hasher.GetHashOf(inputString);
+    hashVal = hasher.GetHash(inputString);
     std::cout << "request_id: " << testRequest.GetRequestID() << "\n";
     std::string pathkey;
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";

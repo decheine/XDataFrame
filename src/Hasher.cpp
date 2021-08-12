@@ -19,26 +19,12 @@ std::string Hasher::GetHash(std::string filenameString){
 
         // std::cout << "md5(" << s << ") = " << toString(digest) << '\n';
         // TODO: Remove text returns or use ROOT's logging infrastructure
-        std::cout << "returning " << toString(digest) << std::endl;
+        // std::cout << "returning " << toString(digest) << std::endl;
 
         return toString(digest);
 }
 
-/**
- * @brief Gets hash of the file contents of filenameString
- * 
- * @param filenameString 
- * @return std::string 
- */
-std::string Hasher::GetHashOf(std::string filenameString){
-        md5 hash;
-        md5::digest_type digest;
 
-        hash.process_bytes(filenameString.data(), filenameString.size());
-        hash.get_digest(digest);
-
-        return toString(digest);
-}
 
 std::string Hasher::toString(const md5::digest_type &digest){
         const auto charDigest = reinterpret_cast<const char *>(&digest);

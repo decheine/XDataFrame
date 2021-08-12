@@ -19,8 +19,6 @@
 class ServiceXHandler {
     public:
 
-
-
         // Gets the response string from the endpoint with request_id
         std::string FetchData(std::string request_id);
 
@@ -41,6 +39,7 @@ class ServiceXHandler {
 
         // Submit Request
         // Json::Value submitRequest(std::string submitJson)
+
     private:
         // helper functions for displaying yaml nodes and values
         void show_val(ryml::NodeRef n);

@@ -26,13 +26,6 @@ MCache::MCache() {
 
 }
 
-/**
- * @brief stub
- * 
- */
-void MCache::LoadCache(){
-    return;
-}
 
 /**
  * @brief checks if a hash entry exists
@@ -60,6 +53,11 @@ void MCache::SetCacheDir(std::string directory){
     cacheDir = directory;
 }
 
+/**
+ * @brief getter for cacheDir
+ * 
+ * @return std::string 
+ */
 std::string MCache::GetCacheDir(){
     return cacheDir;
 }

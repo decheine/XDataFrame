@@ -14,12 +14,15 @@
  * @brief Request object representing an instance of a ServiceX request
  * Contains the endpoint, token, type. 
  * 
+ * First created with a set of values, consisting of an endpoint and optional token, and type.
+ * Then a transformation request can be made with an input request json, and a pointer to
+ * an MCache. 
+ * 
  */
 // TODO: This feels like it is meant for a single request. However the API seems to imply one can
-// run multiple requests, etc. Redisgn API so object has clear purpose?
+// run multiple requests, etc. Redesign API so object has clear purpose?
 class Request {
     public:
-        // Request(const char* endpoint, const char* token, const char* apiType, Json::Value requestJson) {
         // This version takes as input a map of servicex.yaml. submit_request.json
         Request();
 
@@ -29,6 +32,7 @@ class Request {
         // Function utilized by curl methods to write down return values as they are received.
         static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data);
 
+        // DEPRECATED. Makes a curl request to ServiceX with current request_id and returns the response 
         std::string GetStatus();    
 
         void SetRequestID(std::string requestid);
@@ -40,22 +44,17 @@ class Request {
         // saves a json val to a file <request_id>.json
         int SaveJson(Json::Value val);
 
-        // Loads data into the request object. Called with initializer?
-        int LoadRequest();
-
-
-        Json::Value SubmitRequestJson;
-
+        // returns the private member "values"
         std::map<std::string, std::string> GetValues();
 
     private:
-        // TODO: Haha. Sadly, private members then become public API and have to be maintained! ;-)
-        // Who needs private members? public is just easier and I'm lazy
-        // Will change them over later
+        // Json value that stores the submit request data. 
+        Json::Value SubmitRequestJson;
 
+        // A job's returned request_id
         std::string request_id;
 
-
+        // values like endpoint, token, and type, parsed from the servicex.yaml file
         std::map<std::string, std::string> values;
 
 
