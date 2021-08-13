@@ -15,14 +15,12 @@ using boost::uuids::detail::md5;
 
 class Hasher {
     public:
-        std::string toString(const md5::digest_type &digest){
-            const auto charDigest = reinterpret_cast<const char *>(&digest);
-            std::string result;
-            boost::algorithm::hex(charDigest, charDigest + sizeof(md5::digest_type), std::back_inserter(result));
-            return result;
-        }
+        // converts an md5 digest to a readable string
+        std::string toString(const md5::digest_type &digest);
+
+        // returns the MD5 hash of a given string
         std::string GetHash(std::string string);
-        std::string GetHashOf(std::string filename);
+
     private:
         // Hashmap will map hashed submit.json's to their request_id's
         std::map<std::string, std::string> hashTable;

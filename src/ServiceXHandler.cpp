@@ -12,7 +12,7 @@
 // Yaml processor
 #include <c4/yml/preprocess.hpp>
 #include <c4/yml/std/string.hpp>
-#include <ryml/ryml.hpp>
+#include <ryml.hpp>
 
 // Curl
 #include <curl/curl.h>
@@ -54,6 +54,7 @@ void ServiceXHandler::show_val(c4::yml::NodeRef n)
     std::cout << n.val() << "\n";
 }
 
+// Used by curl to write retrieved data to memory
 static size_t writeFunction(void* ptr, size_t size, size_t nmemb, std::string* data) {
     data->append((char*)ptr, size * nmemb);
     return size * nmemb;
@@ -89,16 +90,30 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
     {
         std::cout << "file opened\n";
         std::string content;
-        content.assign( (std::istreambuf_iterator<char>(myfile) ),
-                (std::istreambuf_iterator<char>()    ) );   
+        
+        // content.assign(((std::istreambuf_iterator<char>(myfile)),
+        //         std::istreambuf_iterator<char>()));   
+        
+        content.assign((std::istreambuf_iterator<char>(myfile)),
+                    std::istreambuf_iterator<char>());
+
+        std::cout << "content assigned \n";
 
         // ryml can parse in situ (and read-only buffers too):
 
+        std::string testyaml = "api_endpoints:\n  - endpoint: https://cmsopendata.servicex.ssl-hep.org/\n    type: cms_run1_aod\n    token: xxx";
+
+
         // strcpy(src, content.c_str());
         // char src[];
-        c4::substr srcview = c4::to_substr(content); // a mutable view to the source buffer
+        c4::substr srcview = c4::to_substr(testyaml); // a mutable view to the source buffer
+                std::cout << "to substr \n";
+
+
+
         // there are also overloads for reusing the tree and parser
         ryml::Tree tree = ryml::parse(srcview);
+                std::cout << "parsed \n";
 
         // get a reference to the "foo" node
         ryml::NodeRef node = tree["api_endpoints"];
@@ -146,7 +161,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 }
 
 /**
- * @brief Deprecated. Fetched data from a hardcoded servicex endpoint.
+ * @brief Fetches data from a servicex endpoint specified by the request_id. 
  * 
  * @param request_id 
  * @return std::string 
@@ -194,7 +209,12 @@ std::string ServiceXHandler::FetchData(std::string request_id){
     return response_string;
 }
 
-
+/**
+ * @brief Checks the status of job <request_id> and waits until it's marked as "Complete"
+ * 
+ * @param request_id 
+ * @return int 
+ */
 int ServiceXHandler::WaitOnJob(std::string request_id){
 
     // Get status, check if it is "complete".
@@ -218,12 +238,17 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
     return 0;
 }
 
-
+/**
+ * @brief Saves a json value to a json file named <request_id>.json
+ * 
+ * @param value 
+ * @return int 
+ */
 int ServiceXHandler::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
     builder["indentation"] = "\t";
-
+    // TODO: verify that a request_id value is present and if not, display a warning
     std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
     std::string savedir = "" + value["request_id"].asString() + ".json";
     std::cout << "Saving file as " << savedir << std::endl;
@@ -366,8 +391,3 @@ std::vector<std::string> ServiceXHandler::GetMinIOData(std::string bucketName, s
     return filenames;
 }
 
-/**
- * @brief Stub
- * 
- */
-void HashSubmitJson(){}

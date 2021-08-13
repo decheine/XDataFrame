@@ -15,6 +15,7 @@ namespace fs = boost::filesystem;
  * 
  */
 MCache::MCache() {
+    // TODO: Get rid of printout debugging messages. Can move to log message...
     std::cout << "Object is being created" << std::endl;
     fs::path cachePath = fs::path(fs::temp_directory_path().string() + "/XDataFrame");
     if(fs::is_directory(cachePath)){
@@ -25,13 +26,6 @@ MCache::MCache() {
 
 }
 
-/**
- * @brief stub
- * 
- */
-void MCache::LoadCache(){
-    return;
-}
 
 /**
  * @brief checks if a hash entry exists
@@ -59,6 +53,11 @@ void MCache::SetCacheDir(std::string directory){
     cacheDir = directory;
 }
 
+/**
+ * @brief getter for cacheDir
+ * 
+ * @return std::string 
+ */
 std::string MCache::GetCacheDir(){
     return cacheDir;
 }
