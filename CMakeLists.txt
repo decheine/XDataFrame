@@ -24,8 +24,6 @@ find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread Multi
 
 find_package(Boost REQUIRED COMPONENTS system filesystem )
 
-
-
 include(FetchContent)
 
 # RYML
