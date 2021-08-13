@@ -4,7 +4,6 @@
 // ROOT includes
 #include <ROOT/RDataFrame.hxx>
 
-// TODO: Some comments on what this is.
 class RDataFrameHandler {
     public:
         // Vector of absolute paths of the files
@@ -27,8 +26,6 @@ class RDataFrameHandler {
 
 
         RDataFrameHandler();
-    private:
-        // ROOT::RDataFrame* RDataFrameObject;
 
 };
 

@@ -7,7 +7,6 @@
 #include <boost/filesystem.hpp>
 #include <map>
 
-// TODO: Some comments on what this is?
 /**
  * @brief MCache is a class used as a cache for downloading root files retrieved from
  * ServiceX jobs. 

@@ -14,7 +14,6 @@
 // ryml
 #include <ryml.hpp>
 
-// TODO: Comments! :-)
 // TODO: Make as much of this private as you can, including the indcludes!
 class ServiceXHandler {
     public:
@@ -36,9 +35,6 @@ class ServiceXHandler {
         
         //converts a given valid json string to a Json::Value
         static Json::Value JsonFromStr(std::string str);
-
-        // Submit Request
-        // Json::Value submitRequest(std::string submitJson)
 
     private:
         // helper functions for displaying yaml nodes and values
