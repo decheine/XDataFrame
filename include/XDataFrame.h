@@ -12,9 +12,9 @@
 /**
  * @brief XDataFrame root level class. 
  * 
- * In the future, this could be implemented similar to how RDataFrame is implemented,
- * where it is an object that represents an RDataFrame instead of using a fetching
- * method to do it. 
+ * Input a ServiceX input string to XDataFrame to submit the job and wait on the
+ * results of the transformation. It will return an RDataFrame object populated 
+ * with the resulting ROOT files from ServiceX.
  * 
  */
 
