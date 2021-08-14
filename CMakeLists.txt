@@ -34,9 +34,6 @@ FetchContent_Declare(ryml
 )
 FetchContent_MakeAvailable(ryml)
 
-# set(ryml_DIR ~/IRIS-HEP/vcpkg/packages/ryml_x64-linux/share/ryml)
-# find_package(ryml CONFIG REQUIRED)
-
 # JSONCPP
 FetchContent_Declare(jsoncpp
     GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp.git
@@ -44,9 +41,6 @@ FetchContent_Declare(jsoncpp
     GIT_SHALLOW FALSE  # ensure submodules are checked out
 )
 FetchContent_MakeAvailable(jsoncpp)
-
-# set(jsoncpp_DIR ~/IRIS-HEP/vcpkg/packages/jsoncpp_x64-linux/share/jsoncpp)
-# find_package(jsoncpp CONFIG REQUIRED)
 
 find_package(OpenSSL REQUIRED)
 

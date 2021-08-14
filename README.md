@@ -13,6 +13,17 @@ sudo apt-get install libboost-all-dev
 
 ```
 
+A list of all dependencies:
+
+- ROOT
+- Boost
+- OpenSSL
+- curl
+- [ryml](https://github.com/biojppm/rapidyaml)
+- [jsoncpp](https://github.com/open-source-parsers/jsoncpp)
+- [aws-sdk-cpp](https://github.com/aws/aws-sdk-cpp)
+
+The last three are taken care of by the CMakeLists.txt and fetched from their github repositories and built for your machine upon configuration and so are ready to be used to build this project during the build step.
 
 
 
