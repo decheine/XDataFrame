@@ -16,7 +16,7 @@ namespace fs = boost::filesystem;
  */
 MCache::MCache() {
     // TODO: Get rid of printout debugging messages. Can move to log message...
-    std::cout << "Object is being created" << std::endl;
+    // std::cout << "Object is being created" << std::endl;
     fs::path cachePath = fs::path(fs::temp_directory_path().string() + "/XDataFrame");
     if(fs::is_directory(cachePath)){
     } else {
@@ -109,13 +109,13 @@ bool MCache::WriteRequestID(std::string hash, std::string requestId){
     if(fs::is_directory(cachePath)){
         fs::path reqidFilePath = fs::path(cachePath.string() + "/" + hash + "/request_id.txt");
         if(fs::exists(reqidFilePath)){
-            std::cout << "Request_ID already written for " << hash << "\n Overwriting \n";
+            // std::cout << "Request_ID already written for " << hash << "\n Overwriting \n";
         }
-        std::cout << "opening " << reqidFilePath.string() << "\n";
+        // std::cout << "opening " << reqidFilePath.string() << "\n";
         std::ofstream myfile;
         myfile.open(reqidFilePath.string());
         if(myfile.is_open()){
-            std::cout << "writing " << requestId << " to file\n";
+            std::cout << "writing " << requestId << " to cache\n";
 
             myfile << requestId;
             myfile.close();

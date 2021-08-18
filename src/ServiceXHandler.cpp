@@ -154,9 +154,9 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
         
         std::cout << "returning properties\n";
         return properties;
-    } else std::cout << "Unable to open file\n"; 
+    } else std::cout << "Unable to open servicex.yaml. Proceeding with default endpoint.\n"; 
     
-    std::cout << " - Read servicex.yaml\n";
+    // std::cout << " - Read servicex.yaml\n";
     return properties;
 }
 

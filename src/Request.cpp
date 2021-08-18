@@ -90,7 +90,7 @@ size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string*
  * @return int 
  */
 int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
-    std::cout << "Reading json\n"; 
+    std::cout << "Sending ServiceX request...\n"; 
 
     const char* homeDir = getenv("HOME");
     // std::cout << "homedir: " << homeDir << "\n"; 
@@ -101,24 +101,27 @@ int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
     // std::ostringstream tmp;
     // tmp << myFile.rdbuf();
     // std::string s = tmp.str();
-    std::cout << "Getting hash of request string" << std::endl;
+    // std::cout << "Getting hash of request string" << std::endl;
     // const char* jsonObj = s.c_str();
 
     // Hash and check
     Hasher hasher;
     std::string hashString = hasher.GetHash(submitRequestJson);
-    std::cout << "got hash: " << hashString << "\n";
+    // std::cout << "got hash: " << hashString << "\n";
 
     
     // Look for hash entry on disk
     bool hashFound = true;
-    std::cout << "checking cache for " + hashString + "\n";
+    // std::cout << "checking cache for " + hashString + "\n";
+    std::cout << "Checking cache for previously fetched data.\n";
+
     hashFound = cache->EntryExists(hashString);
 
 
     if(hashFound == false){
+        std::cout << "Cache entry not found, submitting request\n";
         std::string requestURL = GetValues()["endpoint"] + "servicex/transformation";
-        std::cout << "api endpoint: " << requestURL << "\n";
+        // std::cout << "api endpoint: " << requestURL << "\n";
         // Store submitrequestjson to variable
         SubmitRequestJson = ServiceXHandler::JsonFromStr(submitRequestJson);
 
@@ -130,7 +133,7 @@ int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
         curl_global_init(CURL_GLOBAL_DEFAULT);
 
         // GET request
-        std::cout << "Doing POST request\n";
+        // std::cout << "Doing POST request\n";
         CURL *curl = curl_easy_init();
         std::string response_string;
         CURLcode res = CURLE_FAILED_INIT;
@@ -151,7 +154,7 @@ int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
                 // header_string = curl_slist_append(header_string, "Expect:");
                 header_string = curl_slist_append(header_string, "Content-Type: application/json");
                 // header_string = curl_slist_append(header_string, "charset: utf-8");
-                std::cout << "Set up headers\n";
+                // std::cout << "Set up headers\n";
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_string);
                 curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "POST");
             
@@ -159,17 +162,17 @@ int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
 
                 // curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 
-                std::cout << "Trying write function\n";
+                // std::cout << "Trying write function\n";
 
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
                 curl_easy_setopt(curl, CURLOPT_POSTFIELDS, szJsonData);
 
-                std::cout << "Performing curl request\n";
+                // std::cout << "Performing curl request\n";
                 res = curl_easy_perform(curl);
-                std::cout << "Finished curl request\n";
+                // std::cout << "Finished curl request\n";
                 curl_slist_free_all(header_string);
-                std::cout << response_string;
+                std::cout << "Response: " << response_string << "\n";
                 curl_easy_cleanup(curl);
                 curl_global_cleanup();
                 curl = NULL;
@@ -185,7 +188,7 @@ int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
         // All finished, so set the Request variables
         // Make the response into a Json object
         Json::Value responseJson = ServiceXHandler::JsonFromStr(response_string);
-        std::cout << "setting request_id " << responseJson["request_id"].asCString() << "\n";
+        // std::cout << "setting request_id " << responseJson["request_id"].asCString() << "\n";
         request_id = responseJson["request_id"].asCString();
         cache->CreateCacheEntry(hashString);
         cache->WriteRequestID(hashString, request_id);

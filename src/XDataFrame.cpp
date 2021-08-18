@@ -46,7 +46,7 @@
 #include "XDataFrame.h"
 
 ROOT::RDataFrame XDataFrame(std::string inputString){
-    std::cout << "begin\n";
+    std::cout << "Beginning ServiceX to RDataFrame interface.\n";
     ServiceXHandler xHandler;
     std::vector<std::string> userYaml;
     std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
@@ -58,16 +58,14 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
 
     MCache cache;
 
-    //Change this to 
-    testRequest.SendRequest(inputString, &cache);
-    // std::cout << "Saving json of response\n"; 
-    // testRequest.SaveJson(testRequest.SubmitRequestJson);
+    std::cout << "Data transformation request:\n" << inputString << "\n";
 
+    testRequest.SendRequest(inputString, &cache);
 
     Hasher hasher;
     std::string hashVal;
     hashVal = hasher.GetHash(inputString);
-    std::cout << "request_id: " << testRequest.GetRequestID() << "\n";
+    // std::cout << "request_id: " << testRequest.GetRequestID() << "\n";
     std::string pathkey;
     pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
     // Only call this if user specifically wants to refresh the data or if there are no data files. 

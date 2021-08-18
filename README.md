@@ -70,6 +70,29 @@ To run the demo, simply run
 ./Demo
 ```
 
+## Docker Demo
+
+To enter the demo image, from the top level of the repository filter, run
+
+```
+docker run -it xdataframe-docker:latest /bin/bash
+```
+
+It should take you into a new bash prompt. From there, to run the demo, do
+
+```
+./build/bin/Demo
+```
+
+And wait for it to complete. The results will be output to a pdf titled "demoFilter1.pdf". If you want to copy that file from the container to your local machine, from a new terminal window, run (TODO)
+
+```
+docker cp <container id>:/usr/src/xdataframe/demoFilter1.pdf ~
+```
+
+This copies the file to your home directory. You could replace "~" with whatever destination you would want.
+
+Remark that there are still some bugs, so if there are jobs that are returning Fatal, exit the image and try running again.
 
 ## Notes
 
