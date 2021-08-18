@@ -10,6 +10,15 @@ FROM ubuntu:20.04
 ENV TZ=US/Central
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+
+# These commands copy your files into the specified directory in the image
+# and set that as the working location
+COPY . /usr/src/xdataframe
+WORKDIR /usr/src/xdataframe
+
+# shell
+SHELL ["/bin/bash","-c","-l"]
+
 RUN DEBIAN_FRONTEND=noninteractive \
     TZ=US/Chicago \
     apt-get update && apt-get -y dist-upgrade &&  \
@@ -21,35 +30,30 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get install -y libx11-dev libxpm-dev && \
     apt-get install -y libxft-dev libxext-dev python libssl-dev && \
     apt-get install -y libcurl4-openssl-dev && \
-    apt-get install -y libboost-all-dev
+    apt-get install -y libboost-all-dev && \
+    wget https://root.cern/download/root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
+    tar -xzvf root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
+    echo /usr/src/xdataframe/root/lib >> /etc/ld.so.conf && \
+    ldconfig && \
+    /bin/bash -c 'source root/bin/thisroot.sh'
 
+ENV ROOTSYS /usr/src/xdataframe/root
+ENV PATH="$ROOTSYS/bin:$PATH"
+ENV LD_LIBRARY_PATH="$ROOTSYS/lib:$LD_LIBRARY_PATH"
 
-# shell
-SHELL ["/bin/bash","-c","-l"]
+RUN rm -r build && \
+    mkdir build && \
+    /bin/bash -c 'source root/bin/thisroot.sh' && cd build && cmake -DBUILD_ONLY="s3" .. && cmake --build .
 
 # Getting and installing ROOT
-RUN wget https://root.cern/download/root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
-RUN tar -xzvf root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
-RUN /bin/bash -c 'source root/bin/thisroot.sh'
+# RUN wget https://root.cern/download/root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
+# RUN tar -xzvf root_v6.24.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
+# RUN /bin/bash -c 'source root/bin/thisroot.sh'
 
-
-
-
-# These commands copy your files into the specified directory in the image
-# and set that as the working location
-COPY . /usr/src/xdataframe
-WORKDIR /usr/src/xdataframe
-
-RUN rm -r build
-
-RUN mkdir build && cd build && cmake ..
-
-RUN cd build && cmake -DBUILD_ONLY="s3" --build .
-
-
+# ENTRYPOINT [ "/entrypoint.sh" ]
 
 # This command runs your application, comment out this line to compile only
-# CMD["./usr/src/xdataframe/build/bin/Demo"]
-CMD ["ls","-l", "build"]
+CMD ["./build/bin/Demo"]
+# CMD [""]
 
-LABEL Name=xdataframe Version=0.0.1
+LABEL Name=xdataframe Version=1.0.0

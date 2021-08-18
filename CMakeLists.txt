@@ -138,7 +138,6 @@ target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
 )
 
 target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
-                                        aws-cpp-sdk-dynamodb
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
                                         ryml
@@ -154,9 +153,9 @@ add_executable(Demo demo/demo.cxx)
 target_link_libraries(Demo PUBLIC XDataFrameLib)
 
 # Setting the application directories, like bin and lib
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Add compile flags
 SET(GCC_COVERAGE_COMPILE_FLAGS "-DBOOST_NO_CXX11_SCOPED_ENUMS")
