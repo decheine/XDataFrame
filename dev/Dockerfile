@@ -49,7 +49,7 @@ RUN cd build && cmake -DBUILD_ONLY="s3" --build .
 
 
 # This command runs your application, comment out this line to compile only
-CMD["/"]
+# CMD["./usr/src/xdataframe/build/bin/Demo"]
 CMD ["ls","-l", "build"]
 
 LABEL Name=xdataframe Version=0.0.1

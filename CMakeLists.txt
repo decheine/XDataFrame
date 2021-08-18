@@ -49,7 +49,7 @@ find_package( CURL REQUIRED )
 set(BUILD_SHARED_LIBS ON CACHE STRING "Link to shared libraries by default.")
 
 
-message("- Fetching aws-sdk-cpp")
+message("- Fetching aws-sdk-cpp. This could take a few minutes...")
 
 FetchContent_Declare(aws-sdk-cpp
         GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp

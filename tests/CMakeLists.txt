@@ -1,7 +1,5 @@
 message("-- Tests CMakeLists.txt")
 
-include(/home/nick/IRIS-HEP/vcpkg/scripts/buildsystems/vcpkg.cmake)
-
 # find_package (Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
 include_directories (${TEST_SOURCE_DIR}/src
                      )
