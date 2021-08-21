@@ -79,7 +79,13 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     updateString = xHandler.FetchData(testRequest.GetRequestID());
     // std::cout << "Response: " + updateString + "\n";
 
-    xHandler.WaitOnJob(testRequest.GetRequestID());
+    int waitResult;
+    waitResult = xHandler.WaitOnJob(testRequest.GetRequestID());
+    if(waitResult != 0){
+        std::cerr << "Job did not return complete. Exiting.";
+        ROOT::RDataFrame d("", "");
+        return d;
+    }
 
     std::vector<std::string> filenameList;
     filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);

@@ -232,6 +232,12 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
         jsonStatus = JsonFromStr(tmpStatus);
         isCompleted = jsonStatus["status"].asCString();
         std::cout << "Job status of " + request_id + ":\t" + jsonStatus["status"].asCString() << std::endl;
+        if(jsonStatus == "Complete"){
+            return 0;
+        } else if (jsonStatus == "Fatal"){
+            std::cerr << "Error: ServiceX job ended Fatal. Exiting...\n";
+            return 1;
+        }
     }
 
 

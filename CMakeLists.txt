@@ -148,9 +148,11 @@ target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
 #############
 # Executable
 
-add_executable(Demo demo/demo.cxx)
+add_subdirectory(demo)
 
-target_link_libraries(Demo PUBLIC XDataFrameLib)
+# add_executable(Demo demo/demo.cxx)
+
+# target_link_libraries(Demo PUBLIC XDataFrameLib)
 
 # Setting the application directories, like bin and lib
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
