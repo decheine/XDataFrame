@@ -10,7 +10,6 @@ Before building, some dependencies need to be installed. For Ubuntu, they are
 ```
 sudo apt-get install libcurl4-openssl-dev
 sudo apt-get install libboost-all-dev
-
 ```
 
 A list of all dependencies:
