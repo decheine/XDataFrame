@@ -72,7 +72,12 @@ To run the demo, simply run
 
 ## Docker Demo
 
-To enter the demo image, from the top level of the repository filter, run
+The demo image is located on docker hub [here](https://hub.docker.com/repository/docker/decheine/xdataframe-demo-image).
+
+Once the image has been pulled, you can run it from the docker application. Wait until it has completed and you can follow the following steps to explore it further. NOTE: Sometimes the ServiceX job returns "Fatal", the program should exit with an error when this happens, but when it does, simply stop and restart the image, and it should work. 
+
+
+To enter the demo image
 
 ```
 docker run -it xdataframe-docker:latest /bin/bash
