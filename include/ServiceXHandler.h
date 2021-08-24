@@ -1,4 +1,4 @@
-//File: ServiceXHandler.h
+// File: ServiceXHandler.h
 #ifndef SERVICEXHANDLER_H
 #define SERVICEXHANDLER_H
 
@@ -17,37 +17,32 @@
 
 // TODO: Make as much of this private as you can, including the indcludes!
 class ServiceXHandler {
-    public:
+public:
+   // Gets the response string from the endpoint with request_id
+   std::string FetchData(std::string request_id);
 
-        // Gets the response string from the endpoint with request_id
-        std::string FetchData(std::string request_id);
+   // Checks the status of job <request_id> and waits until it's marked as "Complete"
+   Int_t WaitOnJob(std::string request_id);
 
-        // Checks the status of job <request_id> and waits until it's marked as "Complete"
-        Int_t WaitOnJob(std::string request_id);
+   // gets the status of the job request_id
+   void getStatus(std::string request_id);
 
-        // gets the status of the job request_id
-        void getStatus(std::string request_id);
+   // Gets the minio bucket data from a given bucket and a download location specified by pathkey
+   std::vector<std::string> GetMinIOData(std::string bucketName, std::string pathkey);
 
-        // Gets the minio bucket data from a given bucket and a download location specified by pathkey
-        std::vector<std::string> GetMinIOData(std::string bucketName, std::string pathkey);
+   // Parses a yaml file at targetName to a string-string map. Gets the endpoint, type, and token
+   std::map<std::string, std::string> parseYaml(std::string targetName);
 
-        // Parses a yaml file at targetName to a string-string map. Gets the endpoint, type, and token
-        std::map<std::string, std::string> parseYaml(std::string targetName);
-        
-        //converts a given valid json string to a Json::Value
-        static Json::Value JsonFromStr(std::string str);
+   // converts a given valid json string to a Json::Value
+   static Json::Value JsonFromStr(std::string str);
 
-    private:
-        // helper functions for displaying yaml nodes and values
-        void show_val(ryml::NodeRef n);
-        void show_keyval(ryml::NodeRef n);
-    
-        // Saves a json val to a file named val["request_id"].json
-        Int_t SaveJson(Json::Value val);
+private:
+   // helper functions for displaying yaml nodes and values
+   void show_val(ryml::NodeRef n);
+   void show_keyval(ryml::NodeRef n);
 
-
-
+   // Saves a json val to a file named val["request_id"].json
+   Int_t SaveJson(Json::Value val);
 };
-
 
 #endif

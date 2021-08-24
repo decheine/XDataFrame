@@ -2,7 +2,7 @@
 // Standard includes
 #include <stdlib.h>
 #include <iostream>
-#include <string> 
+#include <string>
 
 // ROOT
 #include "TF1.h"
@@ -42,61 +42,64 @@
 #include "Hasher.h"
 #include "MCache.h"
 
-
 #include "XDataFrame.h"
 
-ROOT::RDataFrame XDataFrame(std::string inputString){
-    std::cout << "Beginning ServiceX to RDataFrame interface.\n";
-    ServiceXHandler xHandler;
-    std::vector<std::string> userYaml;
-    std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Main XDataFrame method that runs through all the processes of
+/// sending the request, recieving, and returning the RDataFrame
+ROOT::RDataFrame XDataFrame(std::string inputString)
+{
+   std::cout << "Beginning ServiceX to RDataFrame interface.\n";
+   ServiceXHandler                    xHandler;
+   std::vector<std::string>           userYaml;
+   std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
-    // Initialize a Request object.
-    // Want to be able to extend functionality and add args to XDataFrame() to control behavior
-    // of this
-    Request testRequest(values);
+   // Initialize a Request object.
+   // Want to be able to extend functionality and add args to XDataFrame() to control behavior
+   // of this
+   Request testRequest(values);
 
-    MCache cache;
+   MCache cache;
 
-    std::cout << "Data transformation request:\n" << inputString << "\n";
+   std::cout << "Data transformation request:\n" << inputString << "\n";
 
-    testRequest.SendRequest(inputString, &cache);
+   testRequest.SendRequest(inputString, &cache);
 
-    Hasher hasher;
-    std::string hashVal;
-    hashVal = hasher.GetHash(inputString);
-    // std::cout << "request_id: " << testRequest.GetRequestID() << "\n";
-    std::string pathkey;
-    pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
-    // Only call this if user specifically wants to refresh the data or if there are no data files. 
-    // For now, do it every time. 
+   Hasher      hasher;
+   std::string hashVal;
+   hashVal = hasher.GetHash(inputString);
+   // std::cout << "request_id: " << testRequest.GetRequestID() << "\n";
+   std::string pathkey;
+   pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
+   // Only call this if user specifically wants to refresh the data or if there are no data files.
+   // For now, do it every time.
 
-    // Wait until job is done.
-    
-    // Check on status of job
-    std::cout << "Checking status of job " + testRequest.GetRequestID() + "\n";
-    std::string updateString;
-    updateString = xHandler.FetchData(testRequest.GetRequestID());
-    // std::cout << "Response: " + updateString + "\n";
+   // Wait until job is done.
 
-    int waitResult;
-    waitResult = xHandler.WaitOnJob(testRequest.GetRequestID());
-    if(waitResult != 0){
-        std::cerr << "Job did not return complete. Exiting.\n";
-        std::exit(1);
-        // ROOT::RDataFrame d("", "");
-        // return d;
-    }
+   // Check on status of job
+   std::cout << "Checking status of job " + testRequest.GetRequestID() + "\n";
+   std::string updateString;
+   updateString = xHandler.FetchData(testRequest.GetRequestID());
+   // std::cout << "Response: " + updateString + "\n";
 
-    std::vector<std::string> filenameList;
-    filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);
+   int waitResult;
+   waitResult = xHandler.WaitOnJob(testRequest.GetRequestID());
+   if (waitResult != 0) {
+      std::cerr << "Job did not return complete. Exiting.\n";
+      std::exit(1);
+      // ROOT::RDataFrame d("", "");
+      // return d;
+   }
 
-    // RDataFrame Part
+   std::vector<std::string> filenameList;
+   filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);
 
-    RDataFrameHandler rdfHandler;
-    rdfHandler.AddFiles(filenameList);
-    ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
+   // RDataFrame Part
 
-    std::cout << "Finished\n";
-    return myDataFrame;
+   RDataFrameHandler rdfHandler;
+   rdfHandler.AddFiles(filenameList);
+   ROOT::RDataFrame myDataFrame = rdfHandler.CreateRDataFrame();
+
+   std::cout << "Finished\n";
+   return myDataFrame;
 }
