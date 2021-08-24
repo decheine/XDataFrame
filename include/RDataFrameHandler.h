@@ -3,6 +3,7 @@
 
 // ROOT includes
 #include <ROOT/RDataFrame.hxx>
+#include <Rtypes.h>
 
 class RDataFrameHandler {
     public:
@@ -10,10 +11,10 @@ class RDataFrameHandler {
         std::vector<std::string> filenames;
         
         // adds a file to "filenames"
-        int AddFile(std::string filename);
+        Int_t AddFile(std::string filename);
 
         // adds multiple files to "filenames"
-        int AddFiles(std::vector<std::string> filenames);
+        Int_t AddFiles(std::vector<std::string> filenames);
 
         // constructs and returns the RDataFrame based on
         // current files in "filenames"

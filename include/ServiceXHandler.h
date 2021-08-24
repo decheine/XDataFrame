@@ -4,6 +4,7 @@
 
 // ROOT includes
 #include <TFile.h>
+#include <Rtypes.h>
 
 // Jsoncpp
 #include <json/value.h>
@@ -22,7 +23,7 @@ class ServiceXHandler {
         std::string FetchData(std::string request_id);
 
         // Checks the status of job <request_id> and waits until it's marked as "Complete"
-        int WaitOnJob(std::string request_id);
+        Int_t WaitOnJob(std::string request_id);
 
         // gets the status of the job request_id
         void getStatus(std::string request_id);
@@ -42,7 +43,7 @@ class ServiceXHandler {
         void show_keyval(ryml::NodeRef n);
     
         // Saves a json val to a file named val["request_id"].json
-        int SaveJson(Json::Value val);
+        Int_t SaveJson(Json::Value val);
 
 
 

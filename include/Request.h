@@ -2,6 +2,10 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 
+// ROOT
+#include <Rtypes.h>
+
+
 // Jsoncpp
 #include <json/value.h>
 #include <json/json.h>
@@ -39,10 +43,10 @@ class Request {
         std::string GetRequestID();
 
         // Submission method. Call to send the curl request to ServiceX with a submit_request.json
-        int SendRequest(std::string submitRequestJson, MCache* cache);
+        Int_t SendRequest(std::string submitRequestJson, MCache* cache);
 
         // saves a json val to a file <request_id>.json
-        int SaveJson(Json::Value val);
+        Int_t SaveJson(Json::Value val);
 
         // returns the private member "values"
         std::map<std::string, std::string> GetValues();

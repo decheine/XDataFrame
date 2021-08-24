@@ -87,9 +87,9 @@ size_t Request::writeFunction(void* ptr, size_t size, size_t nmemb, std::string*
  * @param values 
  * @param submitRequestJson 
  * @param cache 
- * @return int 
+ * @return Int_t 
  */
-int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
+Int_t Request::SendRequest(std::string submitRequestJson, MCache* cache) {
     std::cout << "Sending ServiceX request...\n"; 
 
     const char* homeDir = getenv("HOME");
@@ -215,9 +215,9 @@ int Request::SendRequest(std::string submitRequestJson, MCache* cache) {
  * @brief Saves a json value to a json file named <request_id>.json
  * 
  * @param value 
- * @return int 
+ * @return Int_t 
  */
-int Request::SaveJson(Json::Value value){
+Int_t Request::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
     builder["indentation"] = "\t";

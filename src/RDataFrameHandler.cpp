@@ -85,9 +85,9 @@ std::string RDataFrameHandler::GetTreeName(std::string filepath){
  * Return 0 if no problems and the file exists.
  * Return 1 if the file does not exist
  * @param filename 
- * @return int 
+ * @return Int_t 
  */
-int RDataFrameHandler::AddFile(std::string filename){
+Int_t RDataFrameHandler::AddFile(std::string filename){
     filenames.push_back(filename);
     // Check if exists first
     return 0;
@@ -97,7 +97,7 @@ int RDataFrameHandler::AddFile(std::string filename){
  * @brief adds multiple files
  * 
  */
-int RDataFrameHandler::AddFiles(std::vector<std::string> filenames){
+Int_t RDataFrameHandler::AddFiles(std::vector<std::string> filenames){
     for (auto iter = filenames.begin(); iter != filenames.end(); ++iter)
     {  
         // If iter is a valid file:

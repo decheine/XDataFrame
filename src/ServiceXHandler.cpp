@@ -213,9 +213,9 @@ std::string ServiceXHandler::FetchData(std::string request_id){
  * @brief Checks the status of job <request_id> and waits until it's marked as "Complete"
  * 
  * @param request_id 
- * @return int 
+ * @return Int_t
  */
-int ServiceXHandler::WaitOnJob(std::string request_id){
+Int_t ServiceXHandler::WaitOnJob(std::string request_id){
 
     // Get status, check if it is "complete".
 
@@ -224,7 +224,7 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
     Json::Value jsonStatus;
     std::string isCompleted = "";
     
-    unsigned int microsecond = 1000000;
+    Int_t microsecond = 1000000;
 
     while(isCompleted != "Complete"){
         usleep(5 * microsecond);//sleeps for 5 second
@@ -248,9 +248,9 @@ int ServiceXHandler::WaitOnJob(std::string request_id){
  * @brief Saves a json value to a json file named <request_id>.json
  * 
  * @param value 
- * @return int 
+ * @return Int_t
  */
-int ServiceXHandler::SaveJson(Json::Value value){
+Int_t ServiceXHandler::SaveJson(Json::Value value){
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
     builder["indentation"] = "\t";
