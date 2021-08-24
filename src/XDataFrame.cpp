@@ -82,9 +82,10 @@ ROOT::RDataFrame XDataFrame(std::string inputString){
     int waitResult;
     waitResult = xHandler.WaitOnJob(testRequest.GetRequestID());
     if(waitResult != 0){
-        std::cerr << "Job did not return complete. Exiting.";
-        ROOT::RDataFrame d("", "");
-        return d;
+        std::cerr << "Job did not return complete. Exiting.\n";
+        std::exit(1);
+        // ROOT::RDataFrame d("", "");
+        // return d;
     }
 
     std::vector<std::string> filenameList;

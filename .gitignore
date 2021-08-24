@@ -45,3 +45,4 @@ cmake*/
 # other
 servicex.yaml
 workspace.code-workspace
+.clang-format
