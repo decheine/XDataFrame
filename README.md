@@ -69,7 +69,7 @@ To run the demo, simply run
 ./Demo
 ```
 
-## Docker Demo
+## Try it out with the Docker Demo
 
 The demo image is located on docker hub [here](https://hub.docker.com/repository/docker/decheine/xdataframe-demo-image).
 
