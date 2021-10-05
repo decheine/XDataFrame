@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
     std::cout << "\n\t\t docker cp <container id>:/usr/src/xdataframe/demoFilter1.pdf ~\n\n";
     std::cout << "You can get the container id from running \n\n ";
     std::cout << "\t\t docker container ls  | grep 'decheine/xdataframe-demo-image' | awk '{print $1}' \n\n";
-    std::cout << "In a new terminal window.\n\n ";
+    std::cout << "In a new terminal window.\n\n Thank you for trying this demo!\n ";
 
     return 0;
 }
