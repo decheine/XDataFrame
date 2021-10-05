@@ -257,8 +257,8 @@ Json::Value ServiceXHandler::getRequestStatus(std::string request_id){
    }
    // make json from response string
    Json::Value jsonVal = JsonFromStr(response_string);
-   std::cout << "file remaining: " << jsonVal["files-remaining"] << "\n";
-   return response_string;
+
+   return jsonVal;
 }
 
 
@@ -277,16 +277,31 @@ Int_t ServiceXHandler::WaitOnJob(std::string request_id)
    // Get status
    std::string tmpStatus;
    Json::Value jsonStatus;
+   Json::Value jsonRequestStats;
    std::string isCompleted = "";
-
    Int_t microsecond = 1000000;
+
+   std::cout << "getting stats\n";
+   jsonRequestStats = getRequestStatus(request_id);
+   Int_t remainingFiles = jsonRequestStats["files-remaining"].asInt();
+   Int_t processedFiles = jsonRequestStats["files-processed"].asInt();
+   Int_t skippedFiles = jsonRequestStats["files-skipped"].asInt();
+   int totalFiles = remainingFiles + processedFiles + skippedFiles;
+
 
    while (isCompleted != "Complete") {
       usleep(5 * microsecond); // sleeps for 5 second
       tmpStatus   = FetchData(request_id);
       jsonStatus  = JsonFromStr(tmpStatus);
       isCompleted = jsonStatus["status"].asCString();
-      std::cout << "Job status of " + request_id + ":\t" + jsonStatus["status"].asCString() << std::endl;
+      jsonRequestStats = getRequestStatus(request_id);
+
+      remainingFiles = jsonRequestStats["files-remaining"].asInt();
+      processedFiles = jsonRequestStats["files-processed"].asInt();
+      skippedFiles = jsonRequestStats["files-skipped"].asInt();
+      totalFiles = remainingFiles + processedFiles + skippedFiles;
+
+      std::cout << "Job status of " + request_id + ":\t" + jsonStatus["status"].asCString() + "\t| " + "Files: " + processedFiles + " of " + totalFiles  << std::endl;
       if (jsonStatus["status"].asCString() == "Complete") {
          return 0;
       } else if (jsonStatus["status"].asCString() == "Fatal") {
@@ -294,6 +309,7 @@ Int_t ServiceXHandler::WaitOnJob(std::string request_id)
          return 1;
       } else if (jsonStatus["status"].asCString()== "Canceled") {
          std::cerr << "Error: ServiceX job was canceled before completion. Exiting...\n";
+         return 1;
       }
    }
 
