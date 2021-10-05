@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
     ROOT::RDataFrame mydf = XDataFrame(requestString);
 
     std::cout << "Filtering\n";
-    std::cout << "Using filter mydf.Filter(\"mu_pt > 10\").Filter(\"mu_pt < 1000\").Histo1D(\"mu_pt\");"
+    std::cout << "Using filter mydf.Filter(\"mu_pt > 10\").Filter(\"mu_pt < 1000\").Histo1D(\"mu_pt\");";
 
     // Setting up canvas to draw on
     TCanvas* canvas = new TCanvas();
