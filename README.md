@@ -69,7 +69,7 @@ To run the demo, simply run
 ./Demo
 ```
 
-## Docker Demo
+## Try it out with the Docker Demo
 
 The demo image is located on docker hub [here](https://hub.docker.com/repository/docker/decheine/xdataframe-demo-image).
 
@@ -86,7 +86,7 @@ Once the image has been pulled, you can run it from the docker application. Wait
 To enter the demo image
 
 ```
-docker run -it xdataframe-docker:latest /bin/bash
+docker run -it xdataframe-demo-image:latest /bin/bash
 ```
 
 It should take you into a new bash prompt. From there, to run the demo, do
