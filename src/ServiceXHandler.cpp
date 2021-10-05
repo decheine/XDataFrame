@@ -210,6 +210,58 @@ std::string ServiceXHandler::FetchData(std::string request_id)
    return response_string;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @brief Get request current stats for completed files, total files, time
+ *
+ * @param request_id
+ * @return Int_t
+ */
+Json::Value ServiceXHandler::getRequestStatus(std::string request_id){
+   // CURL *curl = curl_easy_init();
+   // std::string request_id = "345974d4-d2ec-49bb-bef2-6683b7e461d5";
+   std::string serviceXURL = "https://cmsopendata.servicex.ssl-hep.org/servicex/transformation/";
+   std::string tmpURL      = (serviceXURL + request_id + "/status");
+   // std::cout << "tmpurl: " << tmpURL << "\n";
+   const char *targetURL = tmpURL.c_str();
+
+   curl_global_init(CURL_GLOBAL_DEFAULT);
+
+   // GET request
+   // std::cout << "Doing GET request\n";
+   CURL *      curl = curl_easy_init();
+   std::string response_string;
+   std::string header_string;
+   // std::cout << "targeturl: " << targetURL << "\n";
+   if (curl) {
+      curl_easy_setopt(curl, CURLOPT_URL, targetURL);
+      curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
+      curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 50L);
+      curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, -1L);
+      // curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
+
+      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
+      curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
+      // curl_easy_setopt(curl, CURLOPT_HEADERDATA, &header_string);
+
+      // curl_easy_setopt(curl, CURLOPT_VERBOSE, 2L);
+
+      // std::cout << "easy perform\n";
+      curl_easy_perform(curl);
+      // std::cout << "done easy perform\n";
+      // std::cout << response_string;
+      curl_easy_cleanup(curl);
+      curl_global_cleanup();
+      curl = NULL;
+   }
+   // make json from response string
+   Json::Value jsonVal = JsonFromStr(response_string);
+   std::cout << "file remaining: " << jsonVal["files-remaining"] << "\n";
+   return response_string;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * @brief Checks the status of job <request_id> and waits until it's marked as "Complete"
@@ -240,6 +292,8 @@ Int_t ServiceXHandler::WaitOnJob(std::string request_id)
       } else if (jsonStatus["status"].asCString() == "Fatal") {
          std::cerr << "Error: ServiceX job ended Fatal. Exiting...\n";
          return 1;
+      } else if (jsonStatus["status"].asCString()== "Canceled") {
+         std::cerr << "Error: ServiceX job was canceled before completion. Exiting...\n";
       }
    }
 

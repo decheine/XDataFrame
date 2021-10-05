@@ -24,8 +24,11 @@ public:
    // Checks the status of job <request_id> and waits until it's marked as "Complete"
    Int_t WaitOnJob(std::string request_id);
 
-   // gets the status of the job request_id
+   // gets the status of the job request_id - deprecated
    void getStatus(std::string request_id);
+
+   // get request current stats for completed files, total files, time
+   Json::Value getRequestStatus(std::string request_id);
 
    // Gets the minio bucket data from a given bucket and a download location specified by pathkey
    std::vector<std::string> GetMinIOData(std::string bucketName, std::string pathkey);
