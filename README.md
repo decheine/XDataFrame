@@ -24,8 +24,6 @@ A list of all dependencies:
 
 The last three are taken care of by the CMakeLists.txt and fetched from their github repositories and built for your machine upon configuration and so are ready to be used to build this project during the build step.
 
-
-
 ### Building
 
 To install the project you can create an optional folder for it to include other projects in that will utilize XDataFrame, to keep it all together.
