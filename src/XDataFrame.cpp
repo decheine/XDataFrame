@@ -127,9 +127,6 @@ ROOT::RDataFrame XDataFrame(std::string inputString, std::string options)
 
    
 
-   
-   
-
    // RDataFrame Part
 
    RDataFrameHandler rdfHandler;

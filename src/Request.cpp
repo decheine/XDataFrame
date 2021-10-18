@@ -161,11 +161,6 @@ Int_t Request::SendRequest(std::string submitRequestJson, MCache *cache)
       request_id = reqId;
       // fs::path reqidPath = fs::path(cache->GetCacheDir() + "/" + hashString);
 
-      // TEMPORARY FOR DEBUGGING
-      std::cout << "computiong checksums\n";
-
-      // cache->ComputeChecksums(hashString);
-
       SetInCache(true);
 
       return 0;
