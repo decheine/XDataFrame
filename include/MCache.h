@@ -35,9 +35,18 @@ public:
    // Checks if a given hash entry exists in the cache already
    bool EntryExists(std::string hash);
 
+   // Compute checksums after downloading for the first time and stored to a file in the cache directory.
+   void ComputeChecksums(std::string hash);
+
    MCache(); // Constructor
 
 private:
+   // Writes checksum map to a file
+   int WriteFile(std::string fname, std::map<std::string, std::string> *m);
+
+   // Reads checksum map from file
+   int ReadFile(std::string fname, std::map<std::string, std::string> *m);
+
    // Hash map of request_id's and hashed submission strings
    std::map<std::string, std::string> hashTable;
 
