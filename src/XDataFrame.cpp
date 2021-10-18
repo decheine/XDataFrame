@@ -51,14 +51,43 @@
 ///   Args: 
 ///      "-d": redownload files regardless of cache status.
 ///
-ROOT::RDataFrame XDataFrame(std::string inputString, std::string args)
+ROOT::RDataFrame XDataFrame(std::string inputString, std::string options)
 {
    std::cout << "Beginning ServiceX to RDataFrame interface.\n";
    ServiceXHandler                    xHandler;
    std::vector<std::string>           userYaml;
    std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
 
-   
+   std::string space_delimiter = " ";
+   std::vector<std::string> args;
+
+   // if(options.find(space_delimiter) < options.length()){
+   //    // found
+   // } else{
+   //    // not found 
+   //    if(options.length() > 0){ // if there's only 1 argument
+   //       args.push_back(options);   
+   //    }
+   // }
+
+   // size_t pos = 0;
+   // while ((pos = options.find(space_delimiter)) != std::string::npos) {
+   //    args.push_back(options.substr(0, pos));
+   //    options.erase(0, pos + space_delimiter.length());
+   // }
+   char *token = strtok(const_cast<char*>(options.c_str()), space_delimiter.c_str()); 
+   while (token != nullptr) 
+   { 
+      args.push_back(std::string(token)); 
+      token = strtok(nullptr, space_delimiter.c_str()); 
+   } 
+
+
+
+   for (const auto &str : args) {
+      std::cout << str << std::endl;
+   }
+
 
    // Initialize a Request object.
    // Want to be able to extend functionality and add args to XDataFrame() to control behavior

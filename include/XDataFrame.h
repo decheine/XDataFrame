@@ -15,7 +15,7 @@
  * with the resulting ROOT files from ServiceX.
  *
  */
-
+ROOT::RDataFrame XDataFrame(std::string inputString);
 ROOT::RDataFrame XDataFrame(std::string inputString, std::string args);
 
 #endif
