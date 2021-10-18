@@ -78,7 +78,6 @@ ROOT::RDataFrame XDataFrame(std::string inputString, std::string options)
       }
    }
 
-
    // Initialize a Request object.
    // Want to be able to extend functionality and add args to XDataFrame() to control behavior
    // of this
