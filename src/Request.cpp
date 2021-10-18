@@ -68,7 +68,6 @@ Int_t Request::SendRequest(std::string submitRequestJson, MCache *cache)
 
    // Look for hash entry on disk
    bool hashFound = true;
-   // std::cout << "checking cache for " + hashString + "\n";
    std::cout << "Checking cache for previously fetched data.\n";
 
    hashFound = cache->EntryExists(hashString);
