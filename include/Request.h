@@ -47,7 +47,15 @@ public:
    // returns the private member "values"
    std::map<std::string, std::string> GetValues();
 
+   // setter for inCache
+   void SetInCache(bool isWritten);
+   // Getter for inCache
+   bool IsInCache();
+
 private:
+   // boolean to mark if the request has been written to the cache
+   bool inCache;
+
    // Json value that stores the submit request data.
    Json::Value SubmitRequestJson;
 

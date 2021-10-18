@@ -164,7 +164,9 @@ Int_t Request::SendRequest(std::string submitRequestJson, MCache *cache)
       // TEMPORARY FOR DEBUGGING
       std::cout << "computiong checksums\n";
 
-      cache->ComputeChecksums(hashString);
+      // cache->ComputeChecksums(hashString);
+
+      SetInCache(true);
 
       return 0;
    }
@@ -221,6 +223,19 @@ std::map<std::string, std::string> Request::GetValues()
    return values;
 }
 
+
+// Setter for inCache
+void Request::SetInCache(bool isWritten){
+   inCache = isWritten;
+}
+
+
+// Getter for inCache
+bool Request::IsInCache(){
+   return inCache;
+}
+
+
 Request::Request() {}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -228,4 +243,5 @@ Request::Request() {}
 Request::Request(std::map<std::string, std::string> myValues)
 {
    values = myValues;
+   inCache = false;
 }

@@ -65,6 +65,8 @@ ROOT::RDataFrame XDataFrame(std::string inputString)
 
    testRequest.SendRequest(inputString, &cache);
 
+   
+
    Hasher      hasher;
    std::string hashVal;
    hashVal = hasher.GetHash(inputString);
@@ -75,26 +77,34 @@ ROOT::RDataFrame XDataFrame(std::string inputString)
    // Want to check the list of files to see if they're good? or if they're all there?
 
    // For now, do it every time.
+   std::vector<std::string> filenameList;
+   // Checks if the data files are in the cache already
+   if(testRequest.IsInCache()){
+      filenameList = cache.GetFileNameList(hashVal);
+   } else{
+      // Not in cache
+      // Wait until job is done.
+      // Check on status of job
+      std::cout << "Checking status of job " + testRequest.GetRequestID() + "\n";
+      std::string updateString;
+      updateString = xHandler.FetchData(testRequest.GetRequestID());
+      // std::cout << "Response: " + updateString + "\n";
 
-
-   // Wait until job is done.
-   // Check on status of job
-   std::cout << "Checking status of job " + testRequest.GetRequestID() + "\n";
-   std::string updateString;
-   updateString = xHandler.FetchData(testRequest.GetRequestID());
-   // std::cout << "Response: " + updateString + "\n";
-
-   int waitResult;
-   waitResult = xHandler.WaitOnJob(testRequest.GetRequestID());
-   if (waitResult != 0) {
-      std::cerr << "Job did not return complete. Exiting.\n";
-      std::exit(1);
-      // ROOT::RDataFrame d("", "");
-      // return d;
+      int waitResult;
+      waitResult = xHandler.WaitOnJob(testRequest.GetRequestID());
+      if (waitResult != 0) {
+         std::cerr << "Job did not return complete. Exiting.\n";
+         std::exit(1);
+         // ROOT::RDataFrame d("", "");
+         // return d;
+      }
+      filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);
    }
 
-   std::vector<std::string> filenameList;
-   filenameList = xHandler.GetMinIOData(testRequest.GetRequestID(), pathkey);
+   
+
+   
+   
 
    // RDataFrame Part
 

@@ -38,13 +38,15 @@ public:
    // Compute checksums after downloading for the first time and stored to a file in the cache directory.
    void ComputeChecksums(std::string hash);
 
+   std::vector<std::string> GetFileNameList(std::string hash);
+
    MCache(); // Constructor
 
 private:
-   // Writes checksum map to a file
+   // Writes checksum map to a file - UNUSED
    int WriteFile(std::string fname, std::map<std::string, std::string> *m);
 
-   // Reads checksum map from file
+   // Reads checksum map from file - UNUSED
    int ReadFile(std::string fname, std::map<std::string, std::string> *m);
 
    // Hash map of request_id's and hashed submission strings

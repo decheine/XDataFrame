@@ -195,6 +195,29 @@ bool MCache::CreateCacheEntry(std::string hash)
    return 0;
 }
 
+ std::vector<std::string> MCache::GetFileNameList(std::string hash){
+// lookup the entry with the hash string
+   fs::path hashFolderPath = fs::path(cacheDir + "/" + hash);
+   std::string ext(".root");
+   std::vector<std::string> filenameList;
+   if (fs::is_directory(hashFolderPath)) {
+
+      // iterate over all ROOT files
+      for (auto &p : fs::recursive_directory_iterator(hashFolderPath))
+      {
+         if (p.path().extension() == ext){
+               filenameList.emplace_back(p.path().string());
+         }
+      }
+
+      return filenameList;
+
+   } else {
+         std::cerr << "specified hash " + hash + "has not been created in the cache";
+         exit(1);
+   }
+ }
+
 
 /**
  * @brief writes checksum map to file
