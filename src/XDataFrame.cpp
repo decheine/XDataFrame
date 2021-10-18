@@ -47,12 +47,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Main XDataFrame method that runs through all the processes of
 /// sending the request, recieving, and returning the RDataFrame
-ROOT::RDataFrame XDataFrame(std::string inputString)
+///
+///   Args: 
+///      "-d": redownload files regardless of cache status.
+///
+ROOT::RDataFrame XDataFrame(std::string inputString, std::string args)
 {
    std::cout << "Beginning ServiceX to RDataFrame interface.\n";
    ServiceXHandler                    xHandler;
    std::vector<std::string>           userYaml;
    std::map<std::string, std::string> values = xHandler.parseYaml("/servicex.yaml");
+
+   
 
    // Initialize a Request object.
    // Want to be able to extend functionality and add args to XDataFrame() to control behavior
@@ -114,4 +120,9 @@ ROOT::RDataFrame XDataFrame(std::string inputString)
 
    std::cout << "Finished\n";
    return myDataFrame;
+}
+
+// overloaded function to make the args parameter optional
+ROOT::RDataFrame XDataFrame(std::string inputString){
+   return XDataFrame(inputString, "");
 }
