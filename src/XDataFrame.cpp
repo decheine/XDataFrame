@@ -72,10 +72,12 @@ ROOT::RDataFrame XDataFrame(std::string inputString)
    std::string pathkey;
    pathkey = cache.GetCacheDir() + "/" + hashVal + "/";
    // Only call this if user specifically wants to refresh the data or if there are no data files.
+   // Want to check the list of files to see if they're good? or if they're all there?
+
    // For now, do it every time.
 
-   // Wait until job is done.
 
+   // Wait until job is done.
    // Check on status of job
    std::cout << "Checking status of job " + testRequest.GetRequestID() + "\n";
    std::string updateString;

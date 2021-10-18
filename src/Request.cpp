@@ -153,7 +153,7 @@ Int_t Request::SendRequest(std::string submitRequestJson, MCache *cache)
    } else {
       // Hash was found
       // request_id = hash
-      // std::cout << "Hash found\n";
+      std::cout << "Hash found\n";
 
       std::string reqId = cache->ReadRequestId(hashString);
       // std::cout << "setting hashes, " << request_id << " " << reqId << "\n";
