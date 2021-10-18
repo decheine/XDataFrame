@@ -30,9 +30,7 @@ Much of this (for now) takes from theh RDataFrame tutorial
  */
 ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame()
 {
-   // TODO: read the files fetched and get the tree name they have
-
-   std::cout << "getting tree name\n";
+   std::cout << "Getting tree names\n";
    // just the first file. Should probably check all the others too.
    std::string treeName = GetTreeName(filenames.at(0));
 
@@ -44,8 +42,6 @@ ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame()
    // std::cout << "Filename1: " << filenames[0] << "\n";
    ROOT::RDataFrame df(treeName, filenames);
 
-   // RDataFrameObject = &df;
-
    return df;
 }
 
@@ -54,14 +50,6 @@ ROOT::RDataFrame RDataFrameHandler::CreateRDataFrame()
 std::string RDataFrameHandler::GetTreeName(std::string filepath)
 {
    TFile *f = TFile::Open(filepath.c_str());
-   // TIter keyList(f->GetListOfKeys());
-   // TKey *key;
-   // for(auto k : *f->GetListOfKeys()) {
-   //     TKey *key = static_cast<TKey*>(k);
-   //     TClass *cl = gROOT->GetClass(key->GetClassName());
-   //     if (!cl->InheritsFrom("TTree")) continue;
-   //     TTree *T = key->ReadObj<TTree>();
-   // }
 
    TIter       next(f->GetListOfKeys());
    TKey *      key;
