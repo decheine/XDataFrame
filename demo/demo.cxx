@@ -18,6 +18,7 @@ int main(int argc, char* argv[]){
     std::string requestString = "{       \"did\": \"cernopendata://1507\",        \"selection\": \"(call ResultTTree (call Select (call SelectMany (call EventDataset 'ServiceXSourceCMSRun1AOD') (lambda (list e) (call (attr e 'TrackMuons') 'globalMuons'))) (lambda (list m) (call (attr m 'pt')))) (list 'mu_pt') 'treeme' 'file.root')\",     \"result-destination\": \"object-store\",     \"result-format\": \"root-file\",     \"chunk-size\": \"1000\",     \"workers\": \"10\"}";
 
     // Getting the RDataFrame
+    // Add the option "-d" to redownload files always even if they are already in the cache.
     ROOT::RDataFrame mydf = XDataFrame(requestString, "");
 
     std::cout << "Filtering\n";

@@ -68,8 +68,14 @@ ROOT::RDataFrame XDataFrame(std::string inputString, std::string options)
       token = strtok(nullptr, space_delimiter.c_str()); 
    } 
 
+   // arg variables
+   bool downloadFlag = false;
+
    for (const auto &str : args) {
-      std::cout << str << std::endl;
+      // Always download files
+      if(str == "-d"){
+         downloadFlag = true;
+      }
    }
 
 
@@ -97,7 +103,7 @@ ROOT::RDataFrame XDataFrame(std::string inputString, std::string options)
    // For now, do it every time.
    std::vector<std::string> filenameList;
    // Checks if the data files are in the cache already
-   if(testRequest.IsInCache()){
+   if(testRequest.IsInCache() && !downloadFlag){
       filenameList = cache.GetFileNameList(hashVal);
    } else{
       // Not in cache
