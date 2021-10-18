@@ -71,6 +71,7 @@ Int_t Request::SendRequest(std::string submitRequestJson, MCache *cache)
    std::cout << "Checking cache for previously fetched data.\n";
 
    hashFound = cache->EntryExists(hashString);
+   
 
    if (hashFound == false) {
       std::cout << "Cache entry not found, submitting request\n";
@@ -159,6 +160,11 @@ Int_t Request::SendRequest(std::string submitRequestJson, MCache *cache)
       // std::cout << "setting hashes, " << request_id << " " << reqId << "\n";
       request_id = reqId;
       // fs::path reqidPath = fs::path(cache->GetCacheDir() + "/" + hashString);
+
+      // TEMPORARY FOR DEBUGGING
+      std::cout << "computiong checksums\n";
+
+      cache->ComputeChecksums(hashString);
 
       return 0;
    }

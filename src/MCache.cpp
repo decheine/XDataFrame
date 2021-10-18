@@ -3,6 +3,9 @@
 #include <fstream>
 
 #include <boost/filesystem.hpp>
+#include <boost/crc.hpp>
+
+#include <TFile.h>
 
 #include "MCache.h"
 
@@ -196,6 +199,8 @@ bool MCache::CreateCacheEntry(std::string hash)
 /**
  * @brief writes checksum map to file
  * 
+ *    UNUSED
+ * 
  * @param fname 
  * @param m 
  * @return int 
@@ -220,6 +225,8 @@ int MCache::WriteFile(std::string fname, std::map<std::string, std::string> *m) 
 
 /**
  * @brief reads checksum map from file
+ * 
+ *  UNUSED
  * 
  * @param fname 
  * @param m 
@@ -273,8 +280,30 @@ int MCache::ReadFile(std::string fname, std::map<std::string, std::string> *m) {
  * Checksums are computed after downloading for the first time and stored to a file in the cache directory. 
  * Use a map to map file names to that file's checksum.
  * 
+ *  UNIMPLEMENTED
+ * 
  * @param hash 
  */
 void MCache::ComputeChecksums(std::string hash){
+   // lookup the entry with the hash string
+   fs::path hashFolderPath = fs::path(cacheDir + "/" + hash);
+   std::string ext(".root");
+   if (fs::is_directory(hashFolderPath)) {
 
+      // iterate over all ROOT files
+      for (auto &p : fs::recursive_directory_iterator(hashFolderPath))
+      {
+         if (p.path().extension() == ext){
+               // std::cout << p.path().string() << '\n';
+               TFile f(p.path().string().c_str());
+               // f.ShowStreamerInfo();
+
+         }
+      }
+
+
+   } else {
+         std::cerr << "specified hash " + hash + "has not been created in the cache";
+         return;
+   }
 }
