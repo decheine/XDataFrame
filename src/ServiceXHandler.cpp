@@ -90,7 +90,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
    std::cout << "Reading file " + fullDir + "\n";
    std::ifstream myfile(fullDir);
    if (myfile.is_open()) {
-      std::cout << "file opened\n";
+      // std::cout << "file opened\n";
       std::string content;
 
       // content.assign(((std::istreambuf_iterator<char>(myfile)),
@@ -98,7 +98,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
 
       content.assign((std::istreambuf_iterator<char>(myfile)), std::istreambuf_iterator<char>());
 
-      std::cout << "content assigned \n";
+      // std::cout << "content assigned \n";
 
       // ryml can parse in situ (and read-only buffers too):
 
@@ -108,15 +108,15 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
       // strcpy(src, content.c_str());
       // char src[];
       c4::substr srcview = c4::to_substr(testyaml); // a mutable view to the source buffer
-      std::cout << "to substr \n";
+      // std::cout << "to substr \n";
 
       // there are also overloads for reusing the tree and parser
       ryml::Tree tree = ryml::parse(srcview);
-      std::cout << "parsed \n";
+      // std::cout << "parsed \n";
 
       // get a reference to the "foo" node
       ryml::NodeRef node = tree["api_endpoints"];
-      std::cout << "Number of children: " << node.num_children() << std::endl;
+      // std::cout << "Number of children: " << node.num_children() << std::endl;
       // ryml::NodeRef subNode = node.find_child("sub2");
       // ryml::NodeRef subFirst = node.child(0);
 
@@ -124,7 +124,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
       char       src[]  = "type";
       c4::substr epName = src;
       // ryml::NodeRef endpointNode = tree["api_endpoints"].find_child(epName);
-      std::cout << "getting api_endpoints child\n";
+      // std::cout << "getting api_endpoints child\n";
       ryml::NodeRef api_endpointNode = tree["api_endpoints"].child(0);
       // ryml::NodeRef typeNode = tree["api_endpoints"];
 
@@ -133,14 +133,14 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
       ryml::NodeRef tokenNode    = api_endpointNode.find_child("token");
 
       // TODO: Needs to search and verify that the nodes are there before they are referenced.
-      std::cout << "Trying show_keyval...\n";
+      // std::cout << "Trying show_keyval...\n";
       show_val(endpointNode);
 
       std::string endpoint;
       std::string token;
       std::string mytype;
 
-      std::cout << "getting endpoint\n";
+      // std::cout << "getting endpoint\n";
       c4::from_chars(endpointNode.val(), &endpoint);
 
       myfile.close();
@@ -151,7 +151,7 @@ std::map<std::string, std::string> ServiceXHandler::parseYaml(std::string target
       // properties["token"] = token;
       // properties["type"] = mytype;
 
-      std::cout << "returning properties\n";
+      // std::cout << "returning properties\n";
       return properties;
    } else
       std::cout << "Unable to open servicex.yaml. Proceeding with default endpoint.\n";
