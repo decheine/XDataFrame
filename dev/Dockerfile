@@ -3,7 +3,7 @@
 # See https://hub.docker.com/r/library/gcc/ for all supported GCC
 # tags from Docker Hub.
 # See https://docs.docker.com/samples/library/gcc/ for more on how to use this image
-# docker build -t xdataframe-docker -f dev/Dockerfile .
+# docker build -t decheine/xdataframe-docker -f dev/Dockerfile .
 FROM ubuntu:20.04
 
 # env var for timezone skipping during build 
