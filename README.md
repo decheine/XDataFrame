@@ -78,7 +78,7 @@ docker pull decheine/xdataframe-demo-image
 ```
 
 
-Once the image has been pulled, you can run it from the docker application. Wait until it has completed and you can follow the following steps to explore it further. NOTE: Sometimes the ServiceX job returns "Fatal", the program should exit with an error when this happens, but when it does, simply stop and restart the image, and it should work. 
+Once the image has been pulled, you can run it from the docker application. Wait until it has completed and you can follow the following steps to explore it further.
 
 
 To enter the demo image
