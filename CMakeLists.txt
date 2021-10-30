@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(XDataFrameProject VERSION 1.0)
+project(XDataFrame VERSION 1.0)
+
+include(GNUInstallDirs)
 
 # specify the C++ standard
-# TODO: How much of this is specified by ROOT when building this library?
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # CMake helper module from git
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -43,7 +44,6 @@ FetchContent_Declare(jsoncpp
 FetchContent_MakeAvailable(jsoncpp)
 
 find_package(OpenSSL REQUIRED)
-
 find_package( CURL REQUIRED )
 
 set(BUILD_SHARED_LIBS ON CACHE STRING "Link to shared libraries by default.")
@@ -75,8 +75,6 @@ message("-- Boost libraries: " ${Boost_LIBRARIES})
 
 message("-- Boost include dir " ${Boost_INCLUDE_DIR})
 
-message("- include dir ")
-
 # Handling vcpkg includes
 
 # Must handle TRIPLET, depending on platform, like x64-linux or x64-windows
@@ -99,7 +97,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 # Generate dictionary
 root_generate_dictionary(G__XDataFrameLib include/XDataFrame.h LINKDEF include/XDataFrameLinkDef.h)
 
-add_library(XDataFrameLib SHARED 
+add_library(XDataFrameLib SHARED
                                 src/XDataFrame.cpp 
                                 include/XDataFrame.h 
                                 G__XDataFrameLib.cxx
@@ -112,14 +110,13 @@ add_library(XDataFrameLib SHARED
                                 include/MCache.h
                                 include/RDataFrameHandler.h
                                 include/Request.h
-                                include/ServiceXHandler.h
-                               
-)
-target_include_directories(XDataFrameLib PUBLIC ${ROOT_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include 
-                                                # ${VCPKG_LOCATION}/installed/${TRIPLET}/include
+                                include/ServiceXHandler.h                       
 )
 
-# target_link_libraries(XDataFrameLib boost_system)
+target_include_directories(XDataFrameLib PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:include>"
+)
 
 target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
                                         ROOT::RIO
@@ -134,16 +131,38 @@ target_link_libraries(XDataFrameLib PUBLIC ROOT::Core
                                         CURL::libcurl
                                         OpenSSL::Crypto
                                         ${Boost_LIBRARIES}
-
-)
-
-target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
+                                        jsoncpp_object jsoncpp_static
                                         aws-cpp-sdk-s3
                                         aws-cpp-sdk-core
                                         ryml
-                                        ${CURL_LINK_LIBRARIES}                                              
+                                        ${CURL_LINK_LIBRARIES}     
+
 )
 
+# target_link_libraries(XDataFrameLib PRIVATE jsoncpp_object jsoncpp_static
+#                                         aws-cpp-sdk-s3
+#                                         aws-cpp-sdk-core
+#                                         ryml
+#                                         ${CURL_LINK_LIBRARIES}                                              
+# )
+
+
+install(
+    TARGETS XDataFrameLib
+    EXPORT XDataFrameLibTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install( FILES  include/XDataFrame.h
+                include/Hasher.h
+                include/MCache.h
+                include/RDataFrameHandler.h
+                include/Request.h
+                include/ServiceXHandler.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 #############
 # Executable
@@ -157,13 +176,35 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
 # Installation
 
+message("-- configuring installation")
 
-# add_test(testname Exename arg1 arg2 ...)
-# add_test(NAME <name> [CONFIGURATIONS [Debug|Release|...]]
-#          [WORKING_DIRECTORY dir]
-#          COMMAND <command> [arg1 [arg2 ...]])
+install(
+    EXPORT XDataFrameLibTargets
+    FILE XDataFrameLibTargets.cmake # maybe not needed
+    NAMESPACE XDataFrame::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/XDataFrame
+    
+)
 
-# if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-#     include(CTest)
-# endif()
+# include(CMakePackageConfigHelpers)
+# configure_package_config_file(
+#     "${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in"
+#     "${CMAKE_CURRENT_BINARY_DIR}/XDataFrameConfig.cmake"
+#     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/XDataFrame
+#     PATH_VARS
+#         CMAKE_INSTALL_LIBDIR
+# )
+
+# write_basic_package_version_file(
+#     ${CMAKE_CURRENT_BINARY_DIR}/XDataFrameConfigVersion.cmake
+#     VERSION 1.1.0
+#     COMPATIBILITY SameMajorVersion
+# )
+
+# Install Config and ConfigVersion files
+# install(
+#     FILES   "${CMAKE_CURRENT_BINARY_DIR}/XDataFrameConfig.cmake"
+#             # "${CMAKE_CURRENT_BINARY_DIR}/XDataFrameConfigVersion.cmake"
+#     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/XDataFrame"
+# )
 
