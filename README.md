@@ -24,7 +24,57 @@ A list of all dependencies:
 
 The last three are taken care of by the CMakeLists.txt and fetched from their github repositories and built for your machine upon configuration and so are ready to be used to build this project during the build step.
 
-### Building
+### Method 1 - add_subdirectory
+
+The easiest method of incorporating XDataFrame into your project is to:
+
+1. Navigate to your project directory and clone the repo
+ 
+```bash
+git clone https://github.com/decheine/XDataFrame
+```
+
+2. You will need to find the globally installed dependencies, like ROOT and boost, by adding these lines to your CMakeLists.txt
+
+```cmake
+find_package(ROOT CONFIG REQUIRED COMPONENTS Core RIO Net Hist Tree Thread MultiProc ROOTDataFrame Gpad Rint )
+find_package(Boost REQUIRED COMPONENTS system filesystem )
+find_package(OpenSSL REQUIRED)
+find_package( CURL REQUIRED )
+```
+
+3. Then add the subdirectory to your CMakeLists.txt
+
+```cmake
+add_subdirectory(XDataFrame)
+```
+
+4. Lastly, when linking libraries to your executable, add the XDataFrame library "XDataFrameLib" to your `target_link_libraries`
+
+```cmake
+target_link_libraries(YourProject PRIVATE ROOT::Core
+                                        ROOT::RIO
+                                        ROOT::Net
+                                        ROOT::Hist 
+                                        ROOT::Tree 
+                                        ROOT::Thread 
+                                        ROOT::MultiProc
+                                        ROOT::ROOTDataFrame
+                                        ROOT::Gpad
+                                        ROOT::Rint
+                                        XDataFrameLib
+)
+```
+
+5. To include the library in your source code, use 
+
+```c++
+#include "XDataFrame.h"
+```
+
+And you should be all set. When you build your project, XDataFrame will build all on it's own and take care of everything for itself. 
+
+### Building manually
 
 To install the project you can create an optional folder for it to include other projects in that will utilize XDataFrame, to keep it all together.
 
@@ -55,16 +105,10 @@ Then run this to build
 cmake --build .
 ```
 
-You can run 
-```
-./XDataFrame <args>
-```
-To run the program.
-
 To run the demo, simply run
 
 ```
-./Demo
+./bin/Demo
 ```
 
 ## Try it out with the Docker Demo
